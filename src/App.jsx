@@ -3,7 +3,7 @@ import { supabase } from './lib/supabase';
 import { getArticles, addManualArticle, updateArticle, deleteArticle, subscribeToArticles, triggerWebScraper } from './services/articles';
 
 export default function App() {
-  // Deteksi Otomatis Bawaan Sistem / Jam Siang & Malam (06.00 - 18.00 = Terang, 18.00 - 06.00 = Gelap)
+  // Deteksi Otomatis Bawaan Sistem / Jam Siang & Malam
   const getInitialTheme = () => {
     if (typeof window !== 'undefined' && window.matchMedia) {
       const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -232,7 +232,7 @@ export default function App() {
       `"${(article.title || '').replace(/"/g, '""')}"`,
       `"${(article.source_name || '').replace(/"/g, '""')}"`,
       `"${article.published_at ? new Date(article.published_at).toLocaleString('id-ID') : '-'}"`,
-      `"${article.entry_type || 'scraped'}"`,
+      `"${article.entry_type === 'manual' ? 'MANUAL' : 'OTOMATIS'}"`,
       `"${article.sentiment || 'neutral'}"`,
       `"${(article.url || '').replace(/"/g, '""')}"`
     ].join(','));
@@ -711,7 +711,7 @@ export default function App() {
                     Daftar Artikel Berita & Opini Publik
                   </h2>
                   <p className="text-[11px] text-slate-400">
-                    Hasil pemindaian otomatis (Google News & Web Umum) dan kliping manual
+                    Hasil pemindaian otomatis dan kliping manual
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-2">
@@ -761,14 +761,15 @@ export default function App() {
                     <option value="negative">🔴 Negatif</option>
                   </select>
 
+                  {/* FILTER TIPE DENGAN ISTILAH OTOMATIS */}
                   <select
                     value={filterType}
                     onChange={(e) => setFilterType(e.target.value)}
                     className="px-2.5 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 font-semibold focus:outline-none"
                   >
                     <option value="all">Semua Tipe</option>
-                    <option value="scraped">Pemindaian Otomatis</option>
-                    <option value="manual">Input Manual</option>
+                    <option value="scraped">OTOMATIS</option>
+                    <option value="manual">MANUAL</option>
                   </select>
 
                   <select
@@ -824,12 +825,13 @@ export default function App() {
                               )}
                             </td>
 
+                            {/* MEDIA SUMBER DENGAN LABEL MANUAL / OTOMATIS */}
                             <td className="py-2.5 px-3 align-top whitespace-nowrap">
                               <span className="font-semibold text-slate-700 dark:text-slate-200 block">
                                 {article.source_name}
                               </span>
-                              <span className="text-[9px] text-slate-400 uppercase tracking-tight block mt-0.5">
-                                {article.entry_type === 'manual' ? 'Manual' : 'Scraped'}
+                              <span className="text-[9px] text-slate-400 uppercase tracking-tight block mt-0.5 font-bold">
+                                {article.entry_type === 'manual' ? 'MANUAL' : 'OTOMATIS'}
                               </span>
                             </td>
 
