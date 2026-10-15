@@ -1,0 +1,31 @@
+name: SIMONITA News Scraper & AI Sentiment
+
+on:
+  schedule:
+    # Berjalan otomatis setiap 1 jam
+    - cron: '0 * * * *'
+  # Memungkinkan pemicuan manual dari tab Actions di GitHub
+  workflow_dispatch:
+
+jobs:
+  scrape-and-analyze:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run News Scraper Engine
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node scripts/scrape.js
