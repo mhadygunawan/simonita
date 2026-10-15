@@ -4,12 +4,10 @@ import { getArticles, addManualArticle, updateArticle, deleteArticle, subscribeT
 
 const translations = {
   id: {
-    statusActive: 'Sistem Aktif',
+    statusActive: 'Sistem Terproteksi',
     officeSubtitle: 'KPPBC TMP B Pekanbaru • Seksi PLI',
     themeLight: '☀️ Terang',
     themeDark: '🌙 Gelap',
-    guestMode: 'Mode Publik (Tamu)',
-    loginOfficer: 'Masuk Pegawai',
     logout: 'Keluar Portal',
     marquee: '🔔 SIMONITA: Sistem Monitoring Opini dan Berita • Jam Layanan: 07.30 - 17.00 WIB • Wilayah Pengawasan: Pekanbaru • Siak • Kampar • Rokan Hulu • Pelalawan',
     menuTitle: 'Menu Portal',
@@ -18,7 +16,7 @@ const translations = {
     tabPress: 'Dewan Pers',
     tabSettings: 'Pengaturan',
     hotspotSidebarTitle: 'Titik Wilayah Pengawasan',
-    hotspotSidebarDesc: 'Klik titik berkedip pada peta latar untuk meninjau rincian pengawasan perairan Siak, darat Kampar/Rohul, dan kawasan industri.',
+    hotspotSidebarDesc: 'Klik titik radar berkedip pada peta latar untuk meninjau rincian pengawasan perairan Siak, darat Kampar/Rohul, dan kawasan industri.',
     portalDesc: 'Portal Intelijen Media & Pemantauan Opini Publik',
     exportCsv: 'Ekspor CSV',
     refresh: 'Segarkan',
@@ -56,7 +54,6 @@ const translations = {
     pressTitle: 'Portal Verifikasi Dewan Pers Republik Indonesia',
     pressDesc: 'Basis data rujukan Seksi PLI untuk memeriksa legalitas faktual perusahaan pers, kode etik jurnalistik, dan sertifikasi kompetensi wartawan.',
     pressCheckListTitle: 'Data Perusahaan Pers Terverifikasi',
-    pressCheckListDesc: 'Akses resmi daftar media massa online, cetak, televisi, dan radio yang telah terverifikasi secara Administrasi maupun Faktual oleh Dewan Pers.',
     pressCheckBtn: 'Buka Basis Data Dewan Pers ↗',
     pressCardWartawan: 'Sertifikasi & Uji Kompetensi Wartawan (UKW)',
     pressCardWartawanDesc: 'Cek keabsahan status sertifikasi wartawan yang bertugas meliput di lingkungan KPPBC TMP B Pekanbaru.',
@@ -70,16 +67,16 @@ const translations = {
     settingCron: 'Jadwal Scraper Multi-Kanal',
     settingDomain: 'Alamat Domain Resmi',
     settingDb: 'Basis Data & Keamanan',
-    version: 'Versi 2.1.0 (Dewan Pers & Multi-Feed Scraper)',
-    loginPageTitle: 'Portal Masuk Pegawai',
-    loginPageDesc: 'Sistem Terpadu SIMONITA KPPBC TMP B Pekanbaru',
-    backToHome: '← Kembali ke Beranda',
+    version: 'Versi 2.2.0 (Strict Auth Gate)',
+    loginPageTitle: 'Portal Masuk SIMONITA',
+    loginPageSubtitle: 'Sistem Monitoring Opini dan Berita • KPPBC TMP B Pekanbaru',
     emailLabel: 'Email Kedinasan Pegawai',
-    passwordLabel: 'Kata Sandi',
-    submitLogin: 'Verifikasi Kredensial',
-    otpTitle: 'Verifikasi 2FA Pegawai',
-    otpDesc: 'Masukkan 6-digit kode OTP keamanan sebelum mengelola data manual.',
-    otpSubmit: 'Konfirmasi Masuk',
+    passwordLabel: 'Kata Sandi Akun',
+    submitLogin: 'Verifikasi Identitas Pegawai',
+    authNotice: 'Area Terbatas: Portal ini diperuntukkan khusus pejabat dan pegawai KPPBC TMP B Pekanbaru. Silakan masuk dengan kredensial terdaftar.',
+    otpTitle: 'Verifikasi Keamanan 2FA',
+    otpDesc: 'Masukkan 6-digit kode OTP pengaman untuk menyelesaikan proses masuk ke sistem dashboard.',
+    otpSubmit: 'Konfirmasi & Masuk Dashboard',
     modalTitle: '+ Tambahkan Artikel Berita Manual',
     modalEditTitle: '✏️ Edit Artikel & Sentimen Opini',
     modalDesc: 'Input publikasi media lokal / regional yang tidak terjaring otomatis.',
@@ -91,18 +88,15 @@ const translations = {
     btnCancel: 'Batal',
     btnSave: 'Simpan ke Basis Data',
     btnUpdate: 'Simpan Perubahan',
-    accessRestricted: 'Akses Dibatasi: Silakan masuk menggunakan akun pegawai terlebih dahulu.',
-    otpSuccess: 'Verifikasi Berhasil. Selamat bertugas di SIMONITA!',
+    otpSuccess: 'Verifikasi 2FA Berhasil. Selamat bertugas!',
     closeModal: 'Tutup',
     confirmDelete: 'Hapus artikel berita ini dari basis data SIMONITA?'
   },
   en: {
-    statusActive: 'System Active',
+    statusActive: 'Protected System',
     officeSubtitle: 'Customs Pekanbaru • Information & Support Section',
     themeLight: '☀️ Light',
     themeDark: '🌙 Dark',
-    guestMode: 'Public Mode (Guest)',
-    loginOfficer: 'Officer Login',
     logout: 'Sign Out',
     marquee: '🔔 SIMONITA: Media Monitoring & News Portal • Operating Hours: 07.30 - 17.00 WIB • Coverage Areas: Pekanbaru • Siak • Kampar • Rokan Hulu • Pelalawan',
     menuTitle: 'Navigation Menu',
@@ -149,7 +143,6 @@ const translations = {
     pressTitle: 'Press Council of Indonesia (Dewan Pers)',
     pressDesc: 'Reference hub for Public Relations team to verify media outlets legitimacy, journalistic ethics, and reporter accreditation.',
     pressCheckListTitle: 'Verified Media Registry',
-    pressCheckListDesc: 'Access the official database of online, print, television, and radio media companies verified by the Press Council.',
     pressCheckBtn: 'Open Press Council Database ↗',
     pressCardWartawan: 'Journalist Competency Certification (UKW)',
     pressCardWartawanDesc: 'Verify certified press credentials of journalists conducting interviews at Customs Pekanbaru.',
@@ -163,16 +156,16 @@ const translations = {
     settingCron: 'Multi-Channel Scraper Interval',
     settingDomain: 'Custom Live Domain',
     settingDb: 'Database & Policies',
-    version: 'Version 2.1.0 (Dewan Pers & Multi-Feed Scraper)',
-    loginPageTitle: 'Officer Login Portal',
-    loginPageDesc: 'SIMONITA Gateway - KPPBC TMP B Pekanbaru',
-    backToHome: '← Back to Main Dashboard',
+    version: 'Version 2.2.0 (Strict Auth Gate)',
+    loginPageTitle: 'SIMONITA Access Gateway',
+    loginPageSubtitle: 'Media Monitoring & Public Opinion System • KPPBC TMP B Pekanbaru',
     emailLabel: 'Official Customs Email',
-    passwordLabel: 'Password',
-    submitLogin: 'Authenticate Credentials',
-    otpTitle: 'Officer 2FA Verification',
-    otpDesc: 'Enter your 6-digit OTP passcode before accessing database modifications.',
-    otpSubmit: 'Confirm Sign In',
+    passwordLabel: 'Account Password',
+    submitLogin: 'Authenticate Customs Officer',
+    authNotice: 'Restricted Area: Exclusively accessible by authorized personnel of KPPBC TMP B Pekanbaru.',
+    otpTitle: '2FA Security Check',
+    otpDesc: 'Enter your 6-digit OTP passcode to unlock the operational dashboard.',
+    otpSubmit: 'Confirm & Enter Dashboard',
     modalTitle: '+ Add Manual News Article',
     modalEditTitle: '✏️ Edit Article & Sentiment',
     modalDesc: 'Record local media articles not caught by automated multi-channel feeds.',
@@ -184,8 +177,7 @@ const translations = {
     btnCancel: 'Cancel',
     btnSave: 'Save to Database',
     btnUpdate: 'Save Changes',
-    accessRestricted: 'Restricted Access: Please sign in with an officer account.',
-    otpSuccess: '2FA Verification Successful. Welcome back to SIMONITA!',
+    otpSuccess: '2FA Verification Successful. Welcome back!',
     closeModal: 'Close',
     confirmDelete: 'Remove this news record permanently from SIMONITA?'
   }
@@ -195,11 +187,20 @@ export default function App() {
   const [lang, setLang] = useState('id');
   const t = translations[lang];
 
-  // Router View: 'dashboard' | 'login'
-  const [currentView, setCurrentView] = useState('dashboard');
-
-  // Session & Theme
+  // Auth State (Gate)
   const [session, setSession] = useState(null);
+  const [authChecked, setAuthChecked] = useState(false);
+  const [is2FAVerified, setIs2FAVerified] = useState(false);
+
+  // Form Login
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+  const [authError, setAuthError] = useState('');
+  const [authLoading, setAuthLoading] = useState(false);
+  const [showOtpDrawer, setShowOtpDrawer] = useState(false);
+  const [otpCode, setOtpCode] = useState(['', '', '', '', '', '']);
+
+  // Theme & Tabs
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [activeTab, setActiveTab] = useState('articles'); // 'articles' | 'stats' | 'press' | 'settings'
 
@@ -210,11 +211,11 @@ export default function App() {
   const [timeFilter, setTimeFilter] = useState('all');
   const [loading, setLoading] = useState(true);
 
-  // Pagination State: 10, 25, 50
+  // Pagination
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Modal & Edit State
+  // Modals
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingArticleId, setEditingArticleId] = useState(null);
   const [formData, setFormData] = useState({
@@ -225,18 +226,8 @@ export default function App() {
     sentiment: 'neutral'
   });
 
-  // Hotspot Popover State
   const [selectedHotspot, setSelectedHotspot] = useState(null);
 
-  // Auth State
-  const [loginEmail, setLoginEmail] = useState('');
-  const [loginPassword, setLoginPassword] = useState('');
-  const [authError, setAuthError] = useState('');
-  const [authLoading, setAuthLoading] = useState(false);
-  const [showOtpDrawer, setShowOtpDrawer] = useState(false);
-  const [otpCode, setOtpCode] = useState(['', '', '', '', '', '']);
-
-  // Enforcement Hotspots
   const hotspots = [
     {
       id: 'building',
@@ -276,18 +267,27 @@ export default function App() {
     }
   ];
 
+  // Inisialisasi Auth State
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
+      if (session) {
+        setIs2FAVerified(true);
+      }
+      setAuthChecked(true);
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
+      if (!session) {
+        setIs2FAVerified(false);
+      }
     });
 
     return () => subscription.unsubscribe();
   }, []);
 
+  // Sinkronisasi Dark Mode
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
@@ -296,6 +296,7 @@ export default function App() {
     }
   }, [isDarkMode]);
 
+  // Load Artikel
   const loadData = async () => {
     try {
       setLoading(true);
@@ -309,44 +310,18 @@ export default function App() {
   };
 
   useEffect(() => {
-    loadData();
-    const channel = subscribeToArticles(() => {
+    if (session && is2FAVerified) {
       loadData();
-    });
-    return () => {
-      if (channel) channel.unsubscribe();
-    };
-  }, []);
-
-  const filteredArticles = articles.filter((item) => {
-    const matchesSearch = item.title.toLowerCase().includes(search.toLowerCase()) ||
-                          item.source_name.toLowerCase().includes(search.toLowerCase());
-    const matchesType = filterType === 'all' ? true : item.entry_type === filterType;
-    
-    let matchesTime = true;
-    if (timeFilter !== 'all' && item.published_at) {
-      const pubDate = new Date(item.published_at);
-      const now = new Date();
-      const diffMs = now - pubDate;
-      const diffHours = diffMs / (1000 * 60 * 60);
-
-      if (timeFilter === '24h') matchesTime = diffHours <= 24;
-      if (timeFilter === '7d') matchesTime = diffHours <= 24 * 7;
-      if (timeFilter === '30d') matchesTime = diffHours <= 24 * 30;
+      const channel = subscribeToArticles(() => {
+        loadData();
+      });
+      return () => {
+        if (channel) channel.unsubscribe();
+      };
     }
+  }, [session, is2FAVerified]);
 
-    return matchesSearch && matchesType && matchesTime;
-  });
-
-  const totalEntries = filteredArticles.length;
-  const totalPages = Math.ceil(totalEntries / rowsPerPage) || 1;
-  const startIndex = (currentPage - 1) * rowsPerPage;
-  const paginatedArticles = filteredArticles.slice(startIndex, startIndex + rowsPerPage);
-
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [search, filterType, timeFilter, rowsPerPage]);
-
+  // Handler Login
   const handleLogin = async (e) => {
     e.preventDefault();
     setAuthLoading(true);
@@ -359,6 +334,7 @@ export default function App() {
       });
 
       if (error) throw error;
+      setSession(data.session);
       setShowOtpDrawer(true);
     } catch (err) {
       setAuthError(err.message || 'Kredensial login tidak valid.');
@@ -375,8 +351,7 @@ export default function App() {
       return;
     }
     setShowOtpDrawer(false);
-    setCurrentView('dashboard');
-    alert(t.otpSuccess);
+    setIs2FAVerified(true);
   };
 
   const handleOtpChange = (index, value) => {
@@ -401,16 +376,13 @@ export default function App() {
   const handleLogout = async () => {
     await supabase.auth.signOut();
     setSession(null);
+    setIs2FAVerified(false);
     setShowOtpDrawer(false);
-    setCurrentView('dashboard');
+    setLoginPassword('');
   };
 
+  // CRUD
   const handleOpenAddModal = () => {
-    if (!session) {
-      alert(t.accessRestricted);
-      setCurrentView('login');
-      return;
-    }
     setEditingArticleId(null);
     setFormData({
       title: '',
@@ -423,11 +395,6 @@ export default function App() {
   };
 
   const handleOpenEditModal = (article) => {
-    if (!session) {
-      alert(t.accessRestricted);
-      setCurrentView('login');
-      return;
-    }
     setEditingArticleId(article.id);
     setFormData({
       title: article.title,
@@ -440,11 +407,6 @@ export default function App() {
   };
 
   const handleDelete = async (id) => {
-    if (!session) {
-      alert(t.accessRestricted);
-      setCurrentView('login');
-      return;
-    }
     if (window.confirm(t.confirmDelete)) {
       try {
         await deleteArticle(id);
@@ -475,6 +437,7 @@ export default function App() {
     }
   };
 
+  // Export CSV
   const exportToCSV = () => {
     if (filteredArticles.length === 0) {
       alert(lang === 'id' ? 'Tidak ada data untuk diekspor.' : 'No data to export.');
@@ -508,6 +471,36 @@ export default function App() {
     URL.revokeObjectURL(url);
   };
 
+  // Filter & Pagination
+  const filteredArticles = articles.filter((item) => {
+    const matchesSearch = item.title.toLowerCase().includes(search.toLowerCase()) ||
+                          item.source_name.toLowerCase().includes(search.toLowerCase());
+    const matchesType = filterType === 'all' ? true : item.entry_type === filterType;
+    
+    let matchesTime = true;
+    if (timeFilter !== 'all' && item.published_at) {
+      const pubDate = new Date(item.published_at);
+      const now = new Date();
+      const diffMs = now - pubDate;
+      const diffHours = diffMs / (1000 * 60 * 60);
+
+      if (timeFilter === '24h') matchesTime = diffHours <= 24;
+      if (timeFilter === '7d') matchesTime = diffHours <= 24 * 7;
+      if (timeFilter === '30d') matchesTime = diffHours <= 24 * 30;
+    }
+
+    return matchesSearch && matchesType && matchesTime;
+  });
+
+  const totalEntries = filteredArticles.length;
+  const totalPages = Math.ceil(totalEntries / rowsPerPage) || 1;
+  const startIndex = (currentPage - 1) * rowsPerPage;
+  const paginatedArticles = filteredArticles.slice(startIndex, startIndex + rowsPerPage);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, filterType, timeFilter, rowsPerPage]);
+
   const totalArticles = articles.length;
   const scrapedCount = articles.filter(a => a.entry_type === 'scraped').length;
   const manualCount = articles.filter(a => a.entry_type === 'manual').length;
@@ -515,6 +508,174 @@ export default function App() {
   const neutralCount = articles.filter(a => a.sentiment === 'neutral' || !a.sentiment).length;
   const negativeCount = articles.filter(a => a.sentiment === 'negative').length;
 
+  if (!authChecked) {
+    return (
+      <div className="min-h-screen bg-[#0D2C5C] flex items-center justify-center text-white">
+        <div className="flex flex-col items-center space-y-3">
+          <div className="w-12 h-12 border-4 border-amber-400 border-t-transparent rounded-full animate-spin"></div>
+          <span className="text-xs font-bold tracking-widest uppercase text-amber-300">Memeriksa Keamanan SIMONITA...</span>
+        </div>
+      </div>
+    );
+  }
+
+  // JIKA BELUM TERAUTENTIKASI / BELUM 2FA -> TAMPILKAN GERBANG LOGIN UTAMA
+  if (!session || !is2FAVerified) {
+    return (
+      <div className="min-h-screen bg-slate-900 text-slate-100 flex flex-col justify-between font-sans relative overflow-hidden">
+        {/* Latar Belakang Isometrik Kedinasan */}
+        <div className="absolute inset-0 pointer-events-none opacity-20 overflow-hidden">
+          <svg className="w-full h-full object-cover" viewBox="0 0 1440 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M-100,500 C300,450 600,650 900,550 C1200,450 1500,600 1600,580 L1600,900 L-100,900 Z" fill="#0284C7" />
+            <path d="M0 200 L1440 600 M0 400 L1440 800 M0 600 L1440 1000" stroke="#F59E0B" strokeWidth="1" strokeDasharray="6 6" />
+            <path d="M1440 200 L0 600 M1440 400 L0 800 M1440 600 L0 1000" stroke="#F59E0B" strokeWidth="1" strokeDasharray="6 6" />
+          </svg>
+        </div>
+
+        {/* Header Minimalis Gerbang Masuk */}
+        <header className="p-4 sm:p-6 z-10 flex items-center justify-between border-b border-white/10 backdrop-blur-md bg-[#0D2C5C]/60">
+          <div className="flex items-center space-x-3">
+            <div className="h-10 w-10 rounded-xl bg-white/10 p-1 border border-amber-400/40 flex items-center justify-center">
+              <img src="/simonita.png" alt="Logo SIMONITA" className="h-full w-full object-contain" />
+            </div>
+            <div>
+              <span className="font-extrabold text-lg tracking-wider text-white">SIMONITA</span>
+              <p className="text-[11px] text-amber-300 font-medium">KPPBC TMP B Pekanbaru</p>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-2">
+            <div className="flex items-center rounded-xl bg-white/10 p-0.5 border border-white/10 text-xs font-bold">
+              <button
+                onClick={() => setLang('id')}
+                className={`px-2.5 py-1 rounded-lg transition ${lang === 'id' ? 'bg-amber-400 text-[#0D2C5C]' : 'text-slate-300'}`}
+              >
+                ID
+              </button>
+              <button
+                onClick={() => setLang('en')}
+                className={`px-2.5 py-1 rounded-lg transition ${lang === 'en' ? 'bg-amber-400 text-[#0D2C5C]' : 'text-slate-300'}`}
+              >
+                EN
+              </button>
+            </div>
+          </div>
+        </header>
+
+        {/* Kotak Login Bersegel Resmi */}
+        <div className="flex-1 flex items-center justify-center p-4 z-10 my-8">
+          <div className="w-full max-w-md bg-[#0D2C5C]/90 backdrop-blur-2xl p-8 rounded-3xl shadow-2xl border border-amber-400/30 text-white">
+            <div className="text-center mb-6">
+              <div className="h-16 w-16 mx-auto mb-3 rounded-2xl bg-amber-400/10 p-2 border border-amber-400/40 flex items-center justify-center shadow-inner">
+                <img src="/simonita.png" alt="Logo" className="h-full w-full object-contain" />
+              </div>
+              <h2 className="text-xl font-extrabold text-white tracking-wide">{t.loginPageTitle}</h2>
+              <p className="text-xs text-amber-200/90 mt-1">{t.loginPageSubtitle}</p>
+            </div>
+
+            <div className="mb-5 p-3 rounded-xl bg-amber-500/10 border border-amber-400/30 text-amber-300 text-[11px] leading-relaxed">
+              🛡️ {t.authNotice}
+            </div>
+
+            {authError && (
+              <div className="mb-4 p-3 rounded-xl bg-rose-500/20 border border-rose-500/40 text-rose-300 text-xs font-medium text-center">
+                {authError}
+              </div>
+            )}
+
+            <form onSubmit={handleLogin} className="space-y-4 text-xs">
+              <div>
+                <label className="block font-semibold mb-1 text-slate-200">{t.emailLabel}</label>
+                <input
+                  type="email"
+                  required
+                  placeholder="pegawai@customs.go.id"
+                  value={loginEmail}
+                  onChange={(e) => setLoginEmail(e.target.value)}
+                  className="w-full px-4 py-2.5 rounded-xl border border-white/20 bg-black/20 text-white placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+                />
+              </div>
+
+              <div>
+                <label className="block font-semibold mb-1 text-slate-200">{t.passwordLabel}</label>
+                <input
+                  type="password"
+                  required
+                  placeholder="••••••••"
+                  value={loginPassword}
+                  onChange={(e) => setLoginPassword(e.target.value)}
+                  className="w-full px-4 py-2.5 rounded-xl border border-white/20 bg-black/20 text-white placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={authLoading}
+                className="w-full py-3 rounded-xl bg-amber-400 hover:bg-amber-500 text-[#0D2C5C] font-extrabold text-sm shadow-lg transition disabled:opacity-50 mt-2"
+              >
+                {authLoading ? 'Memeriksa Kredensial...' : t.submitLogin}
+              </button>
+            </form>
+          </div>
+        </div>
+
+        {/* Footer Kedinasan */}
+        <footer className="p-4 text-center text-xs text-slate-400 border-t border-white/10 bg-[#0D2C5C]/40 z-10">
+          Seksi Penyuluhan dan Layanan Informasi (PLI) • KPPBC TMP B Pekanbaru • {t.version}
+        </footer>
+
+        {/* Drawer Verifikasi 2FA OTP */}
+        {showOtpDrawer && (
+          <div className="fixed inset-0 z-50 flex justify-end bg-black/75 backdrop-blur-sm transition-opacity">
+            <div className="w-full max-w-md bg-[#0D2C5C] text-white h-full p-6 shadow-2xl flex flex-col justify-between border-l border-amber-400/30">
+              <div>
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="font-extrabold text-lg text-amber-400">{t.otpTitle}</h3>
+                  <button
+                    onClick={() => setShowOtpDrawer(false)}
+                    className="p-1 rounded-lg hover:bg-white/10 text-slate-300"
+                  >
+                    ✕
+                  </button>
+                </div>
+
+                <p className="text-xs text-slate-300 mb-6 leading-relaxed">{t.otpDesc}</p>
+
+                <form onSubmit={handleVerifyOtp}>
+                  <div className="flex justify-between gap-2 mb-6" onPaste={handleOtpPaste}>
+                    {otpCode.map((digit, i) => (
+                      <input
+                        key={i}
+                        id={`otp-input-${i}`}
+                        type="text"
+                        maxLength={1}
+                        value={digit}
+                        onChange={(e) => handleOtpChange(i, e.target.value)}
+                        className="w-12 h-14 text-center text-xl font-bold rounded-xl border border-white/20 bg-black/20 text-white focus:outline-none focus:ring-2 focus:ring-amber-400"
+                      />
+                    ))}
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm shadow transition"
+                  >
+                    {t.otpSubmit}
+                  </button>
+                </form>
+              </div>
+
+              <div className="text-[11px] text-slate-400 text-center">
+                KPPBC TMP B Pekanbaru • Keamanan Akses Terpusat
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // JIKA SUDAH LOGIN & 2FA TERVERIFIKASI -> TAMPILKAN DASHBOARD UTAMA
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 flex flex-col font-sans transition-colors duration-300 relative overflow-x-hidden">
 
@@ -586,23 +747,12 @@ export default function App() {
         </div>
       )}
 
-      {/* Header Navigasi Atas */}
+      {/* Header Dashboard Atas */}
       <header className="sticky top-0 z-30 bg-[#0D2C5C]/95 backdrop-blur-md text-white border-b border-amber-500/30 px-4 sm:px-6 py-3 shadow-md">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div 
-            onClick={() => setCurrentView('dashboard')}
-            className="flex items-center space-x-3.5 cursor-pointer"
-          >
+          <div className="flex items-center space-x-3.5">
             <div className="h-10 w-10 rounded-xl overflow-hidden bg-white/10 p-1 flex items-center justify-center border border-amber-400/40 shadow-inner">
-              <img 
-                src="/simonita.png" 
-                alt="Logo SIMONITA" 
-                className="h-full w-full object-contain"
-                onError={(e) => {
-                  e.target.style.display = 'none';
-                  e.target.parentElement.innerHTML = '<span class="font-bold text-amber-400 text-sm">BC</span>';
-                }}
-              />
+              <img src="/simonita.png" alt="Logo SIMONITA" className="h-full w-full object-contain" />
             </div>
             <div>
               <div className="flex items-center space-x-2">
@@ -617,17 +767,13 @@ export default function App() {
             <div className="flex items-center rounded-xl bg-white/10 p-0.5 border border-white/10 font-bold">
               <button
                 onClick={() => setLang('id')}
-                className={`px-2 py-1 rounded-lg transition ${
-                  lang === 'id' ? 'bg-amber-400 text-[#0D2C5C]' : 'text-slate-300 hover:text-white'
-                }`}
+                className={`px-2 py-1 rounded-lg transition ${lang === 'id' ? 'bg-amber-400 text-[#0D2C5C]' : 'text-slate-300 hover:text-white'}`}
               >
                 ID
               </button>
               <button
                 onClick={() => setLang('en')}
-                className={`px-2 py-1 rounded-lg transition ${
-                  lang === 'en' ? 'bg-amber-400 text-[#0D2C5C]' : 'text-slate-300 hover:text-white'
-                }`}
+                className={`px-2 py-1 rounded-lg transition ${lang === 'en' ? 'bg-amber-400 text-[#0D2C5C]' : 'text-slate-300 hover:text-white'}`}
               >
                 EN
               </button>
@@ -641,26 +787,17 @@ export default function App() {
               {isDarkMode ? t.themeLight : t.themeDark}
             </button>
 
-            {session ? (
-              <div className="flex items-center space-x-2">
-                <span className="hidden md:inline-block px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 font-mono text-[11px]">
-                  {session.user.email}
-                </span>
-                <button
-                  onClick={handleLogout}
-                  className="px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-semibold transition"
-                >
-                  {t.logout}
-                </button>
-              </div>
-            ) : currentView === 'dashboard' ? (
+            <div className="flex items-center space-x-2">
+              <span className="hidden md:inline-block px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 font-mono text-[11px]">
+                {session?.user?.email}
+              </span>
               <button
-                onClick={() => setCurrentView('login')}
-                className="px-3.5 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-500 text-[#0D2C5C] font-extrabold shadow-sm transition"
+                onClick={handleLogout}
+                className="px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-semibold transition"
               >
-                🔐 {t.loginOfficer}
+                {t.logout}
               </button>
-            ) : null}
+            </div>
           </div>
         </div>
       </header>
@@ -672,595 +809,474 @@ export default function App() {
         </div>
       </div>
 
-      {/* TAMPILAN LOGIN PEGAWAI */}
-      {currentView === 'login' ? (
-        <div className="flex-1 flex items-center justify-center p-4 z-10 my-auto">
-          <div className="w-full max-w-md bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl p-8 rounded-3xl shadow-2xl border border-slate-200/80 dark:border-slate-800">
+      {/* DASHBOARD KONTEN UTAMA */}
+      <div className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 z-10 flex flex-col md:flex-row gap-6">
+
+        {/* SIDEBAR DASHBOARD */}
+        <aside className="w-full md:w-64 shrink-0 space-y-4">
+          <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl p-3 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col gap-1.5">
+            <span className="text-[10px] uppercase font-bold text-slate-400 px-3 py-1 tracking-wider">{t.menuTitle}</span>
+            
             <button
-              onClick={() => setCurrentView('dashboard')}
-              className="text-xs font-bold text-slate-500 hover:text-[#0D2C5C] dark:hover:text-amber-400 mb-6 flex items-center space-x-1"
+              onClick={() => setActiveTab('articles')}
+              className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-between ${
+                activeTab === 'articles'
+                  ? 'bg-[#0D2C5C] text-white dark:bg-amber-500 dark:text-slate-950 shadow-sm'
+                  : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300'
+              }`}
             >
-              <span>{t.backToHome}</span>
+              <span className="flex items-center space-x-2.5">
+                <span className="text-sm">📰</span>
+                <span>{t.tabArticles}</span>
+              </span>
+              <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-black/10 dark:bg-white/10">{totalArticles}</span>
             </button>
 
-            <div className="text-center mb-6">
-              <div className="h-16 w-16 mx-auto mb-3 rounded-2xl bg-[#0D2C5C]/10 dark:bg-amber-400/10 p-2 border border-amber-400/30 flex items-center justify-center">
-                <img src="/simonita.png" alt="Logo" className="h-full w-full object-contain" />
-              </div>
-              <h2 className="text-xl font-extrabold text-[#0D2C5C] dark:text-amber-400">{t.loginPageTitle}</h2>
-              <p className="text-xs text-slate-500 mt-1">{t.loginPageDesc}</p>
-            </div>
+            <button
+              onClick={() => setActiveTab('stats')}
+              className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-between ${
+                activeTab === 'stats'
+                  ? 'bg-[#0D2C5C] text-white dark:bg-amber-500 dark:text-slate-950 shadow-sm'
+                  : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300'
+              }`}
+            >
+              <span className="flex items-center space-x-2.5">
+                <span className="text-sm">📊</span>
+                <span>{t.tabStats}</span>
+              </span>
+            </button>
 
-            {authError && (
-              <div className="mb-4 p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-600 dark:text-rose-400 text-xs font-medium text-center">
-                {authError}
-              </div>
-            )}
+            <button
+              onClick={() => setActiveTab('press')}
+              className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-between ${
+                activeTab === 'press'
+                  ? 'bg-[#0D2C5C] text-white dark:bg-amber-500 dark:text-slate-950 shadow-sm'
+                  : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300'
+              }`}
+            >
+              <span className="flex items-center space-x-2.5">
+                <span className="text-sm">🏛️</span>
+                <span>{t.tabPress}</span>
+              </span>
+            </button>
 
-            <form onSubmit={handleLogin} className="space-y-4 text-xs">
-              <div>
-                <label className="block font-semibold mb-1 text-slate-700 dark:text-slate-300">{t.emailLabel}</label>
-                <input
-                  type="email"
-                  required
-                  placeholder="pegawai@customs.go.id"
-                  value={loginEmail}
-                  onChange={(e) => setLoginEmail(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#0D2C5C]"
-                />
-              </div>
-
-              <div>
-                <label className="block font-semibold mb-1 text-slate-700 dark:text-slate-300">{t.passwordLabel}</label>
-                <input
-                  type="password"
-                  required
-                  placeholder="••••••••"
-                  value={loginPassword}
-                  onChange={(e) => setLoginPassword(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#0D2C5C]"
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={authLoading}
-                className="w-full py-3 rounded-xl bg-[#0D2C5C] hover:bg-[#0A2247] text-white font-bold text-sm border border-amber-400/40 shadow-md transition disabled:opacity-50 mt-2"
-              >
-                {authLoading ? 'Memverifikasi...' : t.submitLogin}
-              </button>
-            </form>
-
-            <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 text-center text-[11px] text-slate-400">
-              Hak Akses Terbatas Pegawai Seksi PLI Pekanbaru
-            </div>
+            <button
+              onClick={() => setActiveTab('settings')}
+              className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-between ${
+                activeTab === 'settings'
+                  ? 'bg-[#0D2C5C] text-white dark:bg-amber-500 dark:text-slate-950 shadow-sm'
+                  : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300'
+              }`}
+            >
+              <span className="flex items-center space-x-2.5">
+                <span className="text-sm">⚙️</span>
+                <span>{t.tabSettings}</span>
+              </span>
+            </button>
           </div>
-        </div>
-      ) : (
 
-        /* DASHBOARD UTAMA */
-        <div className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 z-10 flex flex-col md:flex-row gap-6">
+          <div className="bg-[#0D2C5C]/5 dark:bg-white/5 p-4 rounded-2xl border border-slate-200/50 dark:border-slate-800 text-xs space-y-2">
+            <span className="font-bold text-[#0D2C5C] dark:text-amber-400 block">{t.hotspotSidebarTitle}</span>
+            <p className="text-[11px] text-slate-500 leading-relaxed">
+              {t.hotspotSidebarDesc}
+            </p>
+          </div>
+        </aside>
 
-          {/* SIDEBAR DASHBOARD */}
-          <aside className="w-full md:w-64 shrink-0 space-y-4">
-            <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl p-3 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col gap-1.5">
-              <span className="text-[10px] uppercase font-bold text-slate-400 px-3 py-1 tracking-wider">{t.menuTitle}</span>
-              
-              <button
-                onClick={() => setActiveTab('articles')}
-                className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-between ${
-                  activeTab === 'articles'
-                    ? 'bg-[#0D2C5C] text-white dark:bg-amber-500 dark:text-slate-950 shadow-sm'
-                    : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300'
-                }`}
-              >
-                <span className="flex items-center space-x-2.5">
-                  <span className="text-sm">📰</span>
-                  <span>{t.tabArticles}</span>
-                </span>
-                <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-black/10 dark:bg-white/10">{totalArticles}</span>
-              </button>
-
-              <button
-                onClick={() => setActiveTab('stats')}
-                className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-between ${
-                  activeTab === 'stats'
-                    ? 'bg-[#0D2C5C] text-white dark:bg-amber-500 dark:text-slate-950 shadow-sm'
-                    : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300'
-                }`}
-              >
-                <span className="flex items-center space-x-2.5">
-                  <span className="text-sm">📊</span>
-                  <span>{t.tabStats}</span>
-                </span>
-              </button>
-
-              <button
-                onClick={() => setActiveTab('press')}
-                className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-between ${
-                  activeTab === 'press'
-                    ? 'bg-[#0D2C5C] text-white dark:bg-amber-500 dark:text-slate-950 shadow-sm'
-                    : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300'
-                }`}
-              >
-                <span className="flex items-center space-x-2.5">
-                  <span className="text-sm">🏛️</span>
-                  <span>{t.tabPress}</span>
-                </span>
-              </button>
-
-              <button
-                onClick={() => setActiveTab('settings')}
-                className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-between ${
-                  activeTab === 'settings'
-                    ? 'bg-[#0D2C5C] text-white dark:bg-amber-500 dark:text-slate-950 shadow-sm'
-                    : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300'
-                }`}
-              >
-                <span className="flex items-center space-x-2.5">
-                  <span className="text-sm">⚙️</span>
-                  <span>{t.tabSettings}</span>
-                </span>
-              </button>
-            </div>
-
-            <div className="bg-[#0D2C5C]/5 dark:bg-white/5 p-4 rounded-2xl border border-slate-200/50 dark:border-slate-800 text-xs space-y-2">
-              <span className="font-bold text-[#0D2C5C] dark:text-amber-400 block">{t.hotspotSidebarTitle}</span>
-              <p className="text-[11px] text-slate-500 leading-relaxed">
-                {t.hotspotSidebarDesc}
-              </p>
-            </div>
-          </aside>
-
-          {/* AREA KERJA */}
-          <main className="flex-1 min-w-0">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
-              <div>
-                <h1 className="text-xl font-extrabold text-[#0D2C5C] dark:text-amber-400">
-                  {activeTab === 'articles' && t.tabArticles}
-                  {activeTab === 'stats' && t.tabStats}
-                  {activeTab === 'press' && t.tabPress}
-                  {activeTab === 'settings' && t.tabSettings}
-                </h1>
-                <p className="text-xs text-slate-500 mt-0.5">{t.portalDesc}</p>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-2">
-                {activeTab === 'articles' && (
-                  <button
-                    onClick={exportToCSV}
-                    className="px-3.5 py-2 text-xs font-bold rounded-xl border border-emerald-500/40 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-600/40 transition flex items-center space-x-1.5 shadow-sm"
-                  >
-                    <span>📥</span>
-                    <span>{t.exportCsv}</span>
-                  </button>
-                )}
-
-                <button
-                  onClick={loadData}
-                  className="px-3 py-2 text-xs font-semibold rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 transition flex items-center space-x-1"
-                >
-                  <span>🔄 {t.refresh}</span>
-                </button>
-
-                <button
-                  onClick={handleOpenAddModal}
-                  className="px-3.5 py-2 text-xs font-bold rounded-xl bg-[#0D2C5C] hover:bg-[#0A2247] text-white border border-amber-400/40 shadow-sm flex items-center space-x-1.5 transition"
-                >
-                  <span>{t.addManual}</span>
-                </button>
-              </div>
-            </div>
-
-            {/* TAB 1: ARTIKEL & BERITA */}
-            {activeTab === 'articles' && (
-              <div className="space-y-4">
-                <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-3.5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col md:flex-row gap-2.5">
-                  <input
-                    type="text"
-                    placeholder={t.searchPlaceholder}
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    className="flex-1 px-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0D2C5C]"
-                  />
-                  <div className="flex gap-2">
-                    <select
-                      value={filterType}
-                      onChange={(e) => setFilterType(e.target.value)}
-                      className="px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0D2C5C]"
-                    >
-                      <option value="all">{t.allTypes}</option>
-                      <option value="scraped">{t.scrapedType}</option>
-                      <option value="manual">{t.manualType}</option>
-                    </select>
-
-                    <select
-                      value={timeFilter}
-                      onChange={(e) => setTimeFilter(e.target.value)}
-                      className="px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0D2C5C]"
-                    >
-                      <option value="all">{t.timeFilterAll}</option>
-                      <option value="24h">{t.timeFilter24h}</option>
-                      <option value="7d">{t.timeFilter7d}</option>
-                      <option value="30d">{t.timeFilter30d}</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse text-sm">
-                      <thead>
-                        <tr className="bg-slate-50 dark:bg-slate-800/60 border-b border-slate-200 dark:border-slate-800 text-xs text-slate-500 uppercase font-semibold">
-                          <th className="py-3 px-4">{t.colTitle}</th>
-                          <th className="py-3 px-4">{t.colSource}</th>
-                          <th className="py-3 px-4">{t.colDate}</th>
-                          <th className="py-3 px-4">{t.colSentiment}</th>
-                          <th className="py-3 px-4">{t.colAction}</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                        {loading ? (
-                          <tr>
-                            <td colSpan="5" className="py-12 text-center text-slate-400">
-                              {t.loadingData}
-                            </td>
-                          </tr>
-                        ) : paginatedArticles.length === 0 ? (
-                          <tr>
-                            <td colSpan="5" className="py-12 text-center text-slate-400">
-                              {t.emptySearch}
-                            </td>
-                          </tr>
-                        ) : (
-                          paginatedArticles.map((article) => (
-                            <tr key={article.id || article.url} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition">
-                              <td className="py-3.5 px-4 font-medium text-slate-800 dark:text-slate-100 max-w-sm">
-                                <div className="line-clamp-2">{article.title}</div>
-                                {article.snippet && (
-                                  <div className="text-xs text-slate-400 line-clamp-1 mt-0.5">{article.snippet}</div>
-                                )}
-                              </td>
-                              <td className="py-3.5 px-4 text-xs font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">
-                                <div>{article.source_name}</div>
-                                <span className="text-[10px] text-slate-400 font-normal">
-                                  {article.entry_type === 'manual' ? 'Manual' : 'Scraped'}
-                                </span>
-                              </td>
-                              <td className="py-3.5 px-4 text-xs text-slate-400 whitespace-nowrap">
-                                {new Date(article.published_at).toLocaleDateString(lang === 'id' ? 'id-ID' : 'en-US', {
-                                  day: 'numeric',
-                                  month: 'short',
-                                  year: 'numeric'
-                                })}
-                              </td>
-                              <td className="py-3.5 px-4 text-xs whitespace-nowrap">
-                                <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold ${
-                                  article.sentiment === 'positive'
-                                    ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300'
-                                    : article.sentiment === 'negative'
-                                    ? 'bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300'
-                                    : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300'
-                                }`}>
-                                  {article.sentiment === 'positive' ? 'Positif' : article.sentiment === 'negative' ? 'Kritis' : 'Netral'}
-                                </span>
-                              </td>
-                              <td className="py-3.5 px-4 text-xs whitespace-nowrap">
-                                <div className="flex items-center space-x-2">
-                                  <a
-                                    href={article.url}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="text-[#0D2C5C] dark:text-amber-400 hover:underline font-bold"
-                                  >
-                                    {t.openLink}
-                                  </a>
-
-                                  {session && (
-                                    <>
-                                      <button
-                                        onClick={() => handleOpenEditModal(article)}
-                                        className="p-1 text-slate-400 hover:text-amber-500 transition"
-                                        title="Edit"
-                                      >
-                                        ✏️
-                                      </button>
-                                      <button
-                                        onClick={() => handleDelete(article.id)}
-                                        className="p-1 text-slate-400 hover:text-rose-500 transition"
-                                        title="Hapus"
-                                      >
-                                        🗑️
-                                      </button>
-                                    </>
-                                  )}
-                                </div>
-                              </td>
-                            </tr>
-                          ))
-                        )}
-                      </tbody>
-                    </table>
-                  </div>
-
-                  {/* KONTROL PAGINASI: 10, 25, 50 */}
-                  <div className="p-3.5 bg-slate-50/50 dark:bg-slate-800/30 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-                    <div className="flex items-center space-x-2">
-                      <span className="text-slate-500">{t.perPageText}</span>
-                      <select
-                        value={rowsPerPage}
-                        onChange={(e) => setRowsPerPage(Number(e.target.value))}
-                        className="px-2 py-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 font-semibold focus:outline-none"
-                      >
-                        <option value={10}>10</option>
-                        <option value={25}>25</option>
-                        <option value={50}>50</option>
-                      </select>
-                      <span className="text-slate-400">
-                        {t.showingPage} {totalEntries ? startIndex + 1 : 0} - {Math.min(startIndex + rowsPerPage, totalEntries)} {t.ofText} {totalEntries} {t.entriesText}
-                      </span>
-                    </div>
-
-                    <div className="flex items-center space-x-1">
-                      <button
-                        disabled={currentPage === 1}
-                        onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                        className="px-3 py-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 disabled:opacity-40 font-semibold"
-                      >
-                        ←
-                      </button>
-                      <span className="px-3 py-1 font-bold">
-                        {currentPage} / {totalPages}
-                      </span>
-                      <button
-                        disabled={currentPage >= totalPages}
-                        onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                        className="px-3 py-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 disabled:opacity-40 font-semibold"
-                      >
-                        →
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* TAB 2: STATISTIK */}
-            {activeTab === 'stats' && (
-              <div className="space-y-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-                  <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                    <span className="text-[11px] font-semibold text-slate-500 uppercase">{t.statsTotal}</span>
-                    <div className="text-2xl font-black text-[#0D2C5C] dark:text-amber-400 mt-1">{totalArticles}</div>
-                    <span className="text-[10px] text-slate-400 mt-1 block">{t.statsTotalSub}</span>
-                  </div>
-                  <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                    <span className="text-[11px] font-semibold text-emerald-600 uppercase">{t.statsPos}</span>
-                    <div className="text-2xl font-black text-emerald-600 mt-1">{positiveCount}</div>
-                    <span className="text-[10px] text-slate-400 mt-1 block">{t.statsPosSub}</span>
-                  </div>
-                  <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                    <span className="text-[11px] font-semibold text-sky-600 uppercase">{t.statsNeu}</span>
-                    <div className="text-2xl font-black text-sky-600 mt-1">{neutralCount}</div>
-                    <span className="text-[10px] text-slate-400 mt-1 block">{t.statsNeuSub}</span>
-                  </div>
-                  <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                    <span className="text-[11px] font-semibold text-rose-600 uppercase">{t.statsNeg}</span>
-                    <div className="text-2xl font-black text-rose-600 mt-1">{negativeCount}</div>
-                    <span className="text-[10px] text-slate-400 mt-1 block">{t.statsNegSub}</span>
-                  </div>
-                </div>
-
-                <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                  <h3 className="font-bold text-xs uppercase tracking-wider text-slate-400 mb-4">{t.sourceDistribution}</h3>
-                  <div className="space-y-4 text-xs">
-                    <div>
-                      <div className="flex justify-between font-semibold mb-1.5">
-                        <span>Scraper Multi-Kanal (Otomatis)</span>
-                        <span>{scrapedCount} items</span>
-                      </div>
-                      <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2 overflow-hidden">
-                        <div 
-                          className="bg-[#0D2C5C] dark:bg-amber-500 h-2 rounded-full" 
-                          style={{ width: `${totalArticles ? (scrapedCount / totalArticles) * 100 : 0}%` }}
-                        ></div>
-                      </div>
-                    </div>
-
-                    <div>
-                      <div className="flex justify-between font-semibold mb-1.5">
-                        <span>Input Pegawai PLI (Manual)</span>
-                        <span>{manualCount} items</span>
-                      </div>
-                      <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2 overflow-hidden">
-                        <div 
-                          className="bg-emerald-500 h-2 rounded-full" 
-                          style={{ width: `${totalArticles ? (manualCount / totalArticles) * 100 : 0}%` }}
-                        ></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* TAB 3: DEWAN PERS */}
-            {activeTab === 'press' && (
-              <div className="space-y-6">
-                {/* Hero Box Dewan Pers */}
-                <div className="bg-gradient-to-br from-[#0D2C5C] to-[#0A2247] text-white p-6 rounded-3xl shadow-lg border border-amber-400/30 relative overflow-hidden">
-                  <div className="max-w-2xl">
-                    <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-amber-400 text-[#0D2C5C] mb-2 inline-block">
-                      Rujukan Resmi Lembaga Negara
-                    </span>
-                    <h2 className="text-lg sm:text-xl font-extrabold mt-1 text-white">{t.pressTitle}</h2>
-                    <p className="text-xs text-slate-200 mt-2 leading-relaxed">
-                      {t.pressDesc}
-                    </p>
-                    <div className="mt-4 flex flex-wrap gap-3">
-                      <a 
-                        href="https://dewanpers.or.id/data" 
-                        target="_blank" 
-                        rel="noreferrer"
-                        className="px-4 py-2 bg-amber-400 hover:bg-amber-500 text-[#0D2C5C] font-bold text-xs rounded-xl shadow transition inline-flex items-center space-x-1.5"
-                      >
-                        <span>{t.pressCheckBtn}</span>
-                      </a>
-                      <a 
-                        href="https://dewanpers.or.id" 
-                        target="_blank" 
-                        rel="noreferrer"
-                        className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white font-semibold text-xs rounded-xl border border-white/20 transition inline-flex items-center space-x-1.5"
-                      >
-                        <span>Portal Utama dewanpers.or.id ↗</span>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-
-                {/* 3 Kartu Panduan Dewan Pers */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
-                    <div>
-                      <div className="text-2xl mb-2">📜</div>
-                      <h4 className="font-bold text-xs text-[#0D2C5C] dark:text-amber-400 mb-1">{t.pressCardWartawan}</h4>
-                      <p className="text-[11px] text-slate-500 leading-relaxed">
-                        {t.pressCardWartawanDesc}
-                      </p>
-                    </div>
-                    <a 
-                      href="https://dewanpers.or.id" 
-                      target="_blank" 
-                      rel="noreferrer"
-                      className="mt-3 text-xs font-semibold text-[#0D2C5C] dark:text-amber-400 hover:underline"
-                    >
-                      Cek Sertifikasi ↗
-                    </a>
-                  </div>
-
-                  <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
-                    <div>
-                      <div className="text-2xl mb-2">🏢</div>
-                      <h4 className="font-bold text-xs text-[#0D2C5C] dark:text-amber-400 mb-1">{t.pressCardOrg}</h4>
-                      <p className="text-[11px] text-slate-500 leading-relaxed">
-                        {t.pressCardOrgDesc}
-                      </p>
-                    </div>
-                    <a 
-                      href="https://dewanpers.or.id/read/page/07-05-2025-organisasi-perusahaan-pers" 
-                      target="_blank" 
-                      rel="noreferrer"
-                      className="mt-3 text-xs font-semibold text-[#0D2C5C] dark:text-amber-400 hover:underline"
-                    >
-                      Daftar Organisasi ↗
-                    </a>
-                  </div>
-
-                  <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
-                    <div>
-                      <div className="text-2xl mb-2">⚖️</div>
-                      <h4 className="font-bold text-xs text-[#0D2C5C] dark:text-amber-400 mb-1">{t.pressCardPengaduan}</h4>
-                      <p className="text-[11px] text-slate-500 leading-relaxed">
-                        {t.pressCardPengaduanDesc}
-                      </p>
-                    </div>
-                    <a 
-                      href="https://dewanpers.or.id" 
-                      target="_blank" 
-                      rel="noreferrer"
-                      className="mt-3 text-xs font-semibold text-[#0D2C5C] dark:text-amber-400 hover:underline"
-                    >
-                      Tata Cara Pengaduan ↗
-                    </a>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* TAB 4: SETTINGS */}
-            {activeTab === 'settings' && (
-              <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
-                <div>
-                  <h2 className="text-base font-bold text-[#0D2C5C] dark:text-amber-400">{t.settingsTitle}</h2>
-                  <p className="text-xs text-slate-500">{t.settingsDesc}</p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 text-xs">
-                  <div className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40">
-                    <span className="font-semibold block mb-1">{t.settingKeyword}</span>
-                    <p className="text-slate-600 dark:text-slate-300 font-mono">"Bea Cukai Pekanbaru", KPPBC Pekanbaru, Media Daerah</p>
-                  </div>
-                  <div className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40">
-                    <span className="font-semibold block mb-1">{t.settingCron}</span>
-                    <p className="text-slate-600 dark:text-slate-300 font-mono">Setiap 1 Jam ('0 * * * *')</p>
-                  </div>
-                  <div className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40">
-                    <span className="font-semibold block mb-1">{t.settingDomain}</span>
-                    <p className="text-slate-600 dark:text-slate-300 font-mono">simonita.cloud (Cloudflare Pages)</p>
-                  </div>
-                  <div className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40">
-                    <span className="font-semibold block mb-1">{t.settingDb}</span>
-                    <p className="text-slate-600 dark:text-slate-300 font-mono">Supabase PostgreSQL + RLS</p>
-                  </div>
-                </div>
-
-                <div className="pt-3 border-t border-slate-200 dark:border-slate-800 text-[11px] text-slate-400 flex flex-col sm:flex-row justify-between gap-1">
-                  <span>Seksi Penyuluhan dan Layanan Informasi (PLI) KPPBC TMP B Pekanbaru</span>
-                  <span>{t.version}</span>
-                </div>
-              </div>
-            )}
-          </main>
-        </div>
-      )}
-
-      {/* Drawer 2FA OTP Horizontal Sliding */}
-      {showOtpDrawer && (
-        <div className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-sm transition-opacity">
-          <div className="w-full max-w-md bg-white dark:bg-slate-900 h-full p-6 shadow-2xl flex flex-col justify-between border-l border-slate-200 dark:border-slate-800">
+        {/* AREA KERJA DASHBOARD */}
+        <main className="flex-1 min-w-0">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
             <div>
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="font-extrabold text-lg text-[#0D2C5C] dark:text-amber-400">{t.otpTitle}</h3>
-                <button
-                  onClick={() => setShowOtpDrawer(false)}
-                  className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400"
-                >
-                  ✕
-                </button>
-              </div>
-
-              <p className="text-xs text-slate-500 mb-6">{t.otpDesc}</p>
-
-              <form onSubmit={handleVerifyOtp}>
-                <div className="flex justify-between gap-2 mb-6" onPaste={handleOtpPaste}>
-                  {otpCode.map((digit, i) => (
-                    <input
-                      key={i}
-                      id={`otp-input-${i}`}
-                      type="text"
-                      maxLength={1}
-                      value={digit}
-                      onChange={(e) => handleOtpChange(i, e.target.value)}
-                      className="w-12 h-14 text-center text-xl font-bold rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500"
-                    />
-                  ))}
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow transition"
-                >
-                  {t.otpSubmit}
-                </button>
-              </form>
+              <h1 className="text-xl font-extrabold text-[#0D2C5C] dark:text-amber-400">
+                {activeTab === 'articles' && t.tabArticles}
+                {activeTab === 'stats' && t.tabStats}
+                {activeTab === 'press' && t.tabPress}
+                {activeTab === 'settings' && t.tabSettings}
+              </h1>
+              <p className="text-xs text-slate-500 mt-0.5">{t.portalDesc}</p>
             </div>
 
-            <div className="text-[11px] text-slate-400 text-center">
-              KPPBC TMP B Pekanbaru • Internal Security
+            <div className="flex flex-wrap items-center gap-2">
+              {activeTab === 'articles' && (
+                <button
+                  onClick={exportToCSV}
+                  className="px-3.5 py-2 text-xs font-bold rounded-xl border border-emerald-500/40 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-600/40 transition flex items-center space-x-1.5 shadow-sm"
+                >
+                  <span>📥</span>
+                  <span>{t.exportCsv}</span>
+                </button>
+              )}
+
+              <button
+                onClick={loadData}
+                className="px-3 py-2 text-xs font-semibold rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 transition flex items-center space-x-1"
+              >
+                <span>🔄 {t.refresh}</span>
+              </button>
+
+              <button
+                onClick={handleOpenAddModal}
+                className="px-3.5 py-2 text-xs font-bold rounded-xl bg-[#0D2C5C] hover:bg-[#0A2247] text-white border border-amber-400/40 shadow-sm flex items-center space-x-1.5 transition"
+              >
+                <span>{t.addManual}</span>
+              </button>
             </div>
           </div>
-        </div>
-      )}
+
+          {/* TAB 1: ARTIKEL DENGAN PAGINASI */}
+          {activeTab === 'articles' && (
+            <div className="space-y-4">
+              <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-3.5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col md:flex-row gap-2.5">
+                <input
+                  type="text"
+                  placeholder={t.searchPlaceholder}
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="flex-1 px-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0D2C5C]"
+                />
+                <div className="flex gap-2">
+                  <select
+                    value={filterType}
+                    onChange={(e) => setFilterType(e.target.value)}
+                    className="px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0D2C5C]"
+                  >
+                    <option value="all">{t.allTypes}</option>
+                    <option value="scraped">{t.scrapedType}</option>
+                    <option value="manual">{t.manualType}</option>
+                  </select>
+
+                  <select
+                    value={timeFilter}
+                    onChange={(e) => setTimeFilter(e.target.value)}
+                    className="px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0D2C5C]"
+                  >
+                    <option value="all">{t.timeFilterAll}</option>
+                    <option value="24h">{t.timeFilter24h}</option>
+                    <option value="7d">{t.timeFilter7d}</option>
+                    <option value="30d">{t.timeFilter30d}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse text-sm">
+                    <thead>
+                      <tr className="bg-slate-50 dark:bg-slate-800/60 border-b border-slate-200 dark:border-slate-800 text-xs text-slate-500 uppercase font-semibold">
+                        <th className="py-3 px-4">{t.colTitle}</th>
+                        <th className="py-3 px-4">{t.colSource}</th>
+                        <th className="py-3 px-4">{t.colDate}</th>
+                        <th className="py-3 px-4">{t.colSentiment}</th>
+                        <th className="py-3 px-4">{t.colAction}</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                      {loading ? (
+                        <tr>
+                          <td colSpan="5" className="py-12 text-center text-slate-400">
+                            {t.loadingData}
+                          </td>
+                        </tr>
+                      ) : paginatedArticles.length === 0 ? (
+                        <tr>
+                          <td colSpan="5" className="py-12 text-center text-slate-400">
+                            {t.emptySearch}
+                          </td>
+                        </tr>
+                      ) : (
+                        paginatedArticles.map((article) => (
+                          <tr key={article.id || article.url} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition">
+                            <td className="py-3.5 px-4 font-medium text-slate-800 dark:text-slate-100 max-w-sm">
+                              <div className="line-clamp-2">{article.title}</div>
+                              {article.snippet && (
+                                <div className="text-xs text-slate-400 line-clamp-1 mt-0.5">{article.snippet}</div>
+                              )}
+                            </td>
+                            <td className="py-3.5 px-4 text-xs font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">
+                              <div>{article.source_name}</div>
+                              <span className="text-[10px] text-slate-400 font-normal">
+                                {article.entry_type === 'manual' ? 'Manual' : 'Scraped'}
+                              </span>
+                            </td>
+                            <td className="py-3.5 px-4 text-xs text-slate-400 whitespace-nowrap">
+                              {new Date(article.published_at).toLocaleDateString(lang === 'id' ? 'id-ID' : 'en-US', {
+                                day: 'numeric',
+                                month: 'short',
+                                year: 'numeric'
+                              })}
+                            </td>
+                            <td className="py-3.5 px-4 text-xs whitespace-nowrap">
+                              <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold ${
+                                article.sentiment === 'positive'
+                                  ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300'
+                                  : article.sentiment === 'negative'
+                                  ? 'bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300'
+                                  : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300'
+                              }`}>
+                                {article.sentiment === 'positive' ? 'Positif' : article.sentiment === 'negative' ? 'Kritis' : 'Netral'}
+                              </span>
+                            </td>
+                            <td className="py-3.5 px-4 text-xs whitespace-nowrap">
+                              <div className="flex items-center space-x-2">
+                                <a
+                                  href={article.url}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="text-[#0D2C5C] dark:text-amber-400 hover:underline font-bold"
+                                >
+                                  {t.openLink}
+                                </a>
+
+                                <button
+                                  onClick={() => handleOpenEditModal(article)}
+                                  className="p-1 text-slate-400 hover:text-amber-500 transition"
+                                  title="Edit"
+                                >
+                                  ✏️
+                                </button>
+                                <button
+                                  onClick={() => handleDelete(article.id)}
+                                  className="p-1 text-slate-400 hover:text-rose-500 transition"
+                                  title="Hapus"
+                                >
+                                  🗑️
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* PAGINASI: 10, 25, 50 */}
+                <div className="p-3.5 bg-slate-50/50 dark:bg-slate-800/30 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-slate-500">{t.perPageText}</span>
+                    <select
+                      value={rowsPerPage}
+                      onChange={(e) => setRowsPerPage(Number(e.target.value))}
+                      className="px-2 py-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 font-semibold focus:outline-none"
+                    >
+                      <option value={10}>10</option>
+                      <option value={25}>25</option>
+                      <option value={50}>50</option>
+                    </select>
+                    <span className="text-slate-400">
+                      {t.showingPage} {totalEntries ? startIndex + 1 : 0} - {Math.min(startIndex + rowsPerPage, totalEntries)} {t.ofText} {totalEntries} {t.entriesText}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center space-x-1">
+                    <button
+                      disabled={currentPage === 1}
+                      onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                      className="px-3 py-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 disabled:opacity-40 font-semibold"
+                    >
+                      ←
+                    </button>
+                    <span className="px-3 py-1 font-bold">
+                      {currentPage} / {totalPages}
+                    </span>
+                    <button
+                      disabled={currentPage >= totalPages}
+                      onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                      className="px-3 py-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 disabled:opacity-40 font-semibold"
+                    >
+                      →
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 2: STATS */}
+          {activeTab === 'stats' && (
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+                <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                  <span className="text-[11px] font-semibold text-slate-500 uppercase">{t.statsTotal}</span>
+                  <div className="text-2xl font-black text-[#0D2C5C] dark:text-amber-400 mt-1">{totalArticles}</div>
+                  <span className="text-[10px] text-slate-400 mt-1 block">{t.statsTotalSub}</span>
+                </div>
+                <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                  <span className="text-[11px] font-semibold text-emerald-600 uppercase">{t.statsPos}</span>
+                  <div className="text-2xl font-black text-emerald-600 mt-1">{positiveCount}</div>
+                  <span className="text-[10px] text-slate-400 mt-1 block">{t.statsPosSub}</span>
+                </div>
+                <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                  <span className="text-[11px] font-semibold text-sky-600 uppercase">{t.statsNeu}</span>
+                  <div className="text-2xl font-black text-sky-600 mt-1">{neutralCount}</div>
+                  <span className="text-[10px] text-slate-400 mt-1 block">{t.statsNeuSub}</span>
+                </div>
+                <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                  <span className="text-[11px] font-semibold text-rose-600 uppercase">{t.statsNeg}</span>
+                  <div className="text-2xl font-black text-rose-600 mt-1">{negativeCount}</div>
+                  <span className="text-[10px] text-slate-400 mt-1 block">{t.statsNegSub}</span>
+                </div>
+              </div>
+
+              <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                <h3 className="font-bold text-xs uppercase tracking-wider text-slate-400 mb-4">{t.sourceDistribution}</h3>
+                <div className="space-y-4 text-xs">
+                  <div>
+                    <div className="flex justify-between font-semibold mb-1.5">
+                      <span>Scraper Multi-Kanal (Otomatis)</span>
+                      <span>{scrapedCount} items</span>
+                    </div>
+                    <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2 overflow-hidden">
+                      <div 
+                        className="bg-[#0D2C5C] dark:bg-amber-500 h-2 rounded-full" 
+                        style={{ width: `${totalArticles ? (scrapedCount / totalArticles) * 100 : 0}%` }}
+                      ></div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="flex justify-between font-semibold mb-1.5">
+                      <span>Input Pegawai PLI (Manual)</span>
+                      <span>{manualCount} items</span>
+                    </div>
+                    <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2 overflow-hidden">
+                      <div 
+                        className="bg-emerald-500 h-2 rounded-full" 
+                        style={{ width: `${totalArticles ? (manualCount / totalArticles) * 100 : 0}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 3: DEWAN PERS */}
+          {activeTab === 'press' && (
+            <div className="space-y-6">
+              <div className="bg-gradient-to-br from-[#0D2C5C] to-[#0A2247] text-white p-6 rounded-3xl shadow-lg border border-amber-400/30 relative overflow-hidden">
+                <div className="max-w-2xl">
+                  <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-amber-400 text-[#0D2C5C] mb-2 inline-block">
+                    Rujukan Resmi Lembaga Negara
+                  </span>
+                  <h2 className="text-lg sm:text-xl font-extrabold mt-1 text-white">{t.pressTitle}</h2>
+                  <p className="text-xs text-slate-200 mt-2 leading-relaxed">
+                    {t.pressDesc}
+                  </p>
+                  <div className="mt-4 flex flex-wrap gap-3">
+                    <a 
+                      href="https://dewanpers.or.id/data" 
+                      target="_blank" 
+                      rel="noreferrer"
+                      className="px-4 py-2 bg-amber-400 hover:bg-amber-500 text-[#0D2C5C] font-bold text-xs rounded-xl shadow transition inline-flex items-center space-x-1.5"
+                    >
+                      <span>{t.pressCheckBtn}</span>
+                    </a>
+                    <a 
+                      href="https://dewanpers.or.id" 
+                      target="_blank" 
+                      rel="noreferrer"
+                      className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white font-semibold text-xs rounded-xl border border-white/20 transition inline-flex items-center space-x-1.5"
+                    >
+                      <span>Portal Utama dewanpers.or.id ↗</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+                  <div>
+                    <div className="text-2xl mb-2">📜</div>
+                    <h4 className="font-bold text-xs text-[#0D2C5C] dark:text-amber-400 mb-1">{t.pressCardWartawan}</h4>
+                    <p className="text-[11px] text-slate-500 leading-relaxed">
+                      {t.pressCardWartawanDesc}
+                    </p>
+                  </div>
+                  <a 
+                    href="https://dewanpers.or.id" 
+                    target="_blank" 
+                    rel="noreferrer"
+                    className="mt-3 text-xs font-semibold text-[#0D2C5C] dark:text-amber-400 hover:underline"
+                  >
+                    Cek Sertifikasi ↗
+                  </a>
+                </div>
+
+                <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+                  <div>
+                    <div className="text-2xl mb-2">🏢</div>
+                    <h4 className="font-bold text-xs text-[#0D2C5C] dark:text-amber-400 mb-1">{t.pressCardOrg}</h4>
+                    <p className="text-[11px] text-slate-500 leading-relaxed">
+                      {t.pressCardOrgDesc}
+                    </p>
+                  </div>
+                  <a 
+                    href="https://dewanpers.or.id/read/page/07-05-2025-organisasi-perusahaan-pers" 
+                    target="_blank" 
+                    rel="noreferrer"
+                    className="mt-3 text-xs font-semibold text-[#0D2C5C] dark:text-amber-400 hover:underline"
+                  >
+                    Daftar Organisasi ↗
+                  </a>
+                </div>
+
+                <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+                  <div>
+                    <div className="text-2xl mb-2">⚖️</div>
+                    <h4 className="font-bold text-xs text-[#0D2C5C] dark:text-amber-400 mb-1">{t.pressCardPengaduan}</h4>
+                    <p className="text-[11px] text-slate-500 leading-relaxed">
+                      {t.pressCardPengaduanDesc}
+                    </p>
+                  </div>
+                  <a 
+                    href="https://dewanpers.or.id" 
+                    target="_blank" 
+                    rel="noreferrer"
+                    className="mt-3 text-xs font-semibold text-[#0D2C5C] dark:text-amber-400 hover:underline"
+                  >
+                    Tata Cara Pengaduan ↗
+                  </a>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 4: PENGATURAN */}
+          {activeTab === 'settings' && (
+            <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+              <div>
+                <h2 className="text-base font-bold text-[#0D2C5C] dark:text-amber-400">{t.settingsTitle}</h2>
+                <p className="text-xs text-slate-500">{t.settingsDesc}</p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 text-xs">
+                <div className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40">
+                  <span className="font-semibold block mb-1">{t.settingKeyword}</span>
+                  <p className="text-slate-600 dark:text-slate-300 font-mono">"Bea Cukai Pekanbaru", KPPBC Pekanbaru, Media Daerah</p>
+                </div>
+                <div className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40">
+                  <span className="font-semibold block mb-1">{t.settingCron}</span>
+                  <p className="text-slate-600 dark:text-slate-300 font-mono">Setiap 1 Jam ('0 * * * *')</p>
+                </div>
+                <div className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40">
+                  <span className="font-semibold block mb-1">{t.settingDomain}</span>
+                  <p className="text-slate-600 dark:text-slate-300 font-mono">simonita.cloud (Cloudflare Pages)</p>
+                </div>
+                <div className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40">
+                  <span className="font-semibold block mb-1">{t.settingDb}</span>
+                  <p className="text-slate-600 dark:text-slate-300 font-mono">Supabase PostgreSQL + RLS</p>
+                </div>
+              </div>
+
+              <div className="pt-3 border-t border-slate-200 dark:border-slate-800 text-[11px] text-slate-400 flex flex-col sm:flex-row justify-between gap-1">
+                <span>Seksi Penyuluhan dan Layanan Informasi (PLI) KPPBC TMP B Pekanbaru</span>
+                <span>{t.version}</span>
+              </div>
+            </div>
+          )}
+        </main>
+      </div>
 
       {/* Modal Input & Edit Berita */}
       {isModalOpen && (
