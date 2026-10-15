@@ -324,7 +324,7 @@ export default function App() {
   }
 
   // =========================================================================
-  // 1. HALAMAN LOGIN (LANCANG KUNING + BALANCED NAVY & GOLD)
+  // 1. HALAMAN LOGIN (SONGKET + BALANCED NAVY & GOLD)
   // =========================================================================
   if (!session) {
     return (
