@@ -8,7 +8,7 @@ export default function App() {
   const [authChecked, setAuthChecked] = useState(false);
   const [is2FAVerified, setIs2FAVerified] = useState(false);
 
-  // Form State Khusus Pegawai
+  // Form State
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -39,46 +39,6 @@ export default function App() {
     snippet: '',
     sentiment: 'neutral'
   });
-  const [selectedHotspot, setSelectedHotspot] = useState(null);
-
-  const hotspots = [
-    {
-      id: 'building',
-      title: 'Kantor Pelayanan KPPBC TMP B Pekanbaru',
-      subtitle: 'Pusat Komando & Pelayanan PLI',
-      desc: 'Pusat operasional intelijen media, pemantauan rilis berita, serta administrasi pengawasan 5 kabupaten/kota.',
-      coverage: 'Pekanbaru Kota',
-      coords: { top: '56%', left: '50%' },
-      icon: '🏛️'
-    },
-    {
-      id: 'river',
-      title: 'Patroli Perairan Sungai Siak',
-      subtitle: 'Pengawasan Pelabuhan & Jalur Air',
-      desc: 'Satuan tugas patroli laut dan sungai memantau lalu lintas kapal kargo dan mencegah penyelundupan via perairan.',
-      coverage: 'Siak & Pesisir',
-      coords: { top: '75%', left: '30%' },
-      icon: '🚤'
-    },
-    {
-      id: 'car',
-      title: 'Unit Patroli Darat Operasi Pasar',
-      subtitle: 'Gempur Rokok Ilegal',
-      desc: 'Pencegahan dan penindakan peredaran Barang Kena Cukai (BKC) tembakau tanpa pita cukai resmi.',
-      coverage: 'Kampar & Rokan Hulu',
-      coords: { top: '80%', left: '65%' },
-      icon: '🚔'
-    },
-    {
-      id: 'drone',
-      title: 'Drone Surveillance Fasilitas Berikat',
-      subtitle: 'Monitoring Udara Kawasan Industri',
-      desc: 'Pengawasan udara berkala di kawasan industri manufaktur, fasilitas TPB, dan Tempat Penimbunan Berikat.',
-      coverage: 'Pelalawan & Siak',
-      coords: { top: '25%', left: '25%' },
-      icon: '🛸'
-    }
-  ];
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -125,7 +85,6 @@ export default function App() {
     }
   }, [session, is2FAVerified]);
 
-  // Handler Login dengan Kredensial Default Kedinasan
   const handleLogin = async (e) => {
     e.preventDefault();
     setAuthLoading(true);
@@ -134,17 +93,15 @@ export default function App() {
     const cleanUser = username.trim().toLowerCase();
     const cleanPass = password.trim();
 
-    // Validasi akun default resmi: plibcpekanbaru / PLI123456
     if (cleanUser === 'plibcpekanbaru' && cleanPass === 'PLI123456') {
       setTimeout(() => {
         setSession({ user: { email: 'plibcpekanbaru@customs.go.id' } });
         setShowOtpDrawer(true);
         setAuthLoading(false);
-      }, 400);
+      }, 300);
       return;
     }
 
-    // Fallback autentikasi via database Supabase
     try {
       const targetEmail = username.includes('@') ? username.trim() : `${username.trim()}@customs.go.id`;
       const { data, error } = await supabase.auth.signInWithPassword({
@@ -246,64 +203,49 @@ export default function App() {
 
   if (!authChecked) {
     return (
-      <div className="min-h-screen bg-[#0D2C5C] flex items-center justify-center text-white">
+      <div className="h-screen w-screen bg-[#0D2C5C] flex items-center justify-center text-white">
         <div className="w-10 h-10 border-4 border-amber-400 border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
 
   // =========================================================================
-  // HALAMAN LOGIN KHUSUS PEGAWAI (USER DEFAULT: plibcpekanbaru)
+  // HALAMAN LOGIN PENUH (FULL PAGE)
   // =========================================================================
   if (!session || !is2FAVerified) {
     return (
-      <div className="min-h-screen flex flex-col justify-between bg-slate-50 dark:bg-slate-950 font-sans">
+      <div className="h-screen w-screen flex flex-col justify-between bg-slate-50 dark:bg-slate-950 font-sans overflow-hidden">
         
         {/* NAVBAR ATAS */}
-        <header className="w-full bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 lg:px-8 py-3 shrink-0 shadow-sm">
-          <div className="max-w-7xl mx-auto flex items-center justify-between">
+        <header className="w-full bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-6 lg:px-12 py-3.5 shrink-0 shadow-sm">
+          <div className="w-full flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="h-10 w-10 rounded-xl bg-[#0D2C5C] p-1.5 flex items-center justify-center border border-amber-400">
+              <div className="h-10 w-10 rounded-xl bg-[#0D2C5C] p-1.5 flex items-center justify-center border border-amber-400 shrink-0">
                 <img src="/simonita.png" alt="Logo SIMONITA" className="h-full w-full object-contain" />
               </div>
-              <div>
-                <div className="flex items-center space-x-2">
-                  <span className="font-extrabold text-lg text-[#0D2C5C] dark:text-amber-400 tracking-wider">SIMONITA</span>
-                  <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700">
-                    KPPBC TMP B Pekanbaru
-                  </span>
-                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-300 flex items-center space-x-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span>Server Online</span>
-                  </span>
-                </div>
-                <p className="text-xs text-slate-500 dark:text-slate-400 hidden sm:block">
-                  Sistem Monitoring Opini dan Berita • Super App Layanan Terpadu
-                </p>
+              <div className="flex items-center space-x-2.5">
+                <span className="font-extrabold text-lg text-[#0D2C5C] dark:text-amber-400 tracking-wider">SIMONITA</span>
+                <span className="text-[11px] font-bold px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700">
+                  Seksi Penyuluhan dan Layanan Informasi
+                </span>
+                <span className="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-300 flex items-center space-x-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <span>Server Online</span>
+                </span>
               </div>
             </div>
 
             <div className="flex items-center space-x-3">
-              <a
-                href="https://dewanpers.or.id"
-                target="_blank"
-                rel="noreferrer"
-                className="hidden md:inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 text-xs font-bold transition shadow-sm"
-              >
-                <span>📹</span>
-                <span>Buku Panduan CCTV & PDF ↗</span>
-              </a>
-
               <div className="flex items-center rounded-xl bg-slate-100 dark:bg-slate-800 p-0.5 border border-slate-200 dark:border-slate-700 text-xs font-semibold">
                 <button
                   onClick={() => setIsDarkMode(false)}
-                  className={`px-3 py-1 rounded-lg transition ${!isDarkMode ? 'bg-white text-amber-600 shadow-sm font-bold' : 'text-slate-500'}`}
+                  className={`px-3 py-1.5 rounded-lg transition ${!isDarkMode ? 'bg-white text-amber-600 shadow-sm font-bold' : 'text-slate-500'}`}
                 >
                   ☀️ Terang
                 </button>
                 <button
                   onClick={() => setIsDarkMode(true)}
-                  className={`px-3 py-1 rounded-lg transition ${isDarkMode ? 'bg-[#0D2C5C] text-white shadow-sm font-bold' : 'text-slate-500'}`}
+                  className={`px-3 py-1.5 rounded-lg transition ${isDarkMode ? 'bg-[#0D2C5C] text-white shadow-sm font-bold' : 'text-slate-500'}`}
                 >
                   🌙 Gelap
                 </button>
@@ -312,88 +254,30 @@ export default function App() {
           </div>
         </header>
 
-        {/* MARQUEE RUNNING TEXT */}
-        <div className="w-full bg-slate-100 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 py-2 px-4 lg:px-8 flex items-center gap-3 overflow-hidden text-xs shrink-0">
+        {/* MARQUEE RUNNING TICKER */}
+        <div className="w-full bg-slate-100 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 py-2.5 px-6 lg:px-12 flex items-center gap-4 overflow-hidden text-xs shrink-0">
           <div className="flex items-center space-x-2 shrink-0">
             <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-            <span className="font-bold px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 border border-emerald-300 text-[11px]">
+            <span className="font-bold px-2.5 py-0.5 rounded-md bg-emerald-100 text-emerald-800 border border-emerald-300 text-[11px]">
               🕒 Senin – Jumat, 07.30 – 17.00 WIB
-            </span>
-            <span className="font-extrabold px-2 py-0.5 rounded-md bg-sky-100 text-sky-800 border border-sky-300 text-[10px] uppercase">
-              GRATIS
             </span>
           </div>
           <div className="flex-1 overflow-hidden relative">
             <div className="animate-marquee font-medium text-slate-600 dark:text-slate-300">
-              ✨ <strong className="text-[#0D2C5C] dark:text-amber-400">Selamat datang di SIMONITA</strong> - Sistem Monitoring Opini dan Berita KPPBC TMP B Pekanbaru • Wilayah Pengawasan: Pekanbaru, Siak, Kampar, Rokan Hulu, dan Pelalawan • Jam Layanan: 07.30 - 17.00 WIB
+              ✨ <strong className="text-[#0D2C5C] dark:text-amber-400">Selamat datang di SIMONITA</strong> - Sistem Monitoring Opini dan Berita • Jam Layanan: 07.30 - 17.00 WIB • Wilayah Pengawasan: Pekanbaru, Siak, Kampar, Rokan Hulu, dan Pelalawan
             </div>
           </div>
         </div>
 
-        {/* CONTAINER UTAMA (GRID 2-KOLOM) */}
-        <div className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          
-          {/* KOLOM KIRI: ILUSTRASI ISOMETRIK & HOTSPOTS */}
-          <div className="lg:col-span-7 relative h-72 sm:h-96 lg:h-[500px] rounded-3xl overflow-hidden bg-gradient-to-br from-blue-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 border border-slate-200 dark:border-slate-800 shadow-inner flex items-center justify-center">
-            
-            <svg className="w-full h-full object-cover" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="560" cy="140" r="90" fill="#FEF08A" opacity="0.6" />
-              <polygon points="40,520 280,240 520,520" fill="#93C5FD" opacity="0.7" />
-              <polygon points="240,520 340,300 440,520" fill="#E2E8F0" />
-              <polygon points="160,520 400,280 640,520" fill="#1E3A8A" opacity="0.8" />
-              <polygon points="360,520 400,280 440,520" fill="#FFFFFF" />
-
-              <g transform="translate(140, 160)">
-                <polygon points="160,220 320,130 480,220 320,310" fill="#0A2247" />
-                <polygon points="160,220 320,310 320,325 160,235" fill="#0284C7" />
-                <polygon points="320,310 480,220 480,235 320,325" fill="#0369A1" />
-
-                <polygon points="260,180 320,145 380,180 320,215" fill="#F59E0B" />
-                <polygon points="260,180 320,215 320,265 260,230" fill="#0D2C5C" />
-                <polygon points="320,215 380,180 380,230 320,265" fill="#1E40AF" />
-
-                <line x1="275" y1="165" x2="275" y2="120" stroke="#FFFFFF" strokeWidth="2" />
-                <rect x="277" y="120" width="18" height="6" fill="#EF4444" />
-                <rect x="277" y="126" width="18" height="6" fill="#FFFFFF" />
-
-                <polygon points="390,210 420,190 450,210 420,230" fill="#1E293B" />
-                <polygon points="390,210 420,230 420,290 390,270" fill="#0F172A" />
-                <polygon points="420,230 450,210 450,270 420,290" fill="#334155" />
-              </g>
-
-              <g transform="translate(180, 120)">
-                <ellipse cx="60" cy="50" rx="16" ry="5" fill="#0D2C5C" />
-                <line x1="48" y1="50" x2="72" y2="50" stroke="#0284C7" strokeWidth="2" />
-                <circle cx="60" cy="50" r="3" fill="#10B981" />
-              </g>
-            </svg>
-
-            {hotspots.map((spot) => (
-              <button
-                key={spot.id}
-                onClick={() => setSelectedHotspot(spot)}
-                style={{ top: spot.coords.top, left: spot.coords.left }}
-                className="absolute -translate-x-1/2 -translate-y-1/2 group focus:outline-none"
-                title={spot.title}
-              >
-                <span className="relative flex h-8 w-8 items-center justify-center">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-                  <span className="relative inline-flex items-center justify-center rounded-full h-7 w-7 bg-[#0D2C5C] text-white border-2 border-amber-400 shadow-lg text-xs group-hover:scale-125 transition-transform">
-                    {spot.icon}
-                  </span>
-                </span>
-              </button>
-            ))}
-          </div>
-
-          {/* KOLOM KANAN: FORM LOGIN BERSIH KHUSUS PEGAWAI */}
-          <div className="lg:col-span-5 w-full max-w-md mx-auto">
-            <div className="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-3xl shadow-xl border border-slate-200 dark:border-slate-800">
+        {/* AREA TENGAH: FULL HEIGHT TANPA BACKGROUND SVG */}
+        <div className="flex-1 w-full px-6 lg:px-12 flex items-center justify-end">
+          <div className="w-full max-w-md">
+            <div className="bg-white dark:bg-slate-900 p-8 sm:p-9 rounded-3xl shadow-2xl border border-slate-200/80 dark:border-slate-800">
               
               <div className="flex items-center justify-between mb-4">
                 <span className="text-[10px] font-bold px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 flex items-center space-x-1">
                   <span>🛡️</span>
-                  <span>KPPBC TMP B PEKANBARU</span>
+                  <span>Seksi Penyuluhan dan Layanan Informasi</span>
                 </span>
                 <span className="text-[10px] font-bold px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-300 flex items-center space-x-1">
                   <span>🛡️</span>
@@ -401,15 +285,15 @@ export default function App() {
                 </span>
               </div>
 
-              <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight mb-2">
+              <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight mb-1.5">
                 Masuk ke Akun
               </h1>
               <p className="text-xs text-slate-500 dark:text-slate-400 mb-6 font-medium">
-                Portal autentikasi resmi pegawai KPPBC TMP B Pekanbaru.
+                Portal autentikasi
               </p>
 
               {authError && (
-                <div className="mb-4 p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold text-center">
+                <div className="mb-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold text-center">
                   {authError}
                 </div>
               )}
@@ -426,10 +310,10 @@ export default function App() {
                     <input
                       type="text"
                       required
-                      placeholder="misal: plibcpekanbaru"
+                      placeholder="ID Pegawai / NIP"
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#0D2C5C] font-medium"
+                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#0D2C5C] font-medium"
                     />
                   </div>
                 </div>
@@ -439,7 +323,7 @@ export default function App() {
                     <label className="font-bold text-slate-700 dark:text-slate-300">
                       Kata Sandi
                     </label>
-                    <a href="#help" onClick={(e) => { e.preventDefault(); alert('Hubungi Helpdesk Seksi PLI KPPBC TMP B Pekanbaru.'); }} className="text-[11px] font-semibold text-[#0D2C5C] dark:text-amber-400 hover:underline">
+                    <a href="#help" onClick={(e) => { e.preventDefault(); alert('Hubungi Helpdesk Seksi PLI.'); }} className="text-[11px] font-semibold text-[#0D2C5C] dark:text-amber-400 hover:underline">
                       Lupa kata sandi?
                     </a>
                   </div>
@@ -453,7 +337,7 @@ export default function App() {
                       placeholder="••••••••"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#0D2C5C] font-medium"
+                      className="w-full pl-10 pr-10 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#0D2C5C] font-medium"
                     />
                     <button
                       type="button"
@@ -468,49 +352,28 @@ export default function App() {
                 <button
                   type="submit"
                   disabled={authLoading}
-                  className="w-full py-3 rounded-2xl bg-[#0D2C5C] hover:bg-[#0A2247] text-white font-extrabold text-sm shadow-md transition disabled:opacity-50 mt-2 flex items-center justify-center space-x-2"
+                  className="w-full py-3.5 rounded-2xl bg-[#0D2C5C] hover:bg-[#0A2247] text-white font-extrabold text-sm shadow-md transition disabled:opacity-50 mt-2 flex items-center justify-center space-x-2"
                 >
                   <span>{authLoading ? 'Memeriksa Akses...' : 'Masuk ke SIMONITA'}</span>
                   <span>→</span>
                 </button>
               </form>
 
-              <div className="mt-6 flex items-center justify-between text-[11px] text-slate-400 pt-3 border-t border-slate-100 dark:border-slate-800">
+              <div className="mt-8 flex items-center justify-between text-[11px] text-slate-400 pt-3 border-t border-slate-100 dark:border-slate-800">
                 <span className="flex items-center space-x-1">
                   <span>🛡️</span>
-                  <span>Copyright © 2026 KPPBC TMP B Pekanbaru</span>
+                  <span>Copyright © 2026 Seksi PLI</span>
                 </span>
-                <span className="font-mono text-slate-400">v2.4</span>
+                <span className="font-mono text-slate-400">v1.0</span>
               </div>
             </div>
           </div>
-
         </div>
 
-        {/* MODAL DETAIL HOTSPOT */}
-        {selectedHotspot && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
-            <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800">
-              <div className="text-3xl mb-2">{selectedHotspot.icon}</div>
-              <span className="text-[10px] uppercase font-bold tracking-wider text-amber-500 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-300">
-                {selectedHotspot.coverage}
-              </span>
-              <h3 className="font-extrabold text-base text-[#0D2C5C] dark:text-amber-400 mt-2">
-                {selectedHotspot.title}
-              </h3>
-              <p className="text-xs font-semibold text-slate-500 mt-0.5 mb-2">{selectedHotspot.subtitle}</p>
-              <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed border-t pt-2.5">{selectedHotspot.desc}</p>
-              <div className="mt-4 flex justify-end">
-                <button
-                  onClick={() => setSelectedHotspot(null)}
-                  className="px-4 py-1.5 rounded-xl bg-[#0D2C5C] text-white text-xs font-bold"
-                >
-                  Tutup
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
+        {/* FOOTER BAWAH */}
+        <footer className="w-full py-3 px-6 lg:px-12 text-center text-xs text-slate-400 border-t border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 shrink-0">
+          SIMONITA • Sistem Monitoring Opini dan Berita • Seksi Penyuluhan dan Layanan Informasi
+        </footer>
 
         {/* DRAWER 2FA OTP */}
         {showOtpDrawer && (
@@ -543,7 +406,7 @@ export default function App() {
                   </button>
                 </form>
               </div>
-              <div className="text-[11px] text-slate-400 text-center">KPPBC TMP B Pekanbaru • Proteksi Terpadu</div>
+              <div className="text-[11px] text-slate-400 text-center">Seksi PLI • Proteksi Terpadu</div>
             </div>
           </div>
         )}
@@ -563,7 +426,7 @@ export default function App() {
           </div>
           <div>
             <span className="font-extrabold text-base tracking-wider">SIMONITA</span>
-            <p className="text-[11px] text-slate-300">KPPBC TMP B Pekanbaru • Seksi PLI</p>
+            <p className="text-[11px] text-slate-300">Seksi Penyuluhan dan Layanan Informasi</p>
           </div>
         </div>
         <div className="flex items-center space-x-3 text-xs">
@@ -678,7 +541,7 @@ export default function App() {
             <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-4">
               <h2 className="text-lg font-bold text-[#0D2C5C] dark:text-amber-400">Verifikasi Anggota Resmi Dewan Pers</h2>
               <p className="text-xs text-slate-600 dark:text-slate-300">
-                Gunakan basis data resmi Dewan Pers untuk memeriksa verifikasi faktual media massa yang meliput KPPBC TMP B Pekanbaru.
+                Gunakan basis data resmi Dewan Pers untuk memeriksa verifikasi faktual media massa.
               </p>
               <a href="https://dewanpers.or.id/data" target="_blank" rel="noreferrer" className="inline-block px-4 py-2 rounded-xl bg-amber-400 text-[#0D2C5C] font-bold text-xs">
                 Buka Basis Data Dewan Pers ↗
