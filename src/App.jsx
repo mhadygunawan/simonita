@@ -162,14 +162,14 @@ export default function App() {
     setPassword('');
   };
 
-  // Filter & Pencarian
+  // Filter & Pencarian (Mendukung Pencarian Sentimen)
   const filteredArticles = (articles || []).filter((item) => {
     if (!item) return false;
     const title = (item.title || '').toLowerCase();
     const source = (item.source_name || '').toLowerCase();
     const sentiment = (item.sentiment || 'neutral').toLowerCase();
     
-    const sentimentLabel = sentiment === 'positive' ? 'positif' : sentiment === 'negative' ? 'negatif kritis' : 'netral';
+    const sentimentLabel = sentiment === 'positive' ? 'positif' : sentiment === 'negative' ? 'negatif' : 'netral';
     const q = search.trim().toLowerCase();
 
     const matchesSearch = !q || title.includes(q) || source.includes(q) || sentiment.includes(q) || sentimentLabel.includes(q);
@@ -324,7 +324,7 @@ export default function App() {
   }
 
   // =========================================================================
-  // 1. HALAMAN LOGIN (SONGKET + BALANCED NAVY & GOLD)
+  // 1. HALAMAN LOGIN
   // =========================================================================
   if (!session) {
     return (
@@ -332,10 +332,8 @@ export default function App() {
         className="min-h-screen w-full flex flex-col justify-between font-sans bg-cover bg-center bg-no-repeat relative"
         style={{ backgroundImage: `url('/login-bg.jpg')` }}
       >
-        {/* Lapisan halus untuk kontras teks */}
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#0A1F3F]/15 to-[#0A1F3F]/60 dark:to-slate-950/85 pointer-events-none"></div>
 
-        {/* TOPBAR */}
         <header className="relative z-10 w-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-amber-400/30 px-6 py-3.5 shadow-sm">
           <div className="w-full flex items-center justify-between">
             <div className="flex items-center space-x-3.5">
@@ -373,7 +371,6 @@ export default function App() {
           </div>
         </header>
 
-        {/* RUNNING TICKER */}
         <div className="relative z-10 w-full bg-[#0D2C5C]/90 text-white backdrop-blur-sm border-b border-amber-400/40 py-2.5 px-6">
           <div className="w-full flex items-center gap-4 overflow-hidden text-xs">
             <div className="flex items-center space-x-2 shrink-0">
@@ -390,7 +387,6 @@ export default function App() {
           </div>
         </div>
 
-        {/* FORM LOGIN KANAN (NAVY CARD DENGAN AKSEN GOLDEN YELLOW) */}
         <main className="relative z-10 w-full flex-1 flex items-center justify-center lg:justify-end px-6 sm:px-16 py-10">
           <div className="w-full max-w-md">
             <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl p-8 sm:p-10 rounded-3xl shadow-2xl border-2 border-amber-400/50">
@@ -499,7 +495,7 @@ export default function App() {
   }
 
   // =========================================================================
-  // 2. DASHBOARD UTAMA (NAVY BLUE DENGAN AKSEN GOLDEN YELLOW PROPORSI)
+  // 2. DASHBOARD UTAMA
   // =========================================================================
   return (
     <div className="min-h-screen w-full bg-[#F4F7FB] dark:bg-slate-950 text-slate-800 dark:text-slate-100 flex flex-col font-sans">
@@ -659,10 +655,9 @@ export default function App() {
           </div>
 
           {/* =========================================================================
-              BIG WELCOME HERO BANNER (NAVY BLUE DENGAN AKSEN GOLDEN YELLOW)
+              BIG WELCOME HERO BANNER
               ========================================================================= */}
           <div className="w-full relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#0A1F3F] via-[#0D2C5C] to-[#143B75] text-white p-6 sm:p-8 shadow-xl border border-amber-400/40">
-            {/* Golden radial ambient */}
             <div className="absolute -right-8 -bottom-8 w-64 h-64 bg-amber-400/10 rounded-full blur-3xl pointer-events-none"></div>
 
             <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -679,7 +674,7 @@ export default function App() {
                 </h1>
 
                 <p className="text-[11px] sm:text-xs text-slate-200 leading-relaxed font-normal">
-                  Pusat kendali pemantauan media daring, kliping berita berkala, dan analisis sentimen publik Seksi PLI Bea Cukai Pekanbaru.
+                  Pusat kendali pemantauan media daring dan analisis sentimen publik Seksi PLI Bea Cukai Pekanbaru.
                 </p>
               </div>
 
@@ -696,24 +691,17 @@ export default function App() {
           {activeTab === 'articles' && (
             <div className="w-full bg-white dark:bg-slate-900 rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/80 dark:border-slate-800 space-y-3.5">
               
-              {/* Header Tabel & Tombol Aksi */}
+              {/* Header Tabel & Tombol Aksi (Tombol Download Excel/CSV di Bagian Paling Kanan) */}
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2.5 pb-2 border-b border-slate-100 dark:border-slate-800">
                 <div>
                   <h2 className="text-base font-black text-[#0D2C5C] dark:text-amber-400">
                     Daftar Artikel Berita & Opini Publik
                   </h2>
                   <p className="text-[11px] text-slate-400">
-                    Hasil pemindaian otomatis dan penambahan kliping berita manual
+                    Hasil pemindaian otomatis (Google News & Web Umum) dan kliping manual
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  <button
-                    onClick={exportToCSV}
-                    className="px-3 py-1.5 text-xs font-bold rounded-xl border border-emerald-500/40 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 transition shadow-xs flex items-center space-x-1"
-                  >
-                    <span>📥</span>
-                    <span>Ekspor CSV</span>
-                  </button>
                   <button
                     onClick={loadData}
                     className="px-3 py-1.5 text-xs font-semibold rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 transition shadow-xs flex items-center space-x-1"
@@ -728,10 +716,18 @@ export default function App() {
                     <span>+</span>
                     <span>Tambah Manual</span>
                   </button>
+                  {/* TOMBOL EKSPOR EXCEL / CSV DI POSISI PALING KANAN */}
+                  <button
+                    onClick={exportToCSV}
+                    className="px-3 py-1.5 text-xs font-bold rounded-xl border border-emerald-500/40 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 transition shadow-xs flex items-center space-x-1"
+                  >
+                    <span>📥</span>
+                    <span>Ekspor Excel/CSV</span>
+                  </button>
                 </div>
               </div>
 
-              {/* Filter & Bar Pencarian */}
+              {/* Filter, Sort By Berbagai Kriteria & Bar Pencarian */}
               <div className="bg-slate-50 dark:bg-slate-800/50 p-2.5 rounded-xl border border-slate-200/80 dark:border-slate-700/80 flex flex-col sm:flex-row gap-2 text-xs">
                 <input
                   type="text"
@@ -905,9 +901,7 @@ export default function App() {
             </div>
           )}
 
-          {/* =========================================================================
-              TAB 2: STATISTIK & OPINI + CUSTOMIZED LINE CHART (BALANCED)
-              ========================================================================= */}
+          {/* ==================== TAB 2: STATISTIK & OPINI ==================== */}
           {activeTab === 'stats' && (
             <div className="w-full bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm border border-slate-200/80 dark:border-slate-800 space-y-6">
               
@@ -940,7 +934,7 @@ export default function App() {
                 </div>
               </div>
 
-              {/* CUSTOMIZED LINE CHART (7 HARI TERAKHIR) */}
+              {/* CUSTOMIZED LINE CHART */}
               <div className="p-5 rounded-2xl bg-slate-50/70 dark:bg-slate-800/40 border border-slate-200/80 dark:border-slate-800 space-y-4">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <div>
