@@ -1,9 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from './lib/supabase';
-import { getArticles, addManualArticle, updateArticle, deleteArticle, subscribeToArticles } from './services/articles';
+import { getArticles, addManualArticle, updateArticle, deleteArticle, subscribeToArticles, triggerWebScraper } from './services/articles';
 
 export default function App() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  // Deteksi Otomatis Bawaan Sistem / Jam Siang & Malam (06.00 - 18.00 = Terang, 18.00 - 06.00 = Gelap)
+  const getInitialTheme = () => {
+    if (typeof window !== 'undefined' && window.matchMedia) {
+      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (systemPrefersDark) return true;
+    }
+    const currentHour = new Date().getHours();
+    return currentHour < 6 || currentHour >= 18;
+  };
+
+  const [isDarkMode, setIsDarkMode] = useState(getInitialTheme);
   const [session, setSession] = useState(null);
   const [authChecked, setAuthChecked] = useState(false);
 
@@ -54,6 +64,18 @@ export default function App() {
     return () => clearInterval(timer);
   }, []);
 
+  // Sinkronisasi Listener Preferensi Tema Bawaan Laptop / Sistem OS
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return;
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleSystemThemeChange = (e) => {
+      setIsDarkMode(e.matches);
+    };
+
+    mediaQuery.addEventListener('change', handleSystemThemeChange);
+    return () => mediaQuery.removeEventListener('change', handleSystemThemeChange);
+  }, []);
+
   // Tutup dropdown menu saat klik di luar area
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -95,6 +117,11 @@ export default function App() {
   const loadData = async () => {
     try {
       setLoading(true);
+      try {
+        await triggerWebScraper();
+      } catch (e) {
+        // Abaikan jika offline / dev
+      }
       const data = await getArticles();
       setArticles(Array.isArray(data) ? data : []);
     } catch (err) {
@@ -127,14 +154,14 @@ export default function App() {
 
     if (cleanUser === 'plibcpekanbaru' && cleanPass === 'PLI123456') {
       setTimeout(() => {
-        setSession({ user: { email: 'plibcpekanbaru@customs.go.id' } });
+        setSession({ user: { email: 'beacukaipekanbaru@gmail.com' } });
         setAuthLoading(false);
       }, 250);
       return;
     }
 
     try {
-      const targetEmail = username.includes('@') ? username.trim() : `${username.trim()}@customs.go.id`;
+      const targetEmail = username.includes('@') ? username.trim() : `${username.trim()}@gmail.com`;
       const { data, error } = await supabase.auth.signInWithPassword({
         email: targetEmail,
         password: password,
@@ -162,14 +189,14 @@ export default function App() {
     setPassword('');
   };
 
-  // Filter & Pencarian (Mendukung Pencarian Sentimen)
+  // Filter & Pencarian
   const filteredArticles = (articles || []).filter((item) => {
     if (!item) return false;
     const title = (item.title || '').toLowerCase();
     const source = (item.source_name || '').toLowerCase();
     const sentiment = (item.sentiment || 'neutral').toLowerCase();
     
-    const sentimentLabel = sentiment === 'positive' ? 'positif' : sentiment === 'negative' ? 'negatif' : 'netral';
+    const sentimentLabel = sentiment === 'positive' ? 'positif' : sentiment === 'negative' ? 'negatif kritis' : 'netral';
     const q = search.trim().toLowerCase();
 
     const matchesSearch = !q || title.includes(q) || source.includes(q) || sentiment.includes(q) || sentimentLabel.includes(q);
@@ -334,6 +361,7 @@ export default function App() {
       >
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#0A1F3F]/15 to-[#0A1F3F]/60 dark:to-slate-950/85 pointer-events-none"></div>
 
+        {/* TOPBAR */}
         <header className="relative z-10 w-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-amber-400/30 px-6 py-3.5 shadow-sm">
           <div className="w-full flex items-center justify-between">
             <div className="flex items-center space-x-3.5">
@@ -371,6 +399,7 @@ export default function App() {
           </div>
         </header>
 
+        {/* RUNNING TICKER */}
         <div className="relative z-10 w-full bg-[#0D2C5C]/90 text-white backdrop-blur-sm border-b border-amber-400/40 py-2.5 px-6">
           <div className="w-full flex items-center gap-4 overflow-hidden text-xs">
             <div className="flex items-center space-x-2 shrink-0">
@@ -387,6 +416,7 @@ export default function App() {
           </div>
         </div>
 
+        {/* FORM LOGIN KANAN */}
         <main className="relative z-10 w-full flex-1 flex items-center justify-center lg:justify-end px-6 sm:px-16 py-10">
           <div className="w-full max-w-md">
             <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl p-8 sm:p-10 rounded-3xl shadow-2xl border-2 border-amber-400/50">
@@ -418,7 +448,7 @@ export default function App() {
               <form onSubmit={handleLogin} className="space-y-4 text-xs">
                 <div>
                   <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1.5">
-                    Nama Pengguna (NIP / ID Kedinasan)
+                    Nama Pengguna
                   </label>
                   <div className="relative">
                     <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-amber-500">
@@ -427,7 +457,7 @@ export default function App() {
                     <input
                       type="text"
                       required
-                      placeholder="ID Pegawai / NIP"
+                      placeholder="Nama Pengguna"
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
                       className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#0D2C5C] dark:focus:ring-amber-400 font-medium"
@@ -514,7 +544,7 @@ export default function App() {
               </div>
               <div>
                 <span className="font-black text-base text-[#0D2C5C] dark:text-amber-400 tracking-wider block">SIMONITA</span>
-                <span className="text-[10px] text-slate-400 font-semibold block leading-tight">Monitoring & Opini</span>
+                <span className="text-[10px] text-slate-400 font-semibold block leading-tight">Dashboard</span>
               </div>
             </div>
           </div>
@@ -572,23 +602,6 @@ export default function App() {
               </span>
             </button>
           </div>
-
-          {/* Profil Petugas Ringkas di Sidebar Kiri */}
-          <div className="bg-white dark:bg-slate-900 rounded-2xl p-3 shadow-sm border border-slate-200/80 dark:border-slate-800 mt-auto">
-            <div className="flex items-center space-x-2.5">
-              <div className="h-9 w-9 rounded-full bg-gradient-to-tr from-[#0D2C5C] to-[#0A1F3F] text-amber-300 border border-amber-400/40 flex items-center justify-center font-black text-xs shadow">
-                PLI
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="text-xs font-black text-[#0D2C5C] dark:text-slate-100 truncate">
-                  Admin PLI
-                </p>
-                <p className="text-[10px] text-slate-400 font-medium truncate">
-                  KPPBC TMP B Pekanbaru
-                </p>
-              </div>
-            </div>
-          </div>
         </aside>
 
         {/* ==================== AREA KONTEN KANAN ==================== */}
@@ -604,7 +617,7 @@ export default function App() {
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                 <span>Online: 1</span>
               </span>
-              <span className="hidden sm:flex items-center space-x-1 px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-mono text-[10px] border border-slate-200 dark:border-slate-700">
+              <span className="hidden sm:flex items-center space-x-1 px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-mono text-[10px] border border-slate-200 dark:border-slate-700">
                 <span>⏱</span>
                 <span>{currentTime || '09:00:00 WIB'}</span>
               </span>
@@ -614,7 +627,7 @@ export default function App() {
               <button
                 onClick={() => setIsDarkMode(!isDarkMode)}
                 className="h-7 w-7 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center text-xs border border-slate-200"
-                title="Ganti Tema"
+                title="Ganti Tema Manual"
               >
                 {isDarkMode ? '🌙' : '☀️'}
               </button>
@@ -636,10 +649,10 @@ export default function App() {
 
                 {/* Popover Dropdown Keluar */}
                 {isUserMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 py-2 z-50 animate-in fade-in zoom-in-95 duration-100">
+                  <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 py-2 z-50 animate-in fade-in zoom-in-95 duration-100">
                     <div className="px-3.5 py-2 border-b border-slate-100 dark:border-slate-800">
                       <p className="text-xs font-bold text-slate-800 dark:text-slate-100">Admin PLI</p>
-                      <p className="text-[10px] text-slate-400 truncate">{session?.user?.email || 'plibcpekanbaru@customs.go.id'}</p>
+                      <p className="text-[10px] text-slate-400 truncate">{session?.user?.email || 'beacukaipekanbaru@gmail.com'}</p>
                     </div>
                     <button
                       onClick={handleLogout}
@@ -691,7 +704,7 @@ export default function App() {
           {activeTab === 'articles' && (
             <div className="w-full bg-white dark:bg-slate-900 rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/80 dark:border-slate-800 space-y-3.5">
               
-              {/* Header Tabel & Tombol Aksi (Tombol Download Excel/CSV di Bagian Paling Kanan) */}
+              {/* Header Tabel & Tombol Aksi */}
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2.5 pb-2 border-b border-slate-100 dark:border-slate-800">
                 <div>
                   <h2 className="text-base font-black text-[#0D2C5C] dark:text-amber-400">
@@ -716,7 +729,7 @@ export default function App() {
                     <span>+</span>
                     <span>Tambah Manual</span>
                   </button>
-                  {/* TOMBOL EKSPOR EXCEL / CSV DI POSISI PALING KANAN */}
+                  {/* EKSPOR EXCEL / CSV DI POSISI PALING KANAN */}
                   <button
                     onClick={exportToCSV}
                     className="px-3 py-1.5 text-xs font-bold rounded-xl border border-emerald-500/40 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 transition shadow-xs flex items-center space-x-1"
@@ -727,7 +740,7 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Filter, Sort By Berbagai Kriteria & Bar Pencarian */}
+              {/* Filter, Sort By & Bar Pencarian */}
               <div className="bg-slate-50 dark:bg-slate-800/50 p-2.5 rounded-xl border border-slate-200/80 dark:border-slate-700/80 flex flex-col sm:flex-row gap-2 text-xs">
                 <input
                   type="text"
