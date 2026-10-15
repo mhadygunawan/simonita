@@ -6,7 +6,6 @@ export default function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [session, setSession] = useState(null);
   const [authChecked, setAuthChecked] = useState(false);
-  const [is2FAVerified, setIs2FAVerified] = useState(false);
 
   // Form State
   const [username, setUsername] = useState('');
@@ -14,10 +13,6 @@ export default function App() {
   const [showPassword, setShowPassword] = useState(false);
   const [authError, setAuthError] = useState('');
   const [authLoading, setAuthLoading] = useState(false);
-
-  // 2FA OTP
-  const [showOtpDrawer, setShowOtpDrawer] = useState(false);
-  const [otpCode, setOtpCode] = useState(['', '', '', '', '', '']);
 
   // Dashboard Data
   const [activeTab, setActiveTab] = useState('articles');
@@ -29,7 +24,7 @@ export default function App() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Modal
+  // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingArticleId, setEditingArticleId] = useState(null);
   const [formData, setFormData] = useState({
@@ -45,7 +40,6 @@ export default function App() {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
         setSession(session);
-        setIs2FAVerified(true);
       }
       setAuthChecked(true);
     }).catch(() => {
@@ -70,7 +64,7 @@ export default function App() {
     }
   }, [isDarkMode]);
 
-  // Pengambilan Data Artikel Aman
+  // Pengambilan Data Artikel
   const loadData = async () => {
     try {
       setLoading(true);
@@ -85,7 +79,7 @@ export default function App() {
   };
 
   useEffect(() => {
-    if (session && is2FAVerified) {
+    if (session) {
       loadData();
       try {
         const channel = subscribeToArticles(() => loadData());
@@ -93,12 +87,12 @@ export default function App() {
           if (channel) channel.unsubscribe();
         };
       } catch (e) {
-        // Abaikan jika realtime channel gagal terhubung
+        // Realtime fallback
       }
     }
-  }, [session, is2FAVerified]);
+  }, [session]);
 
-  // Logika Autentikasi Pegawai
+  // Logika Autentikasi Pegawai (Langsung Masuk Dashboard)
   const handleLogin = async (e) => {
     e.preventDefault();
     setAuthLoading(true);
@@ -107,17 +101,16 @@ export default function App() {
     const cleanUser = username.trim().toLowerCase();
     const cleanPass = password.trim();
 
-    // 1. Validasi Akun Default Resmi Kedinasan
+    // 1. Akun Default Resmi Kedinasan
     if (cleanUser === 'plibcpekanbaru' && cleanPass === 'PLI123456') {
       setTimeout(() => {
         setSession({ user: { email: 'plibcpekanbaru@customs.go.id' } });
-        setShowOtpDrawer(true);
         setAuthLoading(false);
       }, 300);
       return;
     }
 
-    // 2. Validasi Akun Supabase (jika terdaftar di Auth Dashboard)
+    // 2. Akun Supabase Auth
     try {
       const targetEmail = username.includes('@') ? username.trim() : `${username.trim()}@customs.go.id`;
       const { data, error } = await supabase.auth.signInWithPassword({
@@ -129,7 +122,6 @@ export default function App() {
         throw error;
       } else {
         setSession(data.session);
-        setShowOtpDrawer(true);
       }
     } catch (err) {
       setAuthError('Nama Pengguna atau Kata Sandi tidak cocok.');
@@ -138,45 +130,18 @@ export default function App() {
     }
   };
 
-  // Konfirmasi 2FA OTP
-  const handleVerifyOtp = (e) => {
-    e.preventDefault();
-    const fullCode = otpCode.join('');
-    if (fullCode.length < 6) {
-      alert('Masukkan 6-digit kode OTP.');
-      return;
-    }
-    setShowOtpDrawer(false);
-    setIs2FAVerified(true);
-  };
-
-  const handleOtpChange = (index, value) => {
-    if (value.length > 1) value = value.slice(-1);
-    const newOtp = [...otpCode];
-    newOtp[index] = value;
-    setOtpCode(newOtp);
-
-    if (value && index < 5) {
-      const nextInput = document.getElementById(`otp-input-${index + 1}`);
-      if (nextInput) nextInput.focus();
-    }
-  };
-
   const handleLogout = async () => {
     try {
       await supabase.auth.signOut();
     } catch (e) {
-      // Abaikan error signout
+      // ignore
     }
     setSession(null);
-    setIs2FAVerified(false);
-    setShowOtpDrawer(false);
     setUsername('');
     setPassword('');
-    setOtpCode(['', '', '', '', '', '']);
   };
 
-  // Logika Filter & Paginasi dengan Pengecekan Aman
+  // Filter & Paginasi
   const filteredArticles = (articles || []).filter((item) => {
     if (!item) return false;
     const title = (item.title || '').toLowerCase();
@@ -294,9 +259,9 @@ export default function App() {
   }
 
   // =========================================================================
-  // 1. TAMPILAN LOGIN GERBANG RESMI (FULL PAGE)
+  // 1. TAMPILAN LOGIN GERBANG RESMI (LANGSUNG KE DASHBOARD TANPA 2FA)
   // =========================================================================
-  if (!session || !is2FAVerified) {
+  if (!session) {
     return (
       <div className="min-h-screen w-full flex flex-col justify-between bg-slate-50 dark:bg-slate-950 font-sans">
         
@@ -353,7 +318,7 @@ export default function App() {
           </div>
         </div>
 
-        {/* FORM LOGIN MEWAH BERSIH */}
+        {/* FORM LOGIN */}
         <div className="flex-1 w-full px-6 lg:px-12 py-12 flex items-center justify-center">
           <div className="w-full max-w-md">
             <div className="bg-white dark:bg-slate-900 p-8 sm:p-9 rounded-3xl shadow-2xl border border-slate-200/80 dark:border-slate-800">
@@ -458,48 +423,12 @@ export default function App() {
         <footer className="w-full py-3 px-6 lg:px-12 text-center text-xs text-slate-400 border-t border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 shrink-0">
           SIMONITA • Sistem Monitoring Opini dan Berita • Seksi Penyuluhan dan Layanan Informasi
         </footer>
-
-        {/* DRAWER 2FA OTP */}
-        {showOtpDrawer && (
-          <div className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-sm">
-            <div className="w-full max-w-md bg-[#0D2C5C] text-white h-full p-6 shadow-2xl flex flex-col justify-between border-l border-amber-400/40">
-              <div>
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="font-extrabold text-lg text-amber-400">Verifikasi Keamanan 2FA Pegawai</h3>
-                  <button onClick={() => setShowOtpDrawer(false)} className="text-slate-300 hover:text-white">✕</button>
-                </div>
-                <p className="text-xs text-slate-300 mb-6 leading-relaxed">
-                  Masukkan 6-digit kode OTP keamanan untuk mengakses sistem dashboard SIMONITA.
-                </p>
-                <form onSubmit={handleVerifyOtp}>
-                  <div className="flex justify-between gap-2 mb-6">
-                    {otpCode.map((digit, i) => (
-                      <input
-                        key={i}
-                        id={`otp-input-${i}`}
-                        type="text"
-                        maxLength={1}
-                        value={digit}
-                        onChange={(e) => handleOtpChange(i, e.target.value)}
-                        className="w-12 h-14 text-center text-xl font-bold rounded-xl border border-white/20 bg-black/20 text-white focus:ring-2 focus:ring-amber-400"
-                      />
-                    ))}
-                  </div>
-                  <button type="submit" className="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm shadow">
-                    Konfirmasi & Masuk Dashboard →
-                  </button>
-                </form>
-              </div>
-              <div className="text-[11px] text-slate-400 text-center">Seksi PLI • Proteksi Terpadu</div>
-            </div>
-          </div>
-        )}
       </div>
     );
   }
 
   // =========================================================================
-  // 2. DASHBOARD UTAMA (SETELAH LOGIN & 2FA SELESAI)
+  // 2. DASHBOARD UTAMA
   // =========================================================================
   return (
     <div className="min-h-screen w-full bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 flex flex-col font-sans">
