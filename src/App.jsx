@@ -12,8 +12,8 @@ export default function App() {
   const [authChecked, setAuthChecked] = useState(false);
   const [is2FAVerified, setIs2FAVerified] = useState(false);
 
-  // Login Form States (Replica of Reference Screen)
-  const [userRole, setUserRole] = useState('pegawai'); // 'pengguna' | 'pegawai'
+  // Login Form States
+  const [userRole, setUserRole] = useState('pegawai');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -25,7 +25,7 @@ export default function App() {
   const [otpCode, setOtpCode] = useState(['', '', '', '', '', '']);
 
   // Dashboard Data & Filter States
-  const [activeTab, setActiveTab] = useState('articles'); // 'articles' | 'stats' | 'press' | 'settings'
+  const [activeTab, setActiveTab] = useState('articles');
   const [articles, setArticles] = useState([]);
   const [search, setSearch] = useState('');
   const [filterType, setFilterType] = useState('all');
@@ -50,7 +50,6 @@ export default function App() {
   // Hotspot Popover State
   const [selectedHotspot, setSelectedHotspot] = useState(null);
 
-  // Data Hotspot Wilayah Pengawasan KPPBC TMP B Pekanbaru
   const hotspots = [
     {
       id: 'building',
@@ -58,7 +57,7 @@ export default function App() {
       subtitle: 'Pusat Komando & Pelayanan PLI',
       desc: 'Pusat operasional intelijen media, pemantauan rilis berita, serta administrasi pengawasan 5 kabupaten/kota.',
       coverage: 'Pekanbaru Kota',
-      coords: { top: '62%', left: '32%' },
+      coords: { top: '65%', left: '34%' },
       icon: '🏛️'
     },
     {
@@ -67,7 +66,7 @@ export default function App() {
       subtitle: 'Pengawasan Pelabuhan & Jalur Air',
       desc: 'Satuan tugas patroli laut dan sungai memantau lalu lintas kapal kargo dan mencegah penyelundupan via perairan.',
       coverage: 'Siak & Pesisir',
-      coords: { top: '68%', left: '20%' },
+      coords: { top: '72%', left: '18%' },
       icon: '🚤'
     },
     {
@@ -76,7 +75,7 @@ export default function App() {
       subtitle: 'Gempur Rokok Ilegal',
       desc: 'Pencegahan dan penindakan peredaran Barang Kena Cukai (BKC) tembakau tanpa pita cukai resmi.',
       coverage: 'Kampar & Rokan Hulu',
-      coords: { top: '75%', left: '38%' },
+      coords: { top: '80%', left: '42%' },
       icon: '🚔'
     },
     {
@@ -85,12 +84,11 @@ export default function App() {
       subtitle: 'Monitoring Udara Kawasan Industri',
       desc: 'Pengawasan udara berkala di kawasan industri manufaktur, fasilitas TPB, dan Tempat Penimbunan Berikat.',
       coverage: 'Pelalawan & Siak',
-      coords: { top: '42%', left: '11%' },
+      coords: { top: '38%', left: '12%' },
       icon: '🛸'
     }
   ];
 
-  // Sinkronisasi Sesi Supabase
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
@@ -106,7 +104,6 @@ export default function App() {
     return () => subscription.unsubscribe();
   }, []);
 
-  // Sinkronisasi Tema Gelap/Terang
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
@@ -115,7 +112,6 @@ export default function App() {
     }
   }, [isDarkMode]);
 
-  // Load Data Berita
   const loadData = async () => {
     try {
       setLoading(true);
@@ -138,14 +134,12 @@ export default function App() {
     }
   }, [session, is2FAVerified]);
 
-  // Handler Login Single Account / Supabase Integration
   const handleLogin = async (e) => {
     e.preventDefault();
     setAuthLoading(true);
     setAuthError('');
 
     try {
-      // Otomatis arahkan username ke email domain internal jika pengguna mengetik nama pengguna saja
       const targetEmail = username.includes('@') ? username.trim() : `${username.trim()}@customs.go.id`;
 
       const { data, error } = await supabase.auth.signInWithPassword({
@@ -154,7 +148,6 @@ export default function App() {
       });
 
       if (error) {
-        // Fallback untuk akun tunggal lokal jika akun Supabase belum sinkron
         if (username.trim().toLowerCase() === 'admin' && password === 'admin123') {
           setSession({ user: { email: 'admin@customs.go.id' } });
           setShowOtpDrawer(true);
@@ -172,7 +165,6 @@ export default function App() {
     }
   };
 
-  // Handler Verifikasi 2FA OTP
   const handleVerifyOtp = (e) => {
     e.preventDefault();
     const fullCode = otpCode.join('');
@@ -211,7 +203,6 @@ export default function App() {
     setPassword('');
   };
 
-  // Filter & Pagination Calculations
   const filteredArticles = articles.filter((item) => {
     const matchesSearch = item.title.toLowerCase().includes(search.toLowerCase()) ||
                           item.source_name.toLowerCase().includes(search.toLowerCase());
@@ -240,7 +231,6 @@ export default function App() {
     setCurrentPage(1);
   }, [search, filterType, timeFilter, rowsPerPage]);
 
-  // CRUD Handlers
   const handleOpenAddModal = () => {
     setEditingArticleId(null);
     setFormData({
@@ -296,7 +286,6 @@ export default function App() {
     }
   };
 
-  // CSV Export
   const exportToCSV = () => {
     if (filteredArticles.length === 0) {
       alert('Tidak ada data artikel untuk diekspor.');
@@ -339,7 +328,7 @@ export default function App() {
 
   if (!authChecked) {
     return (
-      <div className="min-h-screen bg-[#0D2C5C] flex items-center justify-center text-white">
+      <div className="w-screen h-screen bg-[#0D2C5C] flex items-center justify-center text-white">
         <div className="flex flex-col items-center space-y-3">
           <div className="w-12 h-12 border-4 border-amber-400 border-t-transparent rounded-full animate-spin"></div>
           <span className="text-xs font-bold tracking-widest uppercase text-amber-300">Memeriksa Keamanan SIMONITA...</span>
@@ -349,21 +338,21 @@ export default function App() {
   }
 
   // =========================================================================
-  // HALAMAN GERBANG LOGIN UTAMA (PERSIS SEPERTI GAMBAR CONTOH ANDA)
+  // HALAMAN GERBANG LOGIN UTAMA (PAS DENGAN UKURAN WINDOW BROWSER / 100vh)
   // =========================================================================
   if (!session || !is2FAVerified) {
     return (
-      <div className="min-h-screen bg-slate-100 dark:bg-slate-950 text-slate-800 dark:text-slate-100 flex flex-col justify-between font-sans relative overflow-hidden transition-colors duration-300">
+      <div className="w-full min-h-screen lg:h-screen lg:overflow-hidden bg-slate-100 dark:bg-slate-950 text-slate-800 dark:text-slate-100 flex flex-col justify-between font-sans relative transition-colors duration-300">
 
-        {/* 1. TOP NAVBAR PERSIS SEPERTI CONTOH */}
-        <header className="sticky top-0 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 px-4 sm:px-8 py-2.5 shadow-sm">
-          <div className="max-w-7xl mx-auto flex items-center justify-between">
+        {/* 1. TOP NAVBAR */}
+        <header className="w-full shrink-0 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 px-4 sm:px-8 py-2.5 shadow-sm">
+          <div className="w-full max-w-7xl mx-auto flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="h-9 w-9 rounded-xl bg-[#0D2C5C] p-1.5 flex items-center justify-center shadow-md border border-amber-400/40">
+              <div className="h-9 w-9 rounded-xl bg-[#0D2C5C] p-1.5 flex items-center justify-center shadow-md border border-amber-400/40 shrink-0">
                 <img src="/simonita.png" alt="Logo SIMONITA" className="h-full w-full object-contain" />
               </div>
               <div>
-                <div className="flex items-center space-x-2">
+                <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
                   <span className="font-extrabold text-base tracking-wider text-[#0D2C5C] dark:text-amber-400">SIMONITA</span>
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300/60 dark:border-slate-700">
                     KPPBC TMP B Pekanbaru
@@ -373,14 +362,13 @@ export default function App() {
                     <span>Server Online</span>
                   </span>
                 </div>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium hidden sm:block">
                   Sistem Monitoring Opini dan Berita • Super App Intelijen Media Terpadu
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center space-x-3">
-              {/* Tombol Panduan CCTV & PDF */}
+            <div className="flex items-center space-x-2 sm:space-x-3">
               <a
                 href="https://dewanpers.or.id"
                 target="_blank"
@@ -391,7 +379,6 @@ export default function App() {
                 <span>Buku Panduan CCTV & PDF ↗</span>
               </a>
 
-              {/* Toggle Tema Terang/Gelap */}
               <div className="flex items-center rounded-xl bg-slate-100 dark:bg-slate-800 p-0.5 border border-slate-200 dark:border-slate-700 text-xs font-semibold">
                 <button
                   onClick={() => setIsDarkMode(false)}
@@ -413,7 +400,7 @@ export default function App() {
         </header>
 
         {/* 2. RUNNING TICKER & TAGLINE BERJALAN DINAMIS */}
-        <div className="bg-slate-50/90 dark:bg-slate-900/90 border-b border-slate-200/80 dark:border-slate-800 py-2 px-4 sm:px-8 z-20 flex items-center gap-3 overflow-hidden text-xs">
+        <div className="w-full shrink-0 bg-slate-50/90 dark:bg-slate-900/90 border-b border-slate-200/80 dark:border-slate-800 py-2 px-4 sm:px-8 z-20 flex items-center gap-3 overflow-hidden text-xs">
           <div className="flex items-center space-x-2 shrink-0">
             <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
             <span className="font-bold px-2 py-0.5 rounded-lg bg-emerald-100/60 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-300/40 text-[11px]">
@@ -431,20 +418,26 @@ export default function App() {
           </div>
         </div>
 
-        {/* 3. AREA TENGAH: LATAR BELAKANG ISOMETRIK 3D & KARTU LOGIN MENGAMBANG */}
-        <main className="flex-1 relative flex items-center justify-center p-4 sm:p-8 min-h-[640px]">
+        {/* 3. AREA TENGAH: PAS UKURAN LAYAR 100% */}
+        <main className="w-full flex-1 relative flex items-center justify-center lg:justify-end px-4 sm:px-8 lg:px-16 py-6 overflow-hidden">
           
-          {/* Ilustrasi Isometrik Gunung & Bangunan Dinas Bea Cukai (Persis Gambar) */}
-          <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden flex items-center justify-start">
-            <svg className="w-full h-full object-cover opacity-85 dark:opacity-40" viewBox="0 0 1440 850" fill="none" xmlns="http://www.w3.org/2000/svg">
-              {/* Matahari Pagi */}
-              <circle cx="1080" cy="180" r="140" fill="#FEF08A" opacity="0.4" />
+          {/* Latar Belakang Isometrik SVG Mengisi 100% Width & Height */}
+          <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden w-full h-full">
+            <svg 
+              className="w-full h-full object-cover opacity-85 dark:opacity-40" 
+              viewBox="0 0 1440 850" 
+              preserveAspectRatio="xMidYMid slice" 
+              fill="none" 
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              {/* Matahari */}
+              <circle cx="980" cy="180" r="140" fill="#FEF08A" opacity="0.4" />
               
-              {/* Pegunungan Biru Berlapis */}
-              <polygon points="120,680 480,360 840,680" fill="#93C5FD" opacity="0.6" />
-              <polygon points="400,680 560,420 720,680" fill="#E2E8F0" />
-              <polygon points="280,680 640,400 1000,680" fill="#1E3A8A" opacity="0.8" />
-              <polygon points="580,680 640,400 700,680" fill="#FFFFFF" />
+              {/* Pegunungan */}
+              <polygon points="80,720 440,360 800,720" fill="#93C5FD" opacity="0.6" />
+              <polygon points="360,720 520,420 680,720" fill="#E2E8F0" />
+              <polygon points="240,720 600,400 960,720" fill="#1E3A8A" opacity="0.8" />
+              <polygon points="540,720 600,400 660,720" fill="#FFFFFF" />
 
               {/* Pulau Isometrik Gedung Bea Cukai */}
               <g transform="translate(180, 240)">
@@ -452,23 +445,20 @@ export default function App() {
                 <polygon points="260,280 480,400 480,420 260,300" fill="#0284C7" />
                 <polygon points="480,400 700,280 700,300 480,420" fill="#0369A1" />
 
-                {/* Gedung Kantor Utama Bea Cukai */}
                 <polygon points="400,220 480,175 560,220 480,265" fill="#F59E0B" />
                 <polygon points="400,220 480,265 480,330 400,285" fill="#0D2C5C" />
                 <polygon points="480,265 560,220 560,285 480,330" fill="#1E40AF" />
 
-                {/* Tiang Bendera Merah Putih */}
                 <line x1="420" y1="200" x2="420" y2="140" stroke="#FFFFFF" strokeWidth="2" />
                 <rect x="422" y="140" width="22" height="7" fill="#EF4444" />
                 <rect x="422" y="147" width="22" height="7" fill="#FFFFFF" />
 
-                {/* Menara Pengawas & CCTV */}
                 <polygon points="580,260 620,235 660,260 620,285" fill="#1E293B" />
                 <polygon points="580,260 620,285 620,360 580,335" fill="#0F172A" />
                 <polygon points="620,285 660,260 660,335 620,360" fill="#334155" />
               </g>
 
-              {/* Drone Surveillance Mengambang */}
+              {/* Drone Surveillance */}
               <g transform="translate(160, 280)">
                 <ellipse cx="60" cy="80" rx="18" ry="6" fill="#0D2C5C" />
                 <line x1="45" y1="80" x2="75" y2="80" stroke="#0284C7" strokeWidth="2" />
@@ -477,7 +467,7 @@ export default function App() {
               </g>
             </svg>
 
-            {/* Clickable Radar Hotspots (Sungai Siak, Drone, Gedung BC, Patroli) */}
+            {/* Clickable Radar Hotspots */}
             {hotspots.map((spot) => (
               <button
                 key={spot.id}
@@ -496,29 +486,29 @@ export default function App() {
             ))}
           </div>
 
-          {/* KARTU FORM LOGIN MENGAMBANG (DI SISI KANAN SEPERTI GAMBAR) */}
-          <div className="relative z-20 w-full max-w-md ml-auto mr-4 lg:mr-16">
-            <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl p-6 sm:p-8 rounded-3xl shadow-2xl border border-slate-200/80 dark:border-slate-800">
+          {/* KARTU FORM LOGIN MENGAMBANG */}
+          <div className="relative z-20 w-full max-w-[420px] my-auto">
+            <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl p-6 sm:p-7 rounded-3xl shadow-2xl border border-slate-200/80 dark:border-slate-800">
               
               {/* Badge Instansi & Terverifikasi */}
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 flex items-center space-x-1">
+              <div className="flex items-center justify-between mb-3.5">
+                <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 flex items-center space-x-1">
                   <span>🛡️</span>
                   <span>KPPBC TMP B PEKANBARU</span>
                 </span>
-                <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-400/40 flex items-center space-x-1">
+                <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-400/40 flex items-center space-x-1">
                   <span>🛡️</span>
                   <span>Terverifikasi</span>
                 </span>
               </div>
 
               {/* Heading */}
-              <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight mb-4">
+              <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight mb-3.5">
                 Masuk ke Akun
               </h1>
 
-              {/* Tab Pemilih Peran: Pengguna Jasa & Pegawai */}
-              <div className="grid grid-cols-2 gap-1.5 p-1 rounded-2xl bg-slate-100 dark:bg-slate-800 mb-5">
+              {/* Tab Pemilih Peran */}
+              <div className="grid grid-cols-2 gap-1.5 p-1 rounded-2xl bg-slate-100 dark:bg-slate-800 mb-4">
                 <button
                   type="button"
                   onClick={() => setUserRole('pengguna')}
@@ -537,17 +527,16 @@ export default function App() {
                 </button>
               </div>
 
-              {/* Pesan Kesalahan Jika Login Gagal */}
               {authError && (
-                <div className="mb-4 p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold text-center">
+                <div className="mb-3.5 p-2 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold text-center">
                   {authError}
                 </div>
               )}
 
               {/* Form Input */}
-              <form onSubmit={handleLogin} className="space-y-4 text-xs">
+              <form onSubmit={handleLogin} className="space-y-3.5 text-xs">
                 <div>
-                  <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+                  <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">
                     Nama Pengguna {userRole === 'pengguna' ? '(User ID CEISA)' : '(NIP / ID Kedinasan)'}
                   </label>
                   <div className="relative">
@@ -566,7 +555,7 @@ export default function App() {
                 </div>
 
                 <div>
-                  <div className="flex items-center justify-between mb-1.5">
+                  <div className="flex items-center justify-between mb-1">
                     <label className="font-bold text-slate-700 dark:text-slate-300">
                       Kata Sandi
                     </label>
@@ -596,19 +585,17 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* Tombol Masuk Biru Gelap */}
                 <button
                   type="submit"
                   disabled={authLoading}
-                  className="w-full py-3 rounded-2xl bg-[#0D2C5C] hover:bg-[#0A2247] text-white font-extrabold text-sm shadow-md transition disabled:opacity-50 mt-1 flex items-center justify-center space-x-2"
+                  className="w-full py-2.5 rounded-2xl bg-[#0D2C5C] hover:bg-[#0A2247] text-white font-extrabold text-sm shadow-md transition disabled:opacity-50 mt-1 flex items-center justify-center space-x-2"
                 >
                   <span>{authLoading ? 'Memeriksa Akses...' : 'Masuk ke SIMONITA'}</span>
                   <span>→</span>
                 </button>
               </form>
 
-              {/* Tautan Bantuan CEISA Care */}
-              <div className="mt-4 text-center">
+              <div className="mt-3.5 text-center">
                 <span className="text-[11px] text-slate-400 flex items-center justify-center space-x-1">
                   <span>❔</span>
                   <span>Kendala akun atau akses kedinasan? Buka</span>
@@ -618,8 +605,7 @@ export default function App() {
                 </span>
               </div>
 
-              {/* Tautan E-Front Desk Tamu di Bagian Bawah */}
-              <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
+              <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
                 <span className="text-slate-500 dark:text-slate-400 text-[11px] flex items-center space-x-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                   <span>Bukan pengguna CEISA? (PKL, Magang...)</span>
@@ -634,8 +620,7 @@ export default function App() {
                 </button>
               </div>
 
-              {/* Copyright Sesuai Gambar */}
-              <div className="mt-4 flex items-center justify-between text-[11px] text-slate-400 pt-2 border-t border-slate-50 dark:border-slate-800/60">
+              <div className="mt-3.5 flex items-center justify-between text-[11px] text-slate-400 pt-2 border-t border-slate-50 dark:border-slate-800/60">
                 <span className="flex items-center space-x-1">
                   <span>🛡️</span>
                   <span>Copyright © 2026 KPPBC TMP B Pekanbaru</span>
@@ -646,7 +631,7 @@ export default function App() {
           </div>
         </main>
 
-        {/* Modal Info Hotspot Wilayah Pengawasan */}
+        {/* Modal Info Hotspot */}
         {selectedHotspot && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
             <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 text-left relative animate-in fade-in zoom-in duration-150">
