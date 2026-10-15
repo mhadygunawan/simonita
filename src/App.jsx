@@ -241,22 +241,22 @@ export default function App() {
 
   if (!authChecked) {
     return (
-      <div className="w-screen h-screen bg-[#0D2C5C] flex items-center justify-center text-white">
+      <div className="min-h-screen w-full bg-[#0D2C5C] flex items-center justify-center text-white">
         <div className="w-10 h-10 border-4 border-amber-400 border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
 
   // =========================================================================
-  // 1. TAMPILAN LOGIN GERBANG RESMI (FULL PAGE)
+  // 1. TAMPILAN LOGIN (FULL PAGE PROPORSI CENTER)
   // =========================================================================
   if (!session) {
     return (
-      <div className="w-screen h-screen flex flex-col justify-between bg-slate-50 dark:bg-slate-950 font-sans overflow-hidden">
+      <div className="min-h-screen w-full flex flex-col justify-between bg-slate-50 dark:bg-slate-950 font-sans overflow-x-hidden">
         
         {/* NAVBAR ATAS */}
-        <header className="w-full bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-6 sm:px-12 py-3.5 shrink-0 shadow-sm">
-          <div className="w-full flex items-center justify-between">
+        <header className="w-full bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-6 sm:px-10 py-3.5 shrink-0 shadow-sm">
+          <div className="max-w-7xl mx-auto flex items-center justify-between">
             <div className="flex items-center space-x-3.5">
               <div className="h-10 w-10 rounded-xl bg-[#0D2C5C] p-1.5 flex items-center justify-center border border-amber-400 shrink-0 shadow">
                 <img src="/simonita.png" alt="Logo SIMONITA" className="h-full w-full object-contain" />
@@ -293,24 +293,26 @@ export default function App() {
         </header>
 
         {/* RUNNING TICKER */}
-        <div className="w-full bg-slate-100 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 py-2.5 px-6 sm:px-12 flex items-center gap-4 overflow-hidden text-xs shrink-0">
-          <div className="flex items-center space-x-2 shrink-0">
-            <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-            <span className="font-bold px-2.5 py-0.5 rounded-md bg-emerald-100 text-emerald-800 border border-emerald-300 text-[11px]">
-              🕒 Senin – Jumat, 07.30 – 17.00 WIB
-            </span>
-          </div>
-          <div className="flex-1 overflow-hidden relative">
-            <div className="animate-marquee font-medium text-slate-600 dark:text-slate-300 whitespace-nowrap">
-              ✨ <strong className="text-[#0D2C5C] dark:text-amber-400">Selamat datang di SIMONITA</strong> - Sistem Monitoring Opini dan Berita • Jam Layanan: 07.30 - 17.00 WIB • Wilayah Pengawasan: Pekanbaru, Siak, Kampar, Rokan Hulu, dan Pelalawan
+        <div className="w-full bg-slate-100 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 py-2.5 px-6 sm:px-10 shrink-0">
+          <div className="max-w-7xl mx-auto flex items-center gap-4 overflow-hidden text-xs">
+            <div className="flex items-center space-x-2 shrink-0">
+              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span className="font-bold px-2.5 py-0.5 rounded-md bg-emerald-100 text-emerald-800 border border-emerald-300 text-[11px]">
+                🕒 Senin – Jumat, 07.30 – 17.00 WIB
+              </span>
+            </div>
+            <div className="flex-1 overflow-hidden relative">
+              <div className="animate-marquee font-medium text-slate-600 dark:text-slate-300 whitespace-nowrap">
+                ✨ <strong className="text-[#0D2C5C] dark:text-amber-400">Selamat datang di SIMONITA</strong> - Sistem Monitoring Opini dan Berita • Jam Layanan: 07.30 - 17.00 WIB • Wilayah Pengawasan: Pekanbaru, Siak, Kampar, Rokan Hulu, dan Pelalawan
+              </div>
             </div>
           </div>
         </div>
 
-        {/* CONTAINER UTAMA LOGIN */}
-        <main className="w-full flex-1 flex items-center justify-end px-8 sm:px-16 lg:px-24">
+        {/* KONTEN LOGIN TENGAH */}
+        <main className="w-full max-w-7xl mx-auto flex-1 flex items-center justify-center lg:justify-end px-6 sm:px-10 py-12">
           <div className="w-full max-w-md">
-            <div className="bg-white dark:bg-slate-900 p-8 sm:p-10 rounded-3xl shadow-2xl border border-slate-200/90 dark:border-slate-800">
+            <div className="bg-white dark:bg-slate-900 p-8 sm:p-10 rounded-3xl shadow-xl border border-slate-200/90 dark:border-slate-800">
               
               <div className="flex items-center justify-between mb-5">
                 <span className="text-[10px] font-bold px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 flex items-center space-x-1">
@@ -409,7 +411,7 @@ export default function App() {
         </main>
 
         {/* FOOTER */}
-        <footer className="w-full py-3 px-6 sm:px-12 text-center text-xs text-slate-400 border-t border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 shrink-0">
+        <footer className="w-full py-3.5 px-6 text-center text-xs text-slate-400 border-t border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-slate-900/60 shrink-0">
           SIMONITA • Sistem Monitoring Opini dan Berita • Seksi Penyuluhan dan Layanan Informasi
         </footer>
       </div>
@@ -417,36 +419,38 @@ export default function App() {
   }
 
   // =========================================================================
-  // 2. DASHBOARD UTAMA (TABEL RESPONSIF & TEKS LENGKAP TANPA TRUNCATE)
+  // 2. DASHBOARD UTAMA (TERPUSAT, RAPI, TIDAK TERPOTONG KE KANAN)
   // =========================================================================
   return (
-    <div className="w-screen min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 flex flex-col font-sans">
+    <div className="min-h-screen w-full bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 flex flex-col font-sans overflow-x-hidden">
       
       {/* HEADER DASHBOARD */}
-      <header className="sticky top-0 z-30 bg-[#0D2C5C] text-white px-6 sm:px-12 py-3.5 shadow-md flex items-center justify-between border-b border-amber-500/30">
-        <div className="flex items-center space-x-3.5">
-          <div className="h-10 w-10 rounded-xl bg-white/10 p-1 flex items-center justify-center border border-amber-400 shrink-0">
-            <img src="/simonita.png" alt="Logo" className="h-full w-full object-contain" />
+      <header className="sticky top-0 z-30 bg-[#0D2C5C] text-white px-6 sm:px-10 py-3 shadow-md border-b border-amber-500/30">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div className="flex items-center space-x-3.5">
+            <div className="h-10 w-10 rounded-xl bg-white/10 p-1 flex items-center justify-center border border-amber-400 shrink-0">
+              <img src="/simonita.png" alt="Logo" className="h-full w-full object-contain" />
+            </div>
+            <div>
+              <span className="font-extrabold text-lg tracking-wider block">SIMONITA</span>
+              <p className="text-[11px] text-slate-300">Seksi Penyuluhan dan Layanan Informasi</p>
+            </div>
           </div>
-          <div>
-            <span className="font-extrabold text-lg tracking-wider">SIMONITA</span>
-            <p className="text-xs text-slate-300">Seksi Penyuluhan dan Layanan Informasi</p>
+          <div className="flex items-center space-x-3 text-xs">
+            <span className="hidden md:inline-block px-3 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 font-mono">
+              {session?.user?.email || username || 'Pegawai PLI'}
+            </span>
+            <button onClick={handleLogout} className="px-4 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-semibold transition shadow-sm">
+              Keluar Portal
+            </button>
           </div>
-        </div>
-        <div className="flex items-center space-x-3 text-xs">
-          <span className="hidden md:inline-block px-3 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 font-mono">
-            {session?.user?.email || username || 'Pegawai PLI'}
-          </span>
-          <button onClick={handleLogout} className="px-4 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-semibold transition shadow-sm">
-            Keluar Portal
-          </button>
         </div>
       </header>
 
-      {/* BODY DASHBOARD */}
-      <div className="w-full flex-1 px-4 sm:px-8 lg:px-12 py-6 flex flex-col md:flex-row gap-6">
+      {/* BODY DASHBOARD (CENTERED DENGAN MAX-W-7XL) */}
+      <div className="w-full max-w-7xl mx-auto flex-1 px-4 sm:px-8 py-6 flex flex-col md:flex-row gap-6">
         
-        {/* SIDEBAR */}
+        {/* SIDEBAR NAV */}
         <aside className="w-full md:w-56 shrink-0 space-y-4">
           <div className="bg-white dark:bg-slate-900 p-3 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col gap-1.5 text-xs font-bold">
             <button
@@ -476,14 +480,14 @@ export default function App() {
             <div className="space-y-4">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                 <h2 className="text-lg font-extrabold text-[#0D2C5C] dark:text-amber-400">Daftar Artikel & Berita</h2>
-                <div className="flex gap-2">
-                  <button onClick={exportToCSV} className="px-3 py-1.5 text-xs font-bold rounded-xl border border-emerald-500 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 transition shadow-sm">
+                <div className="flex flex-wrap gap-2">
+                  <button onClick={exportToCSV} className="px-3.5 py-1.5 text-xs font-bold rounded-xl border border-emerald-500 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 transition shadow-sm">
                     📥 Ekspor CSV
                   </button>
-                  <button onClick={loadData} className="px-3 py-1.5 text-xs font-semibold rounded-xl border border-slate-300 bg-white hover:bg-slate-50 transition shadow-sm">
+                  <button onClick={loadData} className="px-3.5 py-1.5 text-xs font-semibold rounded-xl border border-slate-300 bg-white hover:bg-slate-50 transition shadow-sm">
                     🔄 Refresh
                   </button>
-                  <button onClick={handleOpenAddModal} className="px-3 py-1.5 text-xs font-bold rounded-xl bg-[#0D2C5C] text-white hover:bg-[#0A2247] transition shadow-sm">
+                  <button onClick={handleOpenAddModal} className="px-3.5 py-1.5 text-xs font-bold rounded-xl bg-[#0D2C5C] text-white hover:bg-[#0A2247] transition shadow-sm">
                     + Tambah Manual
                   </button>
                 </div>
@@ -496,52 +500,53 @@ export default function App() {
                   placeholder="Cari judul berita atau media..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="flex-1 px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-1 focus:ring-[#0D2C5C]"
+                  className="flex-1 px-3.5 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-1 focus:ring-[#0D2C5C]"
                 />
-                <select
-                  value={filterType}
-                  onChange={(e) => setFilterType(e.target.value)}
-                  className="px-2.5 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none"
-                >
-                  <option value="all">Semua Tipe</option>
-                  <option value="scraped">Pemindaian Otomatis</option>
-                  <option value="manual">Input Manual</option>
-                </select>
-                <select
-                  value={timeFilter}
-                  onChange={(e) => setTimeFilter(e.target.value)}
-                  className="px-2.5 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none"
-                >
-                  <option value="all">Semua Waktu</option>
-                  <option value="24h">24 Jam Terakhir</option>
-                  <option value="7d">7 Hari Terakhir</option>
-                  <option value="30d">Bulan Ini</option>
-                </select>
+                <div className="flex gap-2">
+                  <select
+                    value={filterType}
+                    onChange={(e) => setFilterType(e.target.value)}
+                    className="px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none"
+                  >
+                    <option value="all">Semua Tipe</option>
+                    <option value="scraped">Pemindaian Otomatis</option>
+                    <option value="manual">Input Manual</option>
+                  </select>
+                  <select
+                    value={timeFilter}
+                    onChange={(e) => setTimeFilter(e.target.value)}
+                    className="px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none"
+                  >
+                    <option value="all">Semua Waktu</option>
+                    <option value="24h">24 Jam Terakhir</option>
+                    <option value="7d">7 Hari Terakhir</option>
+                    <option value="30d">Bulan Ini</option>
+                  </select>
+                </div>
               </div>
 
-              {/* TABEL RESPONSIVE (FONT UKURAN PROPORSIONAL & TEKS LENGKAP TANPA SCROLL SAMPING) */}
+              {/* TABEL RESPONSIVE */}
               <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
-                <div className="w-full">
-                  <table className="w-full table-fixed border-collapse text-left">
+                <div className="w-full overflow-x-auto">
+                  <table className="w-full text-left border-collapse text-[11px]">
                     <thead>
-                      <tr className="bg-slate-50 dark:bg-slate-800/70 border-b border-slate-200 dark:border-slate-800 text-[11px] text-slate-500 uppercase font-bold tracking-wider">
-                        <th className="w-auto py-2.5 px-3">Judul Berita & Cuplikan</th>
-                        <th className="w-36 py-2.5 px-3">Media Sumber</th>
-                        <th className="w-24 py-2.5 px-3">Waktu</th>
-                        <th className="w-20 py-2.5 px-2 text-center">Sentimen</th>
-                        <th className="w-20 py-2.5 px-2 text-center">Aksi</th>
+                      <tr className="bg-slate-50 dark:bg-slate-800/70 border-b border-slate-200 dark:border-slate-800 text-slate-500 uppercase font-bold tracking-wider">
+                        <th className="py-3 px-4 min-w-[280px]">Judul Berita & Cuplikan</th>
+                        <th className="py-3 px-3 w-36">Media Sumber</th>
+                        <th className="py-3 px-3 w-24">Waktu</th>
+                        <th className="py-3 px-3 w-20 text-center">Sentimen</th>
+                        <th className="py-3 px-3 w-20 text-center">Aksi</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100 dark:divide-slate-800/80 text-[11px]">
+                    <tbody className="divide-y divide-slate-100 dark:divide-slate-800/80">
                       {loading ? (
-                        <tr><td colSpan="5" className="py-10 text-center text-slate-400">Memuat artikel...</td></tr>
+                        <tr><td colSpan="5" className="py-12 text-center text-slate-400">Memuat artikel...</td></tr>
                       ) : paginatedArticles.length === 0 ? (
-                        <tr><td colSpan="5" className="py-10 text-center text-slate-400">Tidak ada artikel yang sesuai kriteria.</td></tr>
+                        <tr><td colSpan="5" className="py-12 text-center text-slate-400">Tidak ada artikel yang sesuai kriteria.</td></tr>
                       ) : (
                         paginatedArticles.map((article) => (
                           <tr key={article.id || article.url} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition">
-                            {/* Judul Berita ditulis lengkap tanpa pembatasan baris */}
-                            <td className="py-2.5 px-3 align-top break-words">
+                            <td className="py-3 px-4 align-top">
                               <div className="font-semibold text-slate-900 dark:text-slate-100 leading-snug">
                                 {article.title}
                               </div>
@@ -552,8 +557,7 @@ export default function App() {
                               )}
                             </td>
 
-                            {/* Media Sumber */}
-                            <td className="py-2.5 px-3 align-top break-words">
+                            <td className="py-3 px-3 align-top whitespace-nowrap">
                               <span className="font-semibold text-slate-700 dark:text-slate-200 block">
                                 {article.source_name}
                               </span>
@@ -562,8 +566,7 @@ export default function App() {
                               </span>
                             </td>
 
-                            {/* Tanggal */}
-                            <td className="py-2.5 px-3 align-top text-slate-500 dark:text-slate-400 whitespace-nowrap text-[10px]">
+                            <td className="py-3 px-3 align-top text-slate-500 dark:text-slate-400 whitespace-nowrap text-[10px]">
                               {article.published_at ? new Date(article.published_at).toLocaleDateString('id-ID', {
                                 day: 'numeric',
                                 month: 'short',
@@ -571,9 +574,8 @@ export default function App() {
                               }) : '-'}
                             </td>
 
-                            {/* Sentimen */}
-                            <td className="py-2.5 px-2 align-top text-center whitespace-nowrap">
-                              <span className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                            <td className="py-3 px-3 align-top text-center whitespace-nowrap">
+                              <span className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
                                 article.sentiment === 'positive' 
                                   ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300' 
                                   : article.sentiment === 'negative' 
@@ -584,9 +586,8 @@ export default function App() {
                               </span>
                             </td>
 
-                            {/* Aksi */}
-                            <td className="py-2.5 px-2 align-top text-center whitespace-nowrap">
-                              <div className="flex items-center justify-center space-x-1.5">
+                            <td className="py-3 px-3 align-top text-center whitespace-nowrap">
+                              <div className="flex items-center justify-center space-x-2">
                                 <a 
                                   href={article.url} 
                                   target="_blank" 
@@ -620,7 +621,7 @@ export default function App() {
                 </div>
 
                 {/* PAGINASI */}
-                <div className="p-3 bg-slate-50 dark:bg-slate-800/40 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center text-[11px]">
+                <div className="p-3 bg-slate-50 dark:bg-slate-800/40 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-2 text-[11px]">
                   <span className="text-slate-500">
                     Menampilkan {totalEntries ? startIndex + 1 : 0} - {Math.min(startIndex + rowsPerPage, totalEntries)} dari {totalEntries} artikel
                   </span>
