@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from './lib/supabase';
 import { getArticles, addManualArticle, updateArticle, deleteArticle, subscribeToArticles } from './services/articles';
 
@@ -17,6 +17,10 @@ export default function App() {
   // Banner Notification State
   const [showNotifyBanner, setShowNotifyBanner] = useState(true);
 
+  // User Dropdown State (Kanan Atas)
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const userMenuRef = useRef(null);
+
   // Clock state
   const [currentTime, setCurrentTime] = useState('');
 
@@ -25,6 +29,7 @@ export default function App() {
   const [articles, setArticles] = useState([]);
   const [search, setSearch] = useState('');
   const [filterType, setFilterType] = useState('all');
+  const [filterSentiment, setFilterSentiment] = useState('all'); // Filter Sentimen: all | positive | neutral | negative
   const [timeFilter, setTimeFilter] = useState('all');
   const [loading, setLoading] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -50,6 +55,17 @@ export default function App() {
     updateTime();
     const timer = setInterval(updateTime, 1000);
     return () => clearInterval(timer);
+  }, []);
+
+  // Tutup dropdown menu saat klik di luar area
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+        setIsUserMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   useEffect(() => {
@@ -144,19 +160,32 @@ export default function App() {
       await supabase.auth.signOut();
     } catch (e) {}
     setSession(null);
+    setIsUserMenuOpen(false);
     setUsername('');
     setPassword('');
   };
 
+  // Filter & Pencarian (Termasuk Pencarian Berdasarkan Sentimen)
   const filteredArticles = (articles || []).filter((item) => {
     if (!item) return false;
     const title = (item.title || '').toLowerCase();
     const source = (item.source_name || '').toLowerCase();
-    const q = search.toLowerCase();
+    const sentiment = (item.sentiment || 'neutral').toLowerCase();
+    
+    // Label sentimen dalam bahasa Indonesia untuk pencarian
+    const sentimentLabel = sentiment === 'positive' ? 'positif' : sentiment === 'negative' ? 'negatif kritis' : 'netral';
+    const q = search.trim().toLowerCase();
 
-    const matchesSearch = title.includes(q) || source.includes(q);
+    // 1. Pencarian teks: judul, sumber, cuplikan, atau kata kunci sentimen
+    const matchesSearch = !q || title.includes(q) || source.includes(q) || sentiment.includes(q) || sentimentLabel.includes(q);
+
+    // 2. Filter tipe artikel (all, scraped, manual)
     const matchesType = filterType === 'all' ? true : item.entry_type === filterType;
 
+    // 3. Filter dropdown sentimen (all, positive, neutral, negative)
+    const matchesSentiment = filterSentiment === 'all' ? true : item.sentiment === filterSentiment;
+
+    // 4. Filter rentang waktu
     let matchesTime = true;
     if (timeFilter !== 'all' && item.published_at) {
       try {
@@ -170,7 +199,7 @@ export default function App() {
       }
     }
 
-    return matchesSearch && matchesType && matchesTime;
+    return matchesSearch && matchesType && matchesSentiment && matchesTime;
   });
 
   const totalEntries = filteredArticles.length;
@@ -442,12 +471,12 @@ export default function App() {
   }
 
   // =========================================================================
-  // 2. DASHBOARD UTAMA (100% EDGE-TO-EDGE FULL WIDTH)
+  // 2. DASHBOARD UTAMA
   // =========================================================================
   return (
     <div className="min-h-screen w-full bg-[#EDF3F9] dark:bg-slate-950 text-slate-800 dark:text-slate-100 flex flex-col font-sans">
       
-      {/* KONTEN UTAMA DENGAN LEBAR PENUH 100% */}
+      {/* KONTEN UTAMA */}
       <div className="w-full flex-1 p-3 sm:p-5 flex flex-col lg:flex-row gap-5">
         
         {/* ==================== SIDEBAR KIRI ==================== */}
@@ -520,7 +549,7 @@ export default function App() {
             </button>
           </div>
 
-          {/* Profil Petugas & Tombol Keluar */}
+          {/* Profil Petugas di Sidebar Kiri Bawah */}
           <div className="bg-white dark:bg-slate-900 rounded-2xl p-3 shadow-sm border border-slate-200/80 dark:border-slate-800 mt-auto space-y-2.5">
             <div className="flex items-center space-x-2.5">
               <div className="h-9 w-9 rounded-full bg-gradient-to-tr from-amber-500 to-[#0D2240] text-white flex items-center justify-center font-black text-xs shadow">
@@ -528,7 +557,7 @@ export default function App() {
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-xs font-black text-slate-800 dark:text-slate-100 truncate">
-                  Petugas Humas PLI
+                  Admin PLI
                 </p>
                 <p className="text-[10px] text-slate-400 font-medium truncate">
                   KPPBC TMP B Pekanbaru
@@ -541,12 +570,12 @@ export default function App() {
               className="w-full py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 dark:bg-rose-950/40 dark:text-rose-400 text-xs font-bold border border-rose-200 dark:border-rose-800/40 transition flex items-center justify-center space-x-1.5"
             >
               <span>↪</span>
-              <span>KELUAR</span>
+              <span>Keluar Portal</span>
             </button>
           </div>
         </aside>
 
-        {/* ==================== AREA KONTEN KANAN (100% FULL WIDTH) ==================== */}
+        {/* ==================== AREA KONTEN KANAN ==================== */}
         <main className="flex-1 min-w-0 space-y-4">
           
           {/* Top Bar 1: Alert Pemberitahuan */}
@@ -586,7 +615,7 @@ export default function App() {
             </div>
           )}
 
-          {/* Top Bar 2: Status Bar Lengkap */}
+          {/* Top Bar 2: Status Bar Lengkap & Dropdown Akun "Admin PLI" */}
           <div className="w-full bg-white dark:bg-slate-900 rounded-2xl p-2.5 px-4 shadow-sm border border-slate-200/80 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs">
             <div className="flex items-center space-x-2.5">
               <span className="font-black text-[11px] text-slate-400 tracking-wider uppercase">
@@ -610,13 +639,38 @@ export default function App() {
               >
                 {isDarkMode ? '🌙' : '☀️'}
               </button>
-              <div className="flex items-center space-x-2 pl-2 border-l border-slate-200 dark:border-slate-700">
-                <div className="h-6 w-6 rounded-full bg-[#0D2240] text-amber-400 flex items-center justify-center font-bold text-[10px]">
-                  PLI
-                </div>
-                <span className="text-[11px] font-bold text-slate-700 dark:text-slate-200 hidden md:inline">
-                  Admin PLI
-                </span>
+              
+              {/* DROPDOWN MENU KETIKA KLIK LOGO ADMIN PLI */}
+              <div className="relative" ref={userMenuRef}>
+                <button
+                  type="button"
+                  onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                  className="flex items-center space-x-2 pl-2 border-l border-slate-200 dark:border-slate-700 hover:opacity-85 transition focus:outline-none"
+                >
+                  <div className="h-7 w-7 rounded-full bg-[#0D2240] text-amber-400 flex items-center justify-center font-bold text-[10px] shadow-xs">
+                    PLI
+                  </div>
+                  <span className="text-[11px] font-bold text-slate-700 dark:text-slate-200 hidden md:inline">
+                    Admin PLI ▾
+                  </span>
+                </button>
+
+                {/* Popover Dropdown Keluar */}
+                {isUserMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 py-2 z-50 animate-in fade-in zoom-in-95 duration-100">
+                    <div className="px-3.5 py-2 border-b border-slate-100 dark:border-slate-800">
+                      <p className="text-xs font-bold text-slate-800 dark:text-slate-100">Admin PLI</p>
+                      <p className="text-[10px] text-slate-400 truncate">{session?.user?.email || 'plibcpekanbaru@customs.go.id'}</p>
+                    </div>
+                    <button
+                      onClick={handleLogout}
+                      className="w-full text-left px-3.5 py-2.5 text-xs text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 font-bold flex items-center space-x-2 transition"
+                    >
+                      <span>↪</span>
+                      <span>Keluar Portal</span>
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -637,7 +691,7 @@ export default function App() {
                 </h1>
 
                 <p className="text-[11px] sm:text-xs text-sky-100/80 leading-relaxed">
-                  Pusat kendali pemantauan media daring, analisis sentimen publik, kliping berita lokal/nasional, dan verifikasi Dewan Pers Seksi PLI Bea Cukai Pekanbaru.
+                  Pusat kendali pemantauan media daring dan analisis sentimen publik Seksi PLI Bea Cukai Pekanbaru.
                 </p>
               </div>
 
@@ -689,16 +743,28 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Filter & Bar Pencarian */}
+              {/* Filter & Bar Pencarian (Bisa Cari Berdasarkan Sentimen & Dropdown Sentimen) */}
               <div className="bg-[#F8FAFC] dark:bg-slate-800/50 p-2.5 rounded-xl border border-slate-200/80 dark:border-slate-700/80 flex flex-col sm:flex-row gap-2 text-xs">
                 <input
                   type="text"
-                  placeholder="Cari judul berita atau nama media..."
+                  placeholder="Cari judul, media, atau sentimen (Positif / Netral / Negatif)..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   className="flex-1 px-3 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:outline-none focus:ring-1 focus:ring-[#0A58CA]"
                 />
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2">
+                  {/* Filter Sentimen Baru */}
+                  <select
+                    value={filterSentiment}
+                    onChange={(e) => setFilterSentiment(e.target.value)}
+                    className="px-2.5 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 font-semibold focus:outline-none"
+                  >
+                    <option value="all">Semua Sentimen</option>
+                    <option value="positive">🟢 Positif</option>
+                    <option value="neutral">⚪ Netral</option>
+                    <option value="negative">🔴 Negatif</option>
+                  </select>
+
                   <select
                     value={filterType}
                     onChange={(e) => setFilterType(e.target.value)}
@@ -708,6 +774,7 @@ export default function App() {
                     <option value="scraped">Pemindaian Otomatis</option>
                     <option value="manual">Input Manual</option>
                   </select>
+
                   <select
                     value={timeFilter}
                     onChange={(e) => setTimeFilter(e.target.value)}
@@ -742,10 +809,18 @@ export default function App() {
                       ) : (
                         paginatedArticles.map((article) => (
                           <tr key={article.id || article.url} className="hover:bg-sky-50/50 dark:hover:bg-slate-800/40 transition">
+                            
+                            {/* JUDUL BERITA DAPAT DIKLIK & MEMBUKA TAUTAN ARTIKEL ASLI */}
                             <td className="py-2.5 px-3 align-top">
-                              <div className="font-bold text-slate-900 dark:text-slate-100 leading-snug">
+                              <a
+                                href={article.url}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="font-bold text-slate-900 dark:text-slate-100 hover:text-[#0A58CA] dark:hover:text-sky-400 hover:underline leading-snug block transition cursor-pointer"
+                                title="Klik untuk membuka tautan berita asli ↗"
+                              >
                                 {article.title}
-                              </div>
+                              </a>
                               {article.snippet && (
                                 <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5 leading-normal">
                                   {article.snippet}
@@ -778,7 +853,7 @@ export default function App() {
                                   ? 'bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300' 
                                   : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300'
                               }`}>
-                                {article.sentiment === 'positive' ? 'Positif' : article.sentiment === 'negative' ? 'Kritis' : 'Netral'}
+                                {article.sentiment === 'positive' ? 'Positif' : article.sentiment === 'negative' ? 'Negatif' : 'Netral'}
                               </span>
                             </td>
 
@@ -863,7 +938,7 @@ export default function App() {
                   <div className="text-xl font-black text-slate-700 dark:text-slate-300 mt-1">{articles.filter(a => a.sentiment === 'neutral' || !a.sentiment).length}</div>
                 </div>
                 <div className="bg-rose-50/50 dark:bg-rose-950/20 p-3.5 rounded-xl border border-rose-200/80 shadow-xs">
-                  <span className="text-[11px] text-rose-700 font-bold uppercase">Kritis</span>
+                  <span className="text-[11px] text-rose-700 font-bold uppercase">Negatif</span>
                   <div className="text-xl font-black text-rose-600 mt-1">{articles.filter(a => a.sentiment === 'negative').length}</div>
                 </div>
               </div>
@@ -932,7 +1007,7 @@ export default function App() {
               >
                 <option value="positive">Positif (Apresiasi / Kinerja)</option>
                 <option value="neutral">Netral (Informasi Umum)</option>
-                <option value="negative">Kritis (Perlu Tindak Lanjut)</option>
+                <option value="negative">Negatif (Perlu Tindak Lanjut)</option>
               </select>
               <textarea
                 placeholder="Ringkasan isi berita / catatan analis..."
