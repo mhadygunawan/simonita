@@ -1,0 +1,29 @@
+name: Hourly Google News Scraper
+
+on:
+  schedule:
+    # Berjalan otomatis setiap pergantian jam (menit ke-0 UTC)
+    - cron: '0 * * * *'
+  workflow_dispatch: # Mengizinkan trigger manual lewat GitHub UI
+
+jobs:
+  scrape-and-sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm ci || npm install
+
+      - name: Run Scraper Script
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node scripts/scrape.js
