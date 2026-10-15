@@ -1,17 +1,12 @@
-import { supabase } from '../supabaseClient';
+import { supabase } from '../lib/supabase';
 
-export async function getArticles({ searchQuery = '', limit = 50 } = {}) {
-  let query = supabase
+// Ambil semua artikel
+export async function getArticles() {
+  const { data, error } = await supabase
     .from('articles')
     .select('*')
-    .order('published_at', { ascending: false })
-    .limit(limit);
+    .order('published_at', { ascending: false });
 
-  if (searchQuery.trim()) {
-    query = query.or(`title.ilike.%${searchQuery}%,source_name.ilike.%${searchQuery}%,snippet.ilike.%${searchQuery}%`);
-  }
-
-  const { data, error } = await query;
   if (error) {
     console.error('Error fetching articles:', error.message);
     throw error;
@@ -19,45 +14,41 @@ export async function getArticles({ searchQuery = '', limit = 50 } = {}) {
   return data;
 }
 
-export async function addManualArticle({ title, source_name, url, snippet = '', sentiment = 'neutral' }) {
-  const { data: { user } } = await supabase.auth.getUser();
+// Tambah artikel manual
+export async function addManualArticle(article) {
+  const payload = {
+    title: article.title,
+    source_name: article.source_name,
+    url: article.url,
+    snippet: article.snippet || '',
+    published_at: new Date().toISOString(),
+    entry_type: 'manual',
+    sentiment: article.sentiment || 'neutral'
+  };
 
   const { data, error } = await supabase
     .from('articles')
-    .insert([
-      {
-        title,
-        source_name: source_name || 'Manual Entry',
-        url,
-        snippet,
-        sentiment,
-        entry_type: 'manual',
-        created_by: user ? user.id : null,
-        published_at: new Date().toISOString()
-      }
-    ])
-    .select();
+    .insert([payload])
+    .select()
+    .single();
 
   if (error) {
-    console.error('Error adding manual article:', error.message);
+    console.error('Error inserting article:', error.message);
     throw error;
   }
-  return data[0];
+  return data;
 }
 
-export function subscribeToArticles(onNewArticle) {
-  const channel = supabase
-    .channel('articles-feed')
+// Langganan pembaruan realtime
+export function subscribeToArticles(callback) {
+  return supabase
+    .channel('public:articles')
     .on(
       'postgres_changes',
       { event: 'INSERT', schema: 'public', table: 'articles' },
       (payload) => {
-        onNewArticle(payload.new);
+        callback(payload.new);
       }
     )
     .subscribe();
-
-  return () => {
-    supabase.removeChannel(channel);
-  };
 }
