@@ -82,3 +82,15 @@ export function subscribeToArticles(callback) {
     )
     .subscribe();
 }
+
+// Memicu sinkronisasi scraping Google Web & portal berita lokal
+export async function triggerWebScraper() {
+  try {
+    const { data, error } = await supabase.functions.invoke('scrape-web');
+    if (error) throw error;
+    return data;
+  } catch (err) {
+    console.warn('Gagal memicu scraper web:', err.message);
+    return null;
+  }
+}
