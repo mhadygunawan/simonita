@@ -317,14 +317,14 @@ export default function App() {
 
   if (!authChecked) {
     return (
-      <div className="min-h-screen w-full bg-[#0D2240] flex items-center justify-center text-white">
-        <div className="w-10 h-10 border-4 border-sky-400 border-t-transparent rounded-full animate-spin"></div>
+      <div className="min-h-screen w-full bg-[#0A1F3F] flex items-center justify-center text-white">
+        <div className="w-10 h-10 border-4 border-amber-400 border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
 
   // =========================================================================
-  // 1. HALAMAN LOGIN (DENGAN WALLPAPER KAPAL LANCANG KUNING RIAU)
+  // 1. HALAMAN LOGIN (LANCANG KUNING + BALANCED NAVY & GOLD)
   // =========================================================================
   if (!session) {
     return (
@@ -332,19 +332,19 @@ export default function App() {
         className="min-h-screen w-full flex flex-col justify-between font-sans bg-cover bg-center bg-no-repeat relative"
         style={{ backgroundImage: `url('/login-bg.jpg')` }}
       >
-        {/* Lapisan halus untuk kontras teks navbar */}
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-white/60 dark:to-slate-950/80 pointer-events-none"></div>
+        {/* Lapisan halus untuk kontras teks */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#0A1F3F]/15 to-[#0A1F3F]/60 dark:to-slate-950/85 pointer-events-none"></div>
 
         {/* TOPBAR */}
-        <header className="relative z-10 w-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 px-6 py-3.5 shadow-sm">
+        <header className="relative z-10 w-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-amber-400/30 px-6 py-3.5 shadow-sm">
           <div className="w-full flex items-center justify-between">
             <div className="flex items-center space-x-3.5">
-              <div className="h-10 w-10 rounded-2xl bg-gradient-to-br from-[#0D2240] to-[#163868] p-1.5 flex items-center justify-center border border-sky-300 shadow-md shrink-0">
+              <div className="h-10 w-10 rounded-2xl bg-gradient-to-br from-[#0D2C5C] to-[#0A1F3F] p-1.5 flex items-center justify-center border border-amber-400 shadow-md shrink-0">
                 <img src="/simonita.png" alt="Logo SIMONITA" className="h-full w-full object-contain" />
               </div>
               <div className="flex flex-wrap items-center gap-2">
-                <span className="font-black text-xl text-[#0D2240] dark:text-sky-400 tracking-wider">SIMONITA</span>
-                <span className="text-[11px] font-bold px-3 py-1 rounded-full bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 shadow-xs">
+                <span className="font-black text-xl text-[#0D2C5C] dark:text-amber-400 tracking-wider">SIMONITA</span>
+                <span className="text-[11px] font-bold px-3 py-1 rounded-full bg-amber-50 dark:bg-slate-800 text-amber-900 dark:text-amber-300 border border-amber-400/40 shadow-xs">
                   Seksi Penyuluhan dan Layanan Informasi
                 </span>
                 <span className="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-300 flex items-center space-x-1.5">
@@ -355,16 +355,16 @@ export default function App() {
             </div>
 
             <div className="flex items-center space-x-3">
-              <div className="flex items-center rounded-xl bg-white dark:bg-slate-800 p-0.5 border border-slate-200 dark:border-slate-700 text-xs font-semibold shadow-xs">
+              <div className="flex items-center rounded-xl bg-slate-100 dark:bg-slate-800 p-0.5 border border-amber-400/30 text-xs font-semibold shadow-xs">
                 <button
                   onClick={() => setIsDarkMode(false)}
-                  className={`px-3 py-1.5 rounded-lg transition ${!isDarkMode ? 'bg-[#0D2240] text-white shadow-xs font-bold' : 'text-slate-500'}`}
+                  className={`px-3 py-1.5 rounded-lg transition ${!isDarkMode ? 'bg-[#0D2C5C] text-amber-300 shadow-xs font-bold' : 'text-slate-500'}`}
                 >
                   ☀️ Terang
                 </button>
                 <button
                   onClick={() => setIsDarkMode(true)}
-                  className={`px-3 py-1.5 rounded-lg transition ${isDarkMode ? 'bg-[#0D2240] text-white shadow-xs font-bold' : 'text-slate-500'}`}
+                  className={`px-3 py-1.5 rounded-lg transition ${isDarkMode ? 'bg-[#0D2C5C] text-amber-300 shadow-xs font-bold' : 'text-slate-500'}`}
                 >
                   🌙 Gelap
                 </button>
@@ -374,43 +374,43 @@ export default function App() {
         </header>
 
         {/* RUNNING TICKER */}
-        <div className="relative z-10 w-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-b border-slate-200/80 dark:border-slate-800 py-2.5 px-6">
+        <div className="relative z-10 w-full bg-[#0D2C5C]/90 text-white backdrop-blur-sm border-b border-amber-400/40 py-2.5 px-6">
           <div className="w-full flex items-center gap-4 overflow-hidden text-xs">
             <div className="flex items-center space-x-2 shrink-0">
-              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-              <span className="font-bold px-2.5 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 text-[11px]">
+              <span className="w-2 h-2 rounded-full bg-amber-400"></span>
+              <span className="font-bold px-2.5 py-0.5 rounded-md bg-amber-400/20 text-amber-300 border border-amber-400/50 text-[11px]">
                 🕒 Senin – Jumat, 07.30 – 17.00 WIB
               </span>
             </div>
             <div className="flex-1 overflow-hidden relative">
-              <div className="animate-marquee font-medium text-slate-700 dark:text-slate-300 whitespace-nowrap">
-                ✨ <strong className="text-[#0D2240] dark:text-sky-400">Selamat datang di SIMONITA</strong> - Sistem Monitoring Opini dan Berita • Wilayah Pengawasan: Pekanbaru, Siak, Kampar, Rokan Hulu, dan Pelalawan
+              <div className="animate-marquee font-medium text-slate-100 whitespace-nowrap">
+                ✨ <strong className="text-amber-300">Selamat datang di SIMONITA</strong> - Sistem Monitoring Opini dan Berita • Wilayah Pengawasan: Pekanbaru, Siak, Kampar, Rokan Hulu, dan Pelalawan
               </div>
             </div>
           </div>
         </div>
 
-        {/* FORM LOGIN KANAN (FLOATING CARD) */}
+        {/* FORM LOGIN KANAN (NAVY CARD DENGAN AKSEN GOLDEN YELLOW) */}
         <main className="relative z-10 w-full flex-1 flex items-center justify-center lg:justify-end px-6 sm:px-16 py-10">
           <div className="w-full max-w-md">
-            <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl p-8 sm:p-10 rounded-3xl shadow-2xl border border-white/80 dark:border-slate-800">
+            <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl p-8 sm:p-10 rounded-3xl shadow-2xl border-2 border-amber-400/50">
               
               <div className="flex items-center justify-between mb-5">
-                <span className="text-[10px] font-bold px-3 py-1 rounded-full bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 flex items-center space-x-1">
+                <span className="text-[10px] font-bold px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-[#0D2C5C] dark:text-amber-300 border border-amber-400/40 flex items-center space-x-1">
                   <span>🛡️</span>
                   <span>Seksi Penyuluhan dan Layanan Informasi</span>
                 </span>
-                <span className="text-[10px] font-bold px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-300 flex items-center space-x-1">
+                <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-300 flex items-center space-x-1">
                   <span>🛡️</span>
                   <span>Terverifikasi</span>
                 </span>
               </div>
 
-              <h1 className="text-2xl font-black text-[#0D2240] dark:text-white tracking-tight mb-1">
+              <h1 className="text-2xl font-black text-[#0D2C5C] dark:text-amber-400 tracking-tight mb-1">
                 Masuk ke Akun
               </h1>
               <p className="text-xs text-slate-500 dark:text-slate-400 mb-6 font-medium">
-                Portal autentikasi
+                Portal autentikasi resmi pegawai
               </p>
 
               {authError && (
@@ -425,7 +425,7 @@ export default function App() {
                     Nama Pengguna (NIP / ID Kedinasan)
                   </label>
                   <div className="relative">
-                    <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                    <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-amber-500">
                       👤
                     </span>
                     <input
@@ -434,7 +434,7 @@ export default function App() {
                       placeholder="ID Pegawai / NIP"
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
-                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#0D2240] font-medium"
+                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#0D2C5C] dark:focus:ring-amber-400 font-medium"
                     />
                   </div>
                 </div>
@@ -444,12 +444,12 @@ export default function App() {
                     <label className="font-bold text-slate-700 dark:text-slate-300">
                       Kata Sandi
                     </label>
-                    <a href="#help" onClick={(e) => { e.preventDefault(); alert('Hubungi Helpdesk Seksi PLI.'); }} className="text-[11px] font-semibold text-[#0A58CA] dark:text-sky-400 hover:underline">
+                    <a href="#help" onClick={(e) => { e.preventDefault(); alert('Hubungi Helpdesk Seksi PLI.'); }} className="text-[11px] font-semibold text-[#0D2C5C] dark:text-amber-400 hover:underline">
                       Lupa kata sandi?
                     </a>
                   </div>
                   <div className="relative">
-                    <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                    <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-amber-500">
                       🔒
                     </span>
                     <input
@@ -458,7 +458,7 @@ export default function App() {
                       placeholder="••••••••"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="w-full pl-10 pr-10 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#0D2240] font-medium"
+                      className="w-full pl-10 pr-10 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#0D2C5C] dark:focus:ring-amber-400 font-medium"
                     />
                     <button
                       type="button"
@@ -473,7 +473,7 @@ export default function App() {
                 <button
                   type="submit"
                   disabled={authLoading}
-                  className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#0D2240] to-[#153460] hover:from-[#08172c] hover:to-[#0D2240] text-white font-black text-sm shadow-lg transition disabled:opacity-50 mt-2 flex items-center justify-center space-x-2"
+                  className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#0D2C5C] via-[#0A2247] to-[#0D2C5C] hover:brightness-110 text-amber-300 font-black text-sm shadow-lg border border-amber-400/40 transition disabled:opacity-50 mt-2 flex items-center justify-center space-x-2"
                 >
                   <span>{authLoading ? 'Memeriksa Akses...' : 'Masuk ke SIMONITA'}</span>
                   <span>→</span>
@@ -491,7 +491,7 @@ export default function App() {
           </div>
         </main>
 
-        <footer className="relative z-10 w-full py-3.5 px-6 text-center text-xs text-slate-500 border-t border-slate-200/80 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 backdrop-blur-sm shrink-0">
+        <footer className="relative z-10 w-full py-3 px-6 text-center text-xs text-slate-600 dark:text-slate-400 border-t border-white/40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm shrink-0 font-medium">
           SIMONITA • Sistem Monitoring Opini dan Berita • Seksi Penyuluhan dan Layanan Informasi
         </footer>
       </div>
@@ -499,10 +499,10 @@ export default function App() {
   }
 
   // =========================================================================
-  // 2. DASHBOARD UTAMA (SETELAH LOGIN)
+  // 2. DASHBOARD UTAMA (NAVY BLUE DENGAN AKSEN GOLDEN YELLOW PROPORSI)
   // =========================================================================
   return (
-    <div className="min-h-screen w-full bg-[#FAF7F2] dark:bg-slate-950 text-slate-800 dark:text-slate-100 flex flex-col font-sans">
+    <div className="min-h-screen w-full bg-[#F4F7FB] dark:bg-slate-950 text-slate-800 dark:text-slate-100 flex flex-col font-sans">
       
       {/* KONTEN UTAMA */}
       <div className="w-full flex-1 p-3 sm:p-5 flex flex-col lg:flex-row gap-5">
@@ -510,23 +510,23 @@ export default function App() {
         {/* ==================== SIDEBAR KIRI ==================== */}
         <aside className="w-full lg:w-64 shrink-0 flex flex-col gap-3.5">
           
-          {/* Logo SIMONITA */}
-          <div className="bg-white dark:bg-slate-900 rounded-2xl p-3.5 shadow-xs border border-amber-200/70 dark:border-slate-800 flex items-center justify-between">
+          {/* Logo SIMONITA Island */}
+          <div className="bg-white dark:bg-slate-900 rounded-2xl p-3.5 shadow-sm border border-slate-200/80 dark:border-slate-800 flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 p-1 flex items-center justify-center border border-amber-300 shadow shrink-0">
+              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-[#0D2C5C] to-[#0A1F3F] p-1 flex items-center justify-center border border-amber-400 shadow shrink-0">
                 <img src="/simonita.png" alt="Logo" className="h-full w-full object-contain" />
               </div>
               <div>
-                <span className="font-black text-base text-amber-900 dark:text-amber-400 tracking-wider block">SIMONITA</span>
+                <span className="font-black text-base text-[#0D2C5C] dark:text-amber-400 tracking-wider block">SIMONITA</span>
                 <span className="text-[10px] text-slate-400 font-semibold block leading-tight">Monitoring & Opini</span>
               </div>
             </div>
           </div>
 
           {/* Navigasi Menu Sidebar */}
-          <div className="bg-white dark:bg-slate-900 rounded-2xl p-3 shadow-xs border border-amber-200/70 dark:border-slate-800 flex flex-col gap-1.5">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl p-3 shadow-sm border border-slate-200/80 dark:border-slate-800 flex flex-col gap-1.5">
             <div className="flex items-center justify-between px-2 py-1 text-slate-400 text-[11px] font-bold uppercase tracking-wider">
-              <span className="flex items-center gap-1.5 text-orange-500">
+              <span className="flex items-center gap-1.5 text-amber-500">
                 ⚡ Menu Portal
               </span>
             </div>
@@ -535,7 +535,7 @@ export default function App() {
               onClick={() => setActiveTab('articles')}
               className={`w-full text-left px-3.5 py-2.5 rounded-xl transition flex items-center justify-between text-xs font-bold ${
                 activeTab === 'articles'
-                  ? 'bg-gradient-to-r from-amber-50 to-orange-50 text-orange-700 border-l-4 border-orange-500 shadow-xs'
+                  ? 'bg-gradient-to-r from-[#0D2C5C] to-[#123975] text-amber-300 shadow-sm border-l-4 border-amber-400'
                   : 'hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300'
               }`}
             >
@@ -543,7 +543,7 @@ export default function App() {
                 <span>📰</span>
                 <span>Artikel & Berita</span>
               </span>
-              <span className={`text-[10px] px-2 py-0.5 rounded-full font-extrabold ${activeTab === 'articles' ? 'bg-orange-500 text-white' : 'bg-slate-100 text-slate-600'}`}>
+              <span className={`text-[10px] px-2 py-0.5 rounded-full font-extrabold ${activeTab === 'articles' ? 'bg-amber-400 text-[#0D2C5C]' : 'bg-slate-100 text-slate-600'}`}>
                 {totalEntries}
               </span>
             </button>
@@ -552,7 +552,7 @@ export default function App() {
               onClick={() => setActiveTab('stats')}
               className={`w-full text-left px-3.5 py-2.5 rounded-xl transition flex items-center justify-between text-xs font-bold ${
                 activeTab === 'stats'
-                  ? 'bg-gradient-to-r from-amber-50 to-orange-50 text-orange-700 border-l-4 border-orange-500 shadow-xs'
+                  ? 'bg-gradient-to-r from-[#0D2C5C] to-[#123975] text-amber-300 shadow-sm border-l-4 border-amber-400'
                   : 'hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300'
               }`}
             >
@@ -566,7 +566,7 @@ export default function App() {
               onClick={() => setActiveTab('press')}
               className={`w-full text-left px-3.5 py-2.5 rounded-xl transition flex items-center justify-between text-xs font-bold ${
                 activeTab === 'press'
-                  ? 'bg-gradient-to-r from-amber-50 to-orange-50 text-orange-700 border-l-4 border-orange-500 shadow-xs'
+                  ? 'bg-gradient-to-r from-[#0D2C5C] to-[#123975] text-amber-300 shadow-sm border-l-4 border-amber-400'
                   : 'hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300'
               }`}
             >
@@ -578,13 +578,13 @@ export default function App() {
           </div>
 
           {/* Profil Petugas Ringkas di Sidebar Kiri */}
-          <div className="bg-white dark:bg-slate-900 rounded-2xl p-3 shadow-xs border border-amber-200/70 dark:border-slate-800 mt-auto">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl p-3 shadow-sm border border-slate-200/80 dark:border-slate-800 mt-auto">
             <div className="flex items-center space-x-2.5">
-              <div className="h-9 w-9 rounded-full bg-gradient-to-tr from-amber-500 to-orange-600 text-white flex items-center justify-center font-black text-xs shadow">
+              <div className="h-9 w-9 rounded-full bg-gradient-to-tr from-[#0D2C5C] to-[#0A1F3F] text-amber-300 border border-amber-400/40 flex items-center justify-center font-black text-xs shadow">
                 PLI
               </div>
               <div className="min-w-0 flex-1">
-                <p className="text-xs font-black text-slate-800 dark:text-slate-100 truncate">
+                <p className="text-xs font-black text-[#0D2C5C] dark:text-slate-100 truncate">
                   Admin PLI
                 </p>
                 <p className="text-[10px] text-slate-400 font-medium truncate">
@@ -599,16 +599,16 @@ export default function App() {
         <main className="flex-1 min-w-0 space-y-4">
           
           {/* Top Bar: Status Bar Lengkap & Dropdown Akun "Admin PLI" */}
-          <div className="w-full bg-white dark:bg-slate-900 rounded-2xl p-2.5 px-4 shadow-xs border border-amber-200/70 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs">
+          <div className="w-full bg-white dark:bg-slate-900 rounded-2xl p-2.5 px-4 shadow-sm border border-slate-200/80 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs">
             <div className="flex items-center space-x-2.5">
-              <span className="font-black text-[11px] text-amber-900/60 dark:text-slate-400 tracking-wider uppercase">
+              <span className="font-black text-[11px] text-[#0D2C5C] dark:text-amber-400 tracking-wider uppercase">
                 KPPBC TMP B PEKANBARU • SEKSI PLI
               </span>
               <span className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-300 font-bold text-[10px] flex items-center space-x-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                 <span>Online: 1</span>
               </span>
-              <span className="hidden sm:flex items-center space-x-1 px-2 py-0.5 rounded-full bg-amber-50 dark:bg-slate-800 text-amber-900 dark:text-slate-300 font-mono text-[10px] border border-amber-200/60">
+              <span className="hidden sm:flex items-center space-x-1 px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-mono text-[10px] border border-slate-200 dark:border-slate-700">
                 <span>⏱</span>
                 <span>{currentTime || '09:00:00 WIB'}</span>
               </span>
@@ -617,7 +617,7 @@ export default function App() {
             <div className="flex items-center space-x-2">
               <button
                 onClick={() => setIsDarkMode(!isDarkMode)}
-                className="h-7 w-7 rounded-full bg-amber-50 dark:bg-slate-800 text-amber-900 dark:text-slate-300 flex items-center justify-center text-xs border border-amber-200"
+                className="h-7 w-7 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center text-xs border border-slate-200"
                 title="Ganti Tema"
               >
                 {isDarkMode ? '🌙' : '☀️'}
@@ -628,12 +628,12 @@ export default function App() {
                 <button
                   type="button"
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                  className="flex items-center space-x-2 pl-2 border-l border-amber-200 dark:border-slate-700 hover:opacity-85 transition focus:outline-none"
+                  className="flex items-center space-x-2 pl-2 border-l border-slate-200 dark:border-slate-700 hover:opacity-85 transition focus:outline-none"
                 >
-                  <div className="h-7 w-7 rounded-full bg-gradient-to-tr from-amber-500 to-orange-600 text-white flex items-center justify-center font-bold text-[10px] shadow-xs">
+                  <div className="h-7 w-7 rounded-full bg-[#0D2C5C] text-amber-300 border border-amber-400/50 flex items-center justify-center font-bold text-[10px] shadow-xs">
                     PLI
                   </div>
-                  <span className="text-[11px] font-bold text-slate-700 dark:text-slate-200 hidden md:inline">
+                  <span className="text-[11px] font-bold text-[#0D2C5C] dark:text-slate-200 hidden md:inline">
                     Admin PLI ▾
                   </span>
                 </button>
@@ -659,16 +659,17 @@ export default function App() {
           </div>
 
           {/* =========================================================================
-              BIG WELCOME HERO BANNER (WARNA KUNING - ORANYE HANGAT)
+              BIG WELCOME HERO BANNER (NAVY BLUE DENGAN AKSEN GOLDEN YELLOW)
               ========================================================================= */}
-          <div className="w-full relative overflow-hidden rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-orange-600 text-white p-6 sm:p-8 shadow-md border border-amber-300/40">
-            <div className="absolute -right-8 -bottom-8 w-64 h-64 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+          <div className="w-full relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#0A1F3F] via-[#0D2C5C] to-[#143B75] text-white p-6 sm:p-8 shadow-xl border border-amber-400/40">
+            {/* Golden radial ambient */}
+            <div className="absolute -right-8 -bottom-8 w-64 h-64 bg-amber-400/10 rounded-full blur-3xl pointer-events-none"></div>
 
             <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
-              <div className="space-y-1.5 max-w-3xl">
-                <div className="inline-flex items-center space-x-2 px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-[10px] text-white font-semibold">
+              <div className="space-y-2 max-w-3xl">
+                <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-amber-400/30 text-[10px] text-amber-300 font-semibold">
                   <span>✨ SIMONITA • Executive Media Monitoring Center</span>
-                  <span className="text-white/60">•</span>
+                  <span className="text-amber-400/40">•</span>
                   <span>{todayFormatted}</span>
                 </div>
 
@@ -677,13 +678,13 @@ export default function App() {
                   <span className="inline-block animate-bounce">👋</span>
                 </h1>
 
-                <p className="text-[11px] sm:text-xs text-white/90 leading-relaxed font-medium">
-                  Pusat kendali pemantauan media daring dan analisis sentimen publik Seksi PLI Bea Cukai Pekanbaru.
+                <p className="text-[11px] sm:text-xs text-slate-200 leading-relaxed font-normal">
+                  Pusat kendali pemantauan media daring, kliping berita berkala, dan analisis sentimen publik Seksi PLI Bea Cukai Pekanbaru.
                 </p>
               </div>
 
               <div className="shrink-0 self-start md:self-center">
-                <div className="px-3.5 py-2 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 flex items-center space-x-2 text-[11px] font-bold text-white shadow-xs">
+                <div className="px-3.5 py-2 rounded-xl bg-white/10 backdrop-blur-md border border-amber-400/40 flex items-center space-x-2 text-[11px] font-bold text-amber-300 shadow-xs">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
                   <span>Sistem Online 24/7</span>
                 </div>
@@ -693,12 +694,12 @@ export default function App() {
 
           {/* ==================== TAB 1: ARTIKEL & BERITA ==================== */}
           {activeTab === 'articles' && (
-            <div className="w-full bg-white dark:bg-slate-900 rounded-2xl p-4 sm:p-5 shadow-xs border border-amber-200/70 dark:border-slate-800 space-y-3.5">
+            <div className="w-full bg-white dark:bg-slate-900 rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/80 dark:border-slate-800 space-y-3.5">
               
               {/* Header Tabel & Tombol Aksi */}
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2.5 pb-2 border-b border-slate-100 dark:border-slate-800">
                 <div>
-                  <h2 className="text-base font-black text-amber-950 dark:text-amber-400">
+                  <h2 className="text-base font-black text-[#0D2C5C] dark:text-amber-400">
                     Daftar Artikel Berita & Opini Publik
                   </h2>
                   <p className="text-[11px] text-slate-400">
@@ -708,7 +709,7 @@ export default function App() {
                 <div className="flex flex-wrap gap-2">
                   <button
                     onClick={exportToCSV}
-                    className="px-3 py-1.5 text-xs font-bold rounded-xl border border-emerald-400/60 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 transition shadow-xs flex items-center space-x-1"
+                    className="px-3 py-1.5 text-xs font-bold rounded-xl border border-emerald-500/40 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 transition shadow-xs flex items-center space-x-1"
                   >
                     <span>📥</span>
                     <span>Ekspor CSV</span>
@@ -722,7 +723,7 @@ export default function App() {
                   </button>
                   <button
                     onClick={handleOpenAddModal}
-                    className="px-3 py-1.5 text-xs font-bold rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white transition shadow-xs flex items-center space-x-1"
+                    className="px-3.5 py-1.5 text-xs font-bold rounded-xl bg-gradient-to-r from-[#0D2C5C] to-[#0A1F3F] hover:brightness-110 text-amber-300 border border-amber-400/40 transition shadow-xs flex items-center space-x-1"
                   >
                     <span>+</span>
                     <span>Tambah Manual</span>
@@ -731,13 +732,13 @@ export default function App() {
               </div>
 
               {/* Filter & Bar Pencarian */}
-              <div className="bg-[#FFFDF9] dark:bg-slate-800/50 p-2.5 rounded-xl border border-amber-200/80 dark:border-slate-700/80 flex flex-col sm:flex-row gap-2 text-xs">
+              <div className="bg-slate-50 dark:bg-slate-800/50 p-2.5 rounded-xl border border-slate-200/80 dark:border-slate-700/80 flex flex-col sm:flex-row gap-2 text-xs">
                 <input
                   type="text"
                   placeholder="Cari judul, media, atau sentimen (Positif / Netral / Negatif)..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="flex-1 px-3 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:outline-none focus:ring-1 focus:ring-orange-500"
+                  className="flex-1 px-3 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:outline-none focus:ring-1 focus:ring-[#0D2C5C]"
                 />
                 <div className="flex flex-wrap gap-2">
                   <select
@@ -779,7 +780,7 @@ export default function App() {
                 <div className="w-full overflow-x-auto">
                   <table className="w-full text-left border-collapse text-[11px]">
                     <thead>
-                      <tr className="bg-amber-50/50 dark:bg-slate-800/70 border-b border-amber-200/60 dark:border-slate-800 text-amber-900/70 uppercase font-bold tracking-wider">
+                      <tr className="bg-slate-50 dark:bg-slate-800/70 border-b border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 uppercase font-bold tracking-wider">
                         <th className="py-2.5 px-3 min-w-[280px]">Judul Berita & Cuplikan</th>
                         <th className="py-2.5 px-3 w-36">Media Sumber</th>
                         <th className="py-2.5 px-3 w-24">Waktu</th>
@@ -794,7 +795,7 @@ export default function App() {
                         <tr><td colSpan="5" className="py-10 text-center text-slate-400 font-medium">Tidak ada artikel yang sesuai kriteria.</td></tr>
                       ) : (
                         paginatedArticles.map((article) => (
-                          <tr key={article.id || article.url} className="hover:bg-amber-50/40 dark:hover:bg-slate-800/40 transition">
+                          <tr key={article.id || article.url} className="hover:bg-amber-50/30 dark:hover:bg-slate-800/40 transition">
                             
                             {/* JUDUL BERITA KLIKABLE */}
                             <td className="py-2.5 px-3 align-top">
@@ -802,7 +803,7 @@ export default function App() {
                                 href={article.url}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="font-bold text-slate-900 dark:text-slate-100 hover:text-orange-600 dark:hover:text-amber-400 hover:underline leading-snug block transition cursor-pointer"
+                                className="font-bold text-slate-900 dark:text-slate-100 hover:text-[#0D2C5C] dark:hover:text-amber-400 hover:underline leading-snug block transition cursor-pointer"
                                 title="Klik untuk membuka tautan berita asli ↗"
                               >
                                 {article.title}
@@ -849,7 +850,7 @@ export default function App() {
                                   href={article.url} 
                                   target="_blank" 
                                   rel="noreferrer" 
-                                  className="text-orange-600 dark:text-amber-400 font-bold hover:underline"
+                                  className="text-[#0D2C5C] dark:text-amber-400 font-bold hover:underline"
                                   title="Buka Tautan Berita"
                                 >
                                   ↗
@@ -905,13 +906,13 @@ export default function App() {
           )}
 
           {/* =========================================================================
-              TAB 2: STATISTIK & OPINI + CUSTOMIZED LINE CHART
+              TAB 2: STATISTIK & OPINI + CUSTOMIZED LINE CHART (BALANCED)
               ========================================================================= */}
           {activeTab === 'stats' && (
-            <div className="w-full bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-xs border border-amber-200/70 dark:border-slate-800 space-y-6">
+            <div className="w-full bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm border border-slate-200/80 dark:border-slate-800 space-y-6">
               
               <div>
-                <h2 className="text-base font-black text-amber-950 dark:text-amber-400">
+                <h2 className="text-base font-black text-[#0D2C5C] dark:text-amber-400">
                   Ringkasan Analisis Sentimen & Persepsi Publik
                 </h2>
                 <p className="text-xs text-slate-400 mt-0.5">
@@ -921,29 +922,29 @@ export default function App() {
 
               {/* Kartu Ringkasan Angka */}
               <div className="grid grid-cols-1 sm:grid-cols-4 gap-3.5">
-                <div className="bg-[#FFFDF9] dark:bg-slate-800 p-4 rounded-xl border border-amber-200/80 shadow-xs">
-                  <span className="text-[11px] text-amber-900/60 font-bold uppercase">Total Berita</span>
-                  <div className="text-2xl font-black mt-1 text-amber-950 dark:text-white">{totalEntries}</div>
+                <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-200/80 shadow-xs">
+                  <span className="text-[11px] text-[#0D2C5C] dark:text-amber-400 font-bold uppercase">Total Berita</span>
+                  <div className="text-2xl font-black mt-1 text-[#0D2C5C] dark:text-white">{totalEntries}</div>
                 </div>
-                <div className="bg-emerald-50/50 dark:bg-emerald-950/20 p-4 rounded-xl border border-emerald-200/80 shadow-xs">
+                <div className="bg-emerald-50/60 dark:bg-emerald-950/20 p-4 rounded-xl border border-emerald-200 shadow-xs">
                   <span className="text-[11px] text-emerald-700 font-bold uppercase">Sentimen Positif</span>
                   <div className="text-2xl font-black text-emerald-600 mt-1">{articles.filter(a => a.sentiment === 'positive').length}</div>
                 </div>
-                <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-200/80 shadow-xs">
+                <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-200 shadow-xs">
                   <span className="text-[11px] text-slate-500 font-bold uppercase">Sentimen Netral</span>
                   <div className="text-2xl font-black text-slate-700 dark:text-slate-300 mt-1">{articles.filter(a => a.sentiment === 'neutral' || !a.sentiment).length}</div>
                 </div>
-                <div className="bg-rose-50/50 dark:bg-rose-950/20 p-4 rounded-xl border border-rose-200/80 shadow-xs">
+                <div className="bg-rose-50/60 dark:bg-rose-950/20 p-4 rounded-xl border border-rose-200 shadow-xs">
                   <span className="text-[11px] text-rose-700 font-bold uppercase">Sentimen Negatif</span>
                   <div className="text-2xl font-black text-rose-600 mt-1">{articles.filter(a => a.sentiment === 'negative').length}</div>
                 </div>
               </div>
 
               {/* CUSTOMIZED LINE CHART (7 HARI TERAKHIR) */}
-              <div className="p-5 rounded-2xl bg-[#FFFDF9] dark:bg-slate-800/40 border border-amber-200/80 dark:border-slate-800 space-y-4">
+              <div className="p-5 rounded-2xl bg-slate-50/70 dark:bg-slate-800/40 border border-slate-200/80 dark:border-slate-800 space-y-4">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <div>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-amber-950 dark:text-amber-400 flex items-center gap-1.5">
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-[#0D2C5C] dark:text-amber-400 flex items-center gap-1.5">
                       <span>📈</span>
                       <span>Tren Frekuensi Publikasi Berita (7 Hari Terakhir)</span>
                     </h3>
@@ -952,8 +953,8 @@ export default function App() {
                     </p>
                   </div>
                   <div className="flex items-center space-x-3 text-[11px] font-semibold">
-                    <span className="flex items-center space-x-1 text-orange-600">
-                      <span className="w-2.5 h-2.5 rounded-full bg-orange-500"></span>
+                    <span className="flex items-center space-x-1 text-amber-600">
+                      <span className="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
                       <span>Total Berita</span>
                     </span>
                     <span className="flex items-center space-x-1 text-emerald-600">
@@ -968,8 +969,8 @@ export default function App() {
                     <svg viewBox={`0 0 ${chartWidth} ${chartHeight}`} className="w-full h-44 overflow-visible">
                       <defs>
                         <linearGradient id="lineGradTotal" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stopColor="#F97316" stopOpacity="0.3" />
-                          <stop offset="100%" stopColor="#F97316" stopOpacity="0.0" />
+                          <stop offset="0%" stopColor="#F59E0B" stopOpacity="0.35" />
+                          <stop offset="100%" stopColor="#F59E0B" stopOpacity="0.0" />
                         </linearGradient>
                       </defs>
 
@@ -994,7 +995,7 @@ export default function App() {
 
                       <polyline
                         fill="none"
-                        stroke="#F97316"
+                        stroke="#F59E0B"
                         strokeWidth="3"
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -1017,8 +1018,8 @@ export default function App() {
                         const yPos = chartHeight - paddingY - (d.pos / maxVal) * (chartHeight - (paddingY * 2));
                         return (
                           <g key={i}>
-                            <circle cx={x} cy={yTotal} r="4" fill="#FFFFFF" stroke="#F97316" strokeWidth="2.5" />
-                            <text x={x} y={yTotal - 8} textAnchor="middle" fontSize="10" fontWeight="bold" fill="#C2410C">
+                            <circle cx={x} cy={yTotal} r="4" fill="#FFFFFF" stroke="#0D2C5C" strokeWidth="2.5" />
+                            <text x={x} y={yTotal - 8} textAnchor="middle" fontSize="10" fontWeight="bold" fill="#0D2C5C">
                               {d.total}
                             </text>
                             <circle cx={x} cy={yPos} r="3" fill="#10B981" />
@@ -1038,8 +1039,8 @@ export default function App() {
 
           {/* ==================== TAB 3: DEWAN PERS ==================== */}
           {activeTab === 'press' && (
-            <div className="w-full bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-xs border border-amber-200/70 dark:border-slate-800 space-y-3.5">
-              <h2 className="text-base font-black text-amber-950 dark:text-amber-400">
+            <div className="w-full bg-white dark:bg-slate-900 rounded-2xl p-5 shadow-sm border border-slate-200/80 dark:border-slate-800 space-y-3.5">
+              <h2 className="text-base font-black text-[#0D2C5C] dark:text-amber-400">
                 Verifikasi Lembaga Pers & Wartawan Terdaftar
               </h2>
               <p className="text-xs text-slate-600 dark:text-slate-300 max-w-xl leading-relaxed">
@@ -1049,7 +1050,7 @@ export default function App() {
                 href="https://dewanpers.or.id/data"
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center space-x-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold text-xs shadow-xs transition"
+                className="inline-flex items-center space-x-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-[#0D2C5C] to-[#0A1F3F] hover:brightness-110 text-amber-300 font-bold text-xs shadow-xs border border-amber-400/30 transition"
               >
                 <span>Buka Basis Data Dewan Pers ↗</span>
               </a>
@@ -1063,7 +1064,7 @@ export default function App() {
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
           <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-lg w-full p-5 shadow-2xl border border-slate-200 dark:border-slate-800">
-            <h2 className="text-base font-black text-amber-950 dark:text-amber-400 mb-3">
+            <h2 className="text-base font-black text-[#0D2C5C] dark:text-amber-400 mb-3">
               {editingArticleId ? '✏️ Edit Artikel Berita' : '+ Tambah Artikel Manual'}
             </h2>
             <form onSubmit={handleSubmitArticle} className="space-y-3 text-xs">
@@ -1117,7 +1118,7 @@ export default function App() {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold shadow-xs"
+                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#0D2C5C] to-[#0A1F3F] text-amber-300 font-bold shadow-xs border border-amber-400/30"
                 >
                   Simpan
                 </button>
