@@ -9,7 +9,7 @@ const translations = {
     themeLight: '☀️ Terang',
     themeDark: '🌙 Gelap',
     logout: 'Keluar Portal',
-    marquee: '🔔 SIMONITA: Sistem Monitoring Opini dan Berita • Jam Layanan: 07.30 - 17.00 WIB • Wilayah Pengawasan: Pekanbaru • Siak • Kampar • Rokan Hulu • Pelalawan',
+    marquee: '🔔 SIMONITA: Sistem Monitoring Opini dan Berita • Wilayah Pengawasan: Pekanbaru • Siak • Kampar • Rokan Hulu • Pelalawan',
     menuTitle: 'Menu Portal',
     tabArticles: 'Artikel & Berita',
     tabStats: 'Statistik & Opini',
@@ -17,13 +17,13 @@ const translations = {
     tabSettings: 'Pengaturan',
     hotspotSidebarTitle: 'Titik Wilayah Pengawasan',
     hotspotSidebarDesc: 'Klik titik radar berkedip pada peta latar untuk meninjau rincian pengawasan perairan Siak, darat Kampar/Rohul, dan kawasan industri.',
-    portalDesc: 'Portal Intelijen Media & Pemantauan Opini Publik',
+    portalDesc: 'Portal Media & Pemantauan Opini Publik',
     exportCsv: 'Ekspor CSV',
-    refresh: 'Segarkan',
+    refresh: 'Refresh',
     addManual: '+ Tambah Manual',
     searchPlaceholder: 'Cari judul berita atau nama media...',
     allTypes: 'Semua Tipe',
-    scrapedType: 'Scraper Multi-Kanal',
+    scrapedType: 'Pemindaian Media Otomatis',
     manualType: 'Input Manual',
     timeFilterAll: 'Semua Waktu',
     timeFilter24h: '24 Jam Terakhir',
@@ -64,16 +64,16 @@ const translations = {
     settingsTitle: 'Konfigurasi SIMONITA',
     settingsDesc: 'Parameter mesin otomatis dan status infrastruktur portal.',
     settingKeyword: 'Kata Kunci Pengawasan',
-    settingCron: 'Jadwal Scraper Multi-Kanal',
+    settingCron: 'Jadwal Pemantauan Otomatis',
     settingDomain: 'Alamat Domain Resmi',
     settingDb: 'Basis Data & Keamanan',
     version: 'Versi 2.2.0 (Strict Auth Gate)',
     loginPageTitle: 'Portal Masuk SIMONITA',
-    loginPageSubtitle: 'Sistem Monitoring Opini dan Berita • KPPBC TMP B Pekanbaru',
-    emailLabel: 'Email Kedinasan Pegawai',
+    loginPageSubtitle: 'Sistem Monitoring Opini dan Berita',
+    emailLabel: 'Email',
     passwordLabel: 'Kata Sandi Akun',
     submitLogin: 'Verifikasi Identitas Pegawai',
-    authNotice: 'Area Terbatas: Portal ini diperuntukkan khusus pejabat dan pegawai KPPBC TMP B Pekanbaru. Silakan masuk dengan kredensial terdaftar.',
+    authNotice: 'Area Terbatas',
     otpTitle: 'Verifikasi Keamanan 2FA',
     otpDesc: 'Masukkan 6-digit kode OTP pengaman untuk menyelesaikan proses masuk ke sistem dashboard.',
     otpSubmit: 'Konfirmasi & Masuk Dashboard',
@@ -98,7 +98,7 @@ const translations = {
     themeLight: '☀️ Light',
     themeDark: '🌙 Dark',
     logout: 'Sign Out',
-    marquee: '🔔 SIMONITA: Media Monitoring & News Portal • Operating Hours: 07.30 - 17.00 WIB • Coverage Areas: Pekanbaru • Siak • Kampar • Rokan Hulu • Pelalawan',
+    marquee: '🔔 SIMONITA: Media Monitoring & News Portal • Coverage Areas: Pekanbaru • Siak • Kampar • Rokan Hulu • Pelalawan',
     menuTitle: 'Navigation Menu',
     tabArticles: 'Articles & News',
     tabStats: 'Stats & Sentiment',
@@ -106,13 +106,13 @@ const translations = {
     tabSettings: 'Settings',
     hotspotSidebarTitle: 'Field Enforcement Zones',
     hotspotSidebarDesc: 'Click blinking radar beacons on the background to inspect Siak river, highway patrol, and bonded industrial zone operations.',
-    portalDesc: 'Customs Media Intelligence & Sentiment Monitoring',
+    portalDesc: 'Customs Media & Sentiment Monitoring',
     exportCsv: 'Export CSV',
     refresh: 'Refresh',
     addManual: '+ Add Manual',
     searchPlaceholder: 'Search headline or publisher...',
     allTypes: 'All Types',
-    scrapedType: 'Multi-Channel Scraper',
+    scrapedType: 'Automatic Monitoring Media',
     manualType: 'Manual Input',
     timeFilterAll: 'All Time',
     timeFilter24h: 'Last 24 Hours',
@@ -153,16 +153,16 @@ const translations = {
     settingsTitle: 'SIMONITA Core Settings',
     settingsDesc: 'Automation engines and server deployment status.',
     settingKeyword: 'Monitored Keywords',
-    settingCron: 'Multi-Channel Scraper Interval',
+    settingCron: 'Automatic Monitoring Interval',
     settingDomain: 'Custom Live Domain',
     settingDb: 'Database & Policies',
     version: 'Version 2.2.0 (Strict Auth Gate)',
     loginPageTitle: 'SIMONITA Access Gateway',
-    loginPageSubtitle: 'Media Monitoring & Public Opinion System • KPPBC TMP B Pekanbaru',
-    emailLabel: 'Official Customs Email',
+    loginPageSubtitle: 'Media Monitoring & Public Opinion System',
+    emailLabel: 'Email',
     passwordLabel: 'Account Password',
-    submitLogin: 'Authenticate Customs Officer',
-    authNotice: 'Restricted Area: Exclusively accessible by authorized personnel of KPPBC TMP B Pekanbaru.',
+    submitLogin: 'Authenticate',
+    authNotice: 'Restricted Area',
     otpTitle: '2FA Security Check',
     otpDesc: 'Enter your 6-digit OTP passcode to unlock the operational dashboard.',
     otpSubmit: 'Confirm & Enter Dashboard',
@@ -322,26 +322,33 @@ export default function App() {
   }, [session, is2FAVerified]);
 
   // Handler Login
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setAuthLoading(true);
-    setAuthError('');
+  const SINGLE_USER = {
+  username: 'plibcpekanbaru',
+  password: 'PLI123456'
+};
 
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: loginEmail,
-        password: loginPassword,
-      });
+const handleLogin = async (e) => {
+  e.preventDefault();
+  setAuthLoading(true);
+  setAuthError('');
 
-      if (error) throw error;
-      setSession(data.session);
+  setTimeout(() => {
+    if (
+      loginEmail.trim().toLowerCase() === SINGLE_USER.username.toLowerCase() &&
+      loginPassword === SINGLE_USER.password
+    ) {
+      setSession({ user: { email: SINGLE_USER.username } });
       setShowOtpDrawer(true);
-    } catch (err) {
-      setAuthError(err.message || 'Kredensial login tidak valid.');
-    } finally {
-      setAuthLoading(false);
+    } else {
+      setAuthError(
+        lang === 'id' 
+          ? 'Username atau kata sandi tidak valid.' 
+          : 'Invalid username or password.'
+      );
     }
-  };
+    setAuthLoading(false);
+  }, 400);
+};
 
   const handleVerifyOtp = (e) => {
     e.preventDefault();
@@ -587,9 +594,9 @@ export default function App() {
               <div>
                 <label className="block font-semibold mb-1 text-slate-200">{t.emailLabel}</label>
                 <input
-                  type="email"
+                  type="text"
                   required
-                  placeholder="pegawai@customs.go.id"
+                  placeholder="plibcpekanbaru"
                   value={loginEmail}
                   onChange={(e) => setLoginEmail(e.target.value)}
                   className="w-full px-4 py-2.5 rounded-xl border border-white/20 bg-black/20 text-white placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
