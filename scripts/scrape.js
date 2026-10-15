@@ -4,27 +4,37 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+console.log("=== MEMULAI PROSES SCRAPING ===");
+
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 if (!SUPABASE_URL || !SERVICE_ROLE_KEY) {
-  console.error("Missing VITE_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY in .env");
+  console.error("Error: URL atau Service Role Key belum terisi di file .env!");
   process.exit(1);
 }
 
-// Service role client bypasses RLS for scheduled background writing
-const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
-const parser = new Parser();
+// Matikan realtime & persistSession agar ringan dan tidak memerlukan websocket di environment serverless/CLI
+const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY, {
+  auth: { persistSession: false },
+  realtime: { enabled: false }
+});
+
+const parser = new Parser({
+  headers: {
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)'
+  }
+});
 
 async function runScraper() {
   const query = encodeURIComponent("Bea Cukai Pekanbaru");
   const feedUrl = `https://news.google.com/rss/search?q=${query}&hl=id&gl=ID&ceid=ID:id`;
 
-  console.log(`[Scraper] Fetching Google News RSS for: Bea Cukai Pekanbaru...`);
+  console.log("Menghubungi Google News RSS...");
 
   try {
     const feed = await parser.parseURL(feedUrl);
-    console.log(`[Scraper] Found ${feed.items.length} items from feed.`);
+    console.log(`Ditemukan ${feed.items.length} artikel dari Google News.`);
 
     const articles = feed.items.map((item) => {
       const titleParts = item.title.split(' - ');
@@ -43,22 +53,25 @@ async function runScraper() {
     });
 
     if (articles.length === 0) {
-      console.log("[Scraper] No items to insert.");
+      console.log("Tidak ada artikel baru yang ditemukan.");
       return;
     }
 
+    console.log("Mengirim data artikel ke Supabase...");
     const { data, error } = await supabase
       .from('articles')
       .upsert(articles, { onConflict: 'url', ignoreDuplicates: true })
       .select();
 
     if (error) {
-      console.error("[Scraper Error]:", error.message);
+      console.error("[Scraper Error Supabase]:", error.message);
+      process.exit(1);
     } else {
-      console.log(`[Scraper Success] Successfully synced articles! New rows added: ${data.length}`);
+      console.log(`[Scraper Success] Berhasil menyimpan ${data ? data.length : 0} artikel baru ke database.`);
     }
   } catch (err) {
-    console.error("[Scraper Failed]:", err.message);
+    console.error("[Scraper Error Jaringan/Sistem]:", err.message);
+    process.exit(1);
   }
 }
 
