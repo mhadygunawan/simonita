@@ -15,7 +15,7 @@ const translations = {
     menuTitle: 'Menu Portal',
     tabArticles: 'Artikel & Berita',
     tabStats: 'Statistik & Opini',
-    tabServices: 'Layanan & Regulasi',
+    tabPress: 'Dewan Pers',
     tabSettings: 'Pengaturan',
     hotspotSidebarTitle: 'Titik Wilayah Pengawasan',
     hotspotSidebarDesc: 'Klik titik berkedip pada peta latar untuk meninjau rincian pengawasan perairan Siak, darat Kampar/Rohul, dan kawasan industri.',
@@ -25,7 +25,7 @@ const translations = {
     addManual: '+ Tambah Manual',
     searchPlaceholder: 'Cari judul berita atau nama media...',
     allTypes: 'Semua Tipe',
-    scrapedType: 'Scraper Otomatis',
+    scrapedType: 'Scraper Multi-Kanal',
     manualType: 'Input Manual',
     timeFilterAll: 'Semua Waktu',
     timeFilter24h: '24 Jam Terakhir',
@@ -53,23 +53,24 @@ const translations = {
     statsNeg: 'Sentimen Kritis',
     statsNegSub: 'Perlu respon Seksi PLI',
     sourceDistribution: 'Distribusi Saluran Berita',
-    serviceInfoTitle: 'Layanan Pengaduan & Informasi PLI',
-    serviceInfoDesc: 'Saluran bantuan kepabeanan, konsultasi ekspor-impor, dan pelaporan KPPBC TMP B Pekanbaru.',
-    serviceInfoHours: 'Senin - Jumat: 07.30 - 17.00 WIB',
-    serviceZoneTitle: 'Kawasan Berikat & TPB',
-    serviceZoneDesc: 'Administrasi fasilitas Tempat Penimbunan Berikat untuk manufaktur dan komoditas Riau.',
-    serviceZoneSub: 'Wilayah Siak, Pelalawan, Kampar',
-    serviceCigTitle: 'Gempur Rokok Ilegal',
-    serviceCigDesc: 'Operasi penindakan rokok polos tanpa pita cukai di jalur darat Pekanbaru-Rohul.',
-    serviceCigSub: 'Operasi Pasar Aktif',
-    externalPortals: 'Tautan Instansi Terkait',
+    pressTitle: 'Portal Verifikasi Dewan Pers Republik Indonesia',
+    pressDesc: 'Basis data rujukan Seksi PLI untuk memeriksa legalitas faktual perusahaan pers, kode etik jurnalistik, dan sertifikasi kompetensi wartawan.',
+    pressCheckListTitle: 'Data Perusahaan Pers Terverifikasi',
+    pressCheckListDesc: 'Akses resmi daftar media massa online, cetak, televisi, dan radio yang telah terverifikasi secara Administrasi maupun Faktual oleh Dewan Pers.',
+    pressCheckBtn: 'Buka Basis Data Dewan Pers ↗',
+    pressCardWartawan: 'Sertifikasi & Uji Kompetensi Wartawan (UKW)',
+    pressCardWartawanDesc: 'Cek keabsahan status sertifikasi wartawan yang bertugas meliput di lingkungan KPPBC TMP B Pekanbaru.',
+    pressCardOrg: 'Organisasi Konstituen Dewan Pers',
+    pressCardOrgDesc: 'PWI, AJI, IJTI, SMSI, AMSI, JMSI, SPS, ATVSI, ATVLI, PRSSNI.',
+    pressCardPengaduan: 'Layanan Pengaduan & Hak Jawab Pers',
+    pressCardPengaduanDesc: 'Prosedur penyelesaian sengketa pemberitaan berdasarkan UU No. 40 Tahun 1999 tentang Pers.',
     settingsTitle: 'Konfigurasi SIMONITA',
     settingsDesc: 'Parameter mesin otomatis dan status infrastruktur portal.',
     settingKeyword: 'Kata Kunci Pengawasan',
-    settingCron: 'Jadwal Scraper Otomatis',
+    settingCron: 'Jadwal Scraper Multi-Kanal',
     settingDomain: 'Alamat Domain Resmi',
     settingDb: 'Basis Data & Keamanan',
-    version: 'Versi 2.0.0 (Dedicated Auth & Pagination)',
+    version: 'Versi 2.1.0 (Dewan Pers & Multi-Feed Scraper)',
     loginPageTitle: 'Portal Masuk Pegawai',
     loginPageDesc: 'Sistem Terpadu SIMONITA KPPBC TMP B Pekanbaru',
     backToHome: '← Kembali ke Beranda',
@@ -81,7 +82,7 @@ const translations = {
     otpSubmit: 'Konfirmasi Masuk',
     modalTitle: '+ Tambahkan Artikel Berita Manual',
     modalEditTitle: '✏️ Edit Artikel & Sentimen Opini',
-    modalDesc: 'Input publikasi media cetak / online lokal yang tidak terjaring scraper.',
+    modalDesc: 'Input publikasi media lokal / regional yang tidak terjaring otomatis.',
     formTitle: 'Judul Berita',
     formSource: 'Nama Media / Sumber',
     formUrl: 'URL / Tautan Berita',
@@ -107,7 +108,7 @@ const translations = {
     menuTitle: 'Navigation Menu',
     tabArticles: 'Articles & News',
     tabStats: 'Stats & Sentiment',
-    tabServices: 'Services & Regs',
+    tabPress: 'Press Council',
     tabSettings: 'Settings',
     hotspotSidebarTitle: 'Field Enforcement Zones',
     hotspotSidebarDesc: 'Click blinking radar beacons on the background to inspect Siak river, highway patrol, and bonded industrial zone operations.',
@@ -117,7 +118,7 @@ const translations = {
     addManual: '+ Add Manual',
     searchPlaceholder: 'Search headline or publisher...',
     allTypes: 'All Types',
-    scrapedType: 'Automated Scraping',
+    scrapedType: 'Multi-Channel Scraper',
     manualType: 'Manual Input',
     timeFilterAll: 'All Time',
     timeFilter24h: 'Last 24 Hours',
@@ -145,23 +146,24 @@ const translations = {
     statsNeg: 'Critical Sentiment',
     statsNegSub: 'Action required by PR team',
     sourceDistribution: 'News Channel Source Split',
-    serviceInfoTitle: 'Inquiries & PR Unit',
-    serviceInfoDesc: 'Consultations on import/export clearances and official complaints desk.',
-    serviceInfoHours: 'Mon - Fri: 07.30 - 17.00 WIB',
-    serviceZoneTitle: 'Bonded Facilities & TPB',
-    serviceZoneDesc: 'Bonded warehouse administration for Riau provincial manufacturing clusters.',
-    serviceZoneSub: 'Siak, Pelalawan, Kampar Regencies',
-    serviceCigTitle: 'Illicit Cigarette Strike',
-    serviceCigDesc: 'Targeted road enforcement against untaxed and counterfeit tobacco goods.',
-    serviceCigSub: 'Active Market Operation',
-    externalPortals: 'Government Links',
+    pressTitle: 'Press Council of Indonesia (Dewan Pers)',
+    pressDesc: 'Reference hub for Public Relations team to verify media outlets legitimacy, journalistic ethics, and reporter accreditation.',
+    pressCheckListTitle: 'Verified Media Registry',
+    pressCheckListDesc: 'Access the official database of online, print, television, and radio media companies verified by the Press Council.',
+    pressCheckBtn: 'Open Press Council Database ↗',
+    pressCardWartawan: 'Journalist Competency Certification (UKW)',
+    pressCardWartawanDesc: 'Verify certified press credentials of journalists conducting interviews at Customs Pekanbaru.',
+    pressCardOrg: 'Constituent Press Bodies',
+    pressCardOrgDesc: 'PWI, AJI, IJTI, SMSI, AMSI, JMSI, SPS, ATVSI, ATVLI, PRSSNI.',
+    pressCardPengaduan: 'Right of Reply & Dispute Settlement',
+    pressCardPengaduanDesc: 'Statutory dispute mechanisms governed by Law No. 40/1999 on the Press.',
     settingsTitle: 'SIMONITA Core Settings',
     settingsDesc: 'Automation engines and server deployment status.',
     settingKeyword: 'Monitored Keywords',
-    settingCron: 'Automation Schedule',
+    settingCron: 'Multi-Channel Scraper Interval',
     settingDomain: 'Custom Live Domain',
     settingDb: 'Database & Policies',
-    version: 'Version 2.0.0 (Dedicated Auth & Pagination)',
+    version: 'Version 2.1.0 (Dewan Pers & Multi-Feed Scraper)',
     loginPageTitle: 'Officer Login Portal',
     loginPageDesc: 'SIMONITA Gateway - KPPBC TMP B Pekanbaru',
     backToHome: '← Back to Main Dashboard',
@@ -173,7 +175,7 @@ const translations = {
     otpSubmit: 'Confirm Sign In',
     modalTitle: '+ Add Manual News Article',
     modalEditTitle: '✏️ Edit Article & Sentiment',
-    modalDesc: 'Record print or local publications not reached by Google News feeds.',
+    modalDesc: 'Record local media articles not caught by automated multi-channel feeds.',
     formTitle: 'News Headline',
     formSource: 'Publisher / Outlet',
     formUrl: 'URL / Reference Link',
@@ -199,7 +201,7 @@ export default function App() {
   // Session & Theme
   const [session, setSession] = useState(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [activeTab, setActiveTab] = useState('articles');
+  const [activeTab, setActiveTab] = useState('articles'); // 'articles' | 'stats' | 'press' | 'settings'
 
   // Data & Filters
   const [articles, setArticles] = useState([]);
@@ -274,7 +276,6 @@ export default function App() {
     }
   ];
 
-  // Sinkronisasi Sesi Supabase
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
@@ -287,7 +288,6 @@ export default function App() {
     return () => subscription.unsubscribe();
   }, []);
 
-  // Sinkronisasi Dark Mode
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
@@ -296,7 +296,6 @@ export default function App() {
     }
   }, [isDarkMode]);
 
-  // Load Berita
   const loadData = async () => {
     try {
       setLoading(true);
@@ -319,7 +318,6 @@ export default function App() {
     };
   }, []);
 
-  // Filter Data
   const filteredArticles = articles.filter((item) => {
     const matchesSearch = item.title.toLowerCase().includes(search.toLowerCase()) ||
                           item.source_name.toLowerCase().includes(search.toLowerCase());
@@ -340,18 +338,15 @@ export default function App() {
     return matchesSearch && matchesType && matchesTime;
   });
 
-  // Kalkulasi Paginasi
   const totalEntries = filteredArticles.length;
   const totalPages = Math.ceil(totalEntries / rowsPerPage) || 1;
   const startIndex = (currentPage - 1) * rowsPerPage;
   const paginatedArticles = filteredArticles.slice(startIndex, startIndex + rowsPerPage);
 
-  // Reset ke halaman 1 jika filter berubah
   useEffect(() => {
     setCurrentPage(1);
   }, [search, filterType, timeFilter, rowsPerPage]);
 
-  // Auth Handlers
   const handleLogin = async (e) => {
     e.preventDefault();
     setAuthLoading(true);
@@ -410,7 +405,6 @@ export default function App() {
     setCurrentView('dashboard');
   };
 
-  // CRUD Handlers
   const handleOpenAddModal = () => {
     if (!session) {
       alert(t.accessRestricted);
@@ -481,7 +475,6 @@ export default function App() {
     }
   };
 
-  // Ekspor CSV
   const exportToCSV = () => {
     if (filteredArticles.length === 0) {
       alert(lang === 'id' ? 'Tidak ada data untuk diekspor.' : 'No data to export.');
@@ -515,7 +508,6 @@ export default function App() {
     URL.revokeObjectURL(url);
   };
 
-  // Statistik
   const totalArticles = articles.length;
   const scrapedCount = articles.filter(a => a.entry_type === 'scraped').length;
   const manualCount = articles.filter(a => a.entry_type === 'manual').length;
@@ -622,7 +614,6 @@ export default function App() {
           </div>
 
           <div className="flex items-center space-x-2 sm:space-x-2.5 text-xs">
-            {/* Toggle Bahasa */}
             <div className="flex items-center rounded-xl bg-white/10 p-0.5 border border-white/10 font-bold">
               <button
                 onClick={() => setLang('id')}
@@ -642,7 +633,6 @@ export default function App() {
               </button>
             </div>
 
-            {/* Toggle Dark Mode */}
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
               className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-slate-200 border border-white/10 transition"
@@ -651,7 +641,6 @@ export default function App() {
               {isDarkMode ? t.themeLight : t.themeDark}
             </button>
 
-            {/* Sesi Status / Tombol Masuk Khusus */}
             {session ? (
               <div className="flex items-center space-x-2">
                 <span className="hidden md:inline-block px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 font-mono text-[11px]">
@@ -683,7 +672,7 @@ export default function App() {
         </div>
       </div>
 
-      {/* TAMPILAN 1: HALAMAN KHUSUS LOGIN PEGAWAI */}
+      {/* TAMPILAN LOGIN PEGAWAI */}
       {currentView === 'login' ? (
         <div className="flex-1 flex items-center justify-center p-4 z-10 my-auto">
           <div className="w-full max-w-md bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl p-8 rounded-3xl shadow-2xl border border-slate-200/80 dark:border-slate-800">
@@ -749,10 +738,10 @@ export default function App() {
         </div>
       ) : (
 
-        /* TAMPILAN 2: DASHBOARD UTAMA (TANPA KARTU LOGIN DI SIDEBAR) */
+        /* DASHBOARD UTAMA */
         <div className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 z-10 flex flex-col md:flex-row gap-6">
 
-          {/* SIDEBAR DASHBOARD BERSIH */}
+          {/* SIDEBAR DASHBOARD */}
           <aside className="w-full md:w-64 shrink-0 space-y-4">
             <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl p-3 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col gap-1.5">
               <span className="text-[10px] uppercase font-bold text-slate-400 px-3 py-1 tracking-wider">{t.menuTitle}</span>
@@ -787,16 +776,16 @@ export default function App() {
               </button>
 
               <button
-                onClick={() => setActiveTab('services')}
+                onClick={() => setActiveTab('press')}
                 className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-between ${
-                  activeTab === 'services'
+                  activeTab === 'press'
                     ? 'bg-[#0D2C5C] text-white dark:bg-amber-500 dark:text-slate-950 shadow-sm'
                     : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300'
                 }`}
               >
                 <span className="flex items-center space-x-2.5">
                   <span className="text-sm">🏛️</span>
-                  <span>{t.tabServices}</span>
+                  <span>{t.tabPress}</span>
                 </span>
               </button>
 
@@ -815,7 +804,6 @@ export default function App() {
               </button>
             </div>
 
-            {/* Status Autentikasi Pegawai di Sidebar */}
             <div className="bg-[#0D2C5C]/5 dark:bg-white/5 p-4 rounded-2xl border border-slate-200/50 dark:border-slate-800 text-xs space-y-2">
               <span className="font-bold text-[#0D2C5C] dark:text-amber-400 block">{t.hotspotSidebarTitle}</span>
               <p className="text-[11px] text-slate-500 leading-relaxed">
@@ -824,14 +812,14 @@ export default function App() {
             </div>
           </aside>
 
-          {/* AREA KERJA DASHBOARD */}
+          {/* AREA KERJA */}
           <main className="flex-1 min-w-0">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
               <div>
                 <h1 className="text-xl font-extrabold text-[#0D2C5C] dark:text-amber-400">
                   {activeTab === 'articles' && t.tabArticles}
                   {activeTab === 'stats' && t.tabStats}
-                  {activeTab === 'services' && t.tabServices}
+                  {activeTab === 'press' && t.tabPress}
                   {activeTab === 'settings' && t.tabSettings}
                 </h1>
                 <p className="text-xs text-slate-500 mt-0.5">{t.portalDesc}</p>
@@ -864,10 +852,9 @@ export default function App() {
               </div>
             </div>
 
-            {/* TAB 1: ARTIKEL DENGAN FILTER & PAGINASI 10/25/50 */}
+            {/* TAB 1: ARTIKEL & BERITA */}
             {activeTab === 'articles' && (
               <div className="space-y-4">
-                {/* Search & Filter Bar */}
                 <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-3.5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col md:flex-row gap-2.5">
                   <input
                     type="text"
@@ -900,7 +887,6 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* Tabel Berita */}
                 <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
                   <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse text-sm">
@@ -1070,7 +1056,7 @@ export default function App() {
                   <div className="space-y-4 text-xs">
                     <div>
                       <div className="flex justify-between font-semibold mb-1.5">
-                        <span>Google News Scraper</span>
+                        <span>Scraper Multi-Kanal (Otomatis)</span>
                         <span>{scrapedCount} items</span>
                       </div>
                       <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2 overflow-hidden">
@@ -1098,52 +1084,93 @@ export default function App() {
               </div>
             )}
 
-            {/* TAB 3: LAYANAN */}
-            {activeTab === 'services' && (
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
-                  <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                    <div className="text-xl mb-1.5">📞</div>
-                    <h4 className="font-bold text-xs text-[#0D2C5C] dark:text-amber-400 mb-1">{t.serviceInfoTitle}</h4>
-                    <p className="text-[11px] text-slate-500 leading-relaxed">{t.serviceInfoDesc}</p>
-                    <div className="mt-2.5 text-[11px] font-semibold text-emerald-600">{t.serviceInfoHours}</div>
-                  </div>
-
-                  <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                    <div className="text-xl mb-1.5">📜</div>
-                    <h4 className="font-bold text-xs text-[#0D2C5C] dark:text-amber-400 mb-1">{t.serviceZoneTitle}</h4>
-                    <p className="text-[11px] text-slate-500 leading-relaxed">{t.serviceZoneDesc}</p>
-                    <div className="mt-2.5 text-[11px] font-semibold text-sky-600">{t.serviceZoneSub}</div>
-                  </div>
-
-                  <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                    <div className="text-xl mb-1.5">⚖️</div>
-                    <h4 className="font-bold text-xs text-[#0D2C5C] dark:text-amber-400 mb-1">{t.serviceCigTitle}</h4>
-                    <p className="text-[11px] text-slate-500 leading-relaxed">{t.serviceCigDesc}</p>
-                    <div className="mt-2.5 text-[11px] font-semibold text-rose-600">{t.serviceCigSub}</div>
+            {/* TAB 3: DEWAN PERS */}
+            {activeTab === 'press' && (
+              <div className="space-y-6">
+                {/* Hero Box Dewan Pers */}
+                <div className="bg-gradient-to-br from-[#0D2C5C] to-[#0A2247] text-white p-6 rounded-3xl shadow-lg border border-amber-400/30 relative overflow-hidden">
+                  <div className="max-w-2xl">
+                    <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-amber-400 text-[#0D2C5C] mb-2 inline-block">
+                      Rujukan Resmi Lembaga Negara
+                    </span>
+                    <h2 className="text-lg sm:text-xl font-extrabold mt-1 text-white">{t.pressTitle}</h2>
+                    <p className="text-xs text-slate-200 mt-2 leading-relaxed">
+                      {t.pressDesc}
+                    </p>
+                    <div className="mt-4 flex flex-wrap gap-3">
+                      <a 
+                        href="https://dewanpers.or.id/data" 
+                        target="_blank" 
+                        rel="noreferrer"
+                        className="px-4 py-2 bg-amber-400 hover:bg-amber-500 text-[#0D2C5C] font-bold text-xs rounded-xl shadow transition inline-flex items-center space-x-1.5"
+                      >
+                        <span>{t.pressCheckBtn}</span>
+                      </a>
+                      <a 
+                        href="https://dewanpers.or.id" 
+                        target="_blank" 
+                        rel="noreferrer"
+                        className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white font-semibold text-xs rounded-xl border border-white/20 transition inline-flex items-center space-x-1.5"
+                      >
+                        <span>Portal Utama dewanpers.or.id ↗</span>
+                      </a>
+                    </div>
                   </div>
                 </div>
 
-                <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                  <h3 className="font-bold text-xs uppercase tracking-wider text-slate-400 mb-3">{t.externalPortals}</h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                {/* 3 Kartu Panduan Dewan Pers */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+                    <div>
+                      <div className="text-2xl mb-2">📜</div>
+                      <h4 className="font-bold text-xs text-[#0D2C5C] dark:text-amber-400 mb-1">{t.pressCardWartawan}</h4>
+                      <p className="text-[11px] text-slate-500 leading-relaxed">
+                        {t.pressCardWartawanDesc}
+                      </p>
+                    </div>
                     <a 
-                      href="https://www.beacukai.go.id" 
+                      href="https://dewanpers.or.id" 
                       target="_blank" 
-                      rel="noreferrer" 
-                      className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition flex items-center justify-between"
+                      rel="noreferrer"
+                      className="mt-3 text-xs font-semibold text-[#0D2C5C] dark:text-amber-400 hover:underline"
                     >
-                      <span className="font-semibold">Portal DJBC Pusat</span>
-                      <span className="text-slate-400">↗</span>
+                      Cek Sertifikasi ↗
                     </a>
+                  </div>
+
+                  <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+                    <div>
+                      <div className="text-2xl mb-2">🏢</div>
+                      <h4 className="font-bold text-xs text-[#0D2C5C] dark:text-amber-400 mb-1">{t.pressCardOrg}</h4>
+                      <p className="text-[11px] text-slate-500 leading-relaxed">
+                        {t.pressCardOrgDesc}
+                      </p>
+                    </div>
                     <a 
-                      href="https://insw.go.id" 
+                      href="https://dewanpers.or.id/read/page/07-05-2025-organisasi-perusahaan-pers" 
                       target="_blank" 
-                      rel="noreferrer" 
-                      className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition flex items-center justify-between"
+                      rel="noreferrer"
+                      className="mt-3 text-xs font-semibold text-[#0D2C5C] dark:text-amber-400 hover:underline"
                     >
-                      <span className="font-semibold">Indonesia National Single Window (INSW)</span>
-                      <span className="text-slate-400">↗</span>
+                      Daftar Organisasi ↗
+                    </a>
+                  </div>
+
+                  <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+                    <div>
+                      <div className="text-2xl mb-2">⚖️</div>
+                      <h4 className="font-bold text-xs text-[#0D2C5C] dark:text-amber-400 mb-1">{t.pressCardPengaduan}</h4>
+                      <p className="text-[11px] text-slate-500 leading-relaxed">
+                        {t.pressCardPengaduanDesc}
+                      </p>
+                    </div>
+                    <a 
+                      href="https://dewanpers.or.id" 
+                      target="_blank" 
+                      rel="noreferrer"
+                      className="mt-3 text-xs font-semibold text-[#0D2C5C] dark:text-amber-400 hover:underline"
+                    >
+                      Tata Cara Pengaduan ↗
                     </a>
                   </div>
                 </div>
@@ -1161,7 +1188,7 @@ export default function App() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 text-xs">
                   <div className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40">
                     <span className="font-semibold block mb-1">{t.settingKeyword}</span>
-                    <p className="text-slate-600 dark:text-slate-300 font-mono">"Bea Cukai Pekanbaru"</p>
+                    <p className="text-slate-600 dark:text-slate-300 font-mono">"Bea Cukai Pekanbaru", KPPBC Pekanbaru, Media Daerah</p>
                   </div>
                   <div className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40">
                     <span className="font-semibold block mb-1">{t.settingCron}</span>
