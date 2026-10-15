@@ -177,7 +177,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 flex flex-col font-sans transition-colors duration-300 relative overflow-x-hidden">
 
-      {/* Latar Belakang Isometrik SVG Khas Wilayah Kerja Bea Cukai Riau */}
+      {/* Latar Belakang Isometrik SVG Khas Wilayah Kerja Riau */}
       <div className="fixed inset-0 pointer-events-none opacity-20 dark:opacity-10 z-0 overflow-hidden">
         <svg className="w-full h-full object-cover" viewBox="0 0 1440 900" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M-100,500 C300,450 600,650 900,550 C1200,450 1500,600 1600,580 L1600,900 L-100,900 Z" fill="#0284C7" />
@@ -245,383 +245,416 @@ export default function App() {
         </div>
       </div>
 
-      {/* Konten Dashboard */}
-      <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 z-10">
+      {/* Konten Utama Terbagi Menjadi Sidebar Kiri & Area Kerja Kanan */}
+      <div className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 z-10 flex flex-col md:flex-row gap-6">
 
-        {/* Modal Form Login Pegawai (Jika belum login) */}
-        {!session && (
-          <div className="mb-8 max-w-md mx-auto bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl p-6 rounded-3xl shadow-xl border border-slate-200/80 dark:border-slate-800">
-            <div className="text-center mb-5">
-              <div className="inline-block p-2.5 rounded-2xl bg-[#0D2C5C]/10 dark:bg-amber-400/10 text-[#0D2C5C] dark:text-amber-400 font-bold mb-1.5 text-xl">
-                🔐
-              </div>
-              <h2 className="text-lg font-extrabold text-[#0D2C5C] dark:text-amber-400">Login Pegawai Bea Cukai</h2>
-              <p className="text-xs text-slate-500 dark:text-slate-400">Masuk untuk mengelola dan memvalidasi publikasi manual.</p>
-            </div>
-
-            {authError && (
-              <div className="mb-4 p-2.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-600 dark:text-rose-400 text-xs text-center font-medium">
-                {authError}
-              </div>
-            )}
-
-            <form onSubmit={handleLogin} className="space-y-3.5 text-xs">
-              <div>
-                <label className="block font-semibold mb-1">Email Kedinasan</label>
-                <input
-                  type="email"
-                  required
-                  placeholder="nama@customs.go.id"
-                  value={loginEmail}
-                  onChange={(e) => setLoginEmail(e.target.value)}
-                  className="w-full px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#0D2C5C]"
-                />
-              </div>
-
-              <div>
-                <label className="block font-semibold mb-1">Kata Sandi</label>
-                <input
-                  type="password"
-                  required
-                  placeholder="••••••••"
-                  value={loginPassword}
-                  onChange={(e) => setLoginPassword(e.target.value)}
-                  className="w-full px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#0D2C5C]"
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={authLoading}
-                className="w-full py-2.5 rounded-xl bg-[#0D2C5C] hover:bg-[#0A2247] text-white font-bold text-sm border border-amber-400/40 shadow-md transition disabled:opacity-50"
-              >
-                {authLoading ? 'Memverifikasi...' : 'Masuk Portal SIMONITA'}
-              </button>
-            </form>
-          </div>
-        )}
-
-        {/* 4 Tab Navigasi Dashboard */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-          <div className="flex flex-wrap items-center gap-2">
+        {/* SIDEBAR KIRI */}
+        <aside className="w-full md:w-64 shrink-0 space-y-4">
+          
+          {/* Menu Navigasi Vertikal */}
+          <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl p-3 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col gap-1.5">
+            <span className="text-[10px] uppercase font-bold text-slate-400 px-3 py-1 tracking-wider">Menu Portal</span>
+            
             <button
               onClick={() => setActiveTab('articles')}
-              className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-1.5 ${
+              className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-between ${
                 activeTab === 'articles'
                   ? 'bg-[#0D2C5C] text-white dark:bg-amber-500 dark:text-slate-950 shadow-sm'
-                  : 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300'
+                  : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300'
               }`}
             >
-              <span>📰</span>
-              <span>Artikel & Berita</span>
+              <span className="flex items-center space-x-2.5">
+                <span className="text-sm">📰</span>
+                <span>Artikel & Berita</span>
+              </span>
+              <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-black/10 dark:bg-white/10">{totalArticles}</span>
             </button>
 
             <button
               onClick={() => setActiveTab('stats')}
-              className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-1.5 ${
+              className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-between ${
                 activeTab === 'stats'
                   ? 'bg-[#0D2C5C] text-white dark:bg-amber-500 dark:text-slate-950 shadow-sm'
-                  : 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300'
+                  : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300'
               }`}
             >
-              <span>📊</span>
-              <span>Statistik & Opini</span>
+              <span className="flex items-center space-x-2.5">
+                <span className="text-sm">📊</span>
+                <span>Statistik & Opini</span>
+              </span>
             </button>
 
             <button
               onClick={() => setActiveTab('services')}
-              className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-1.5 ${
+              className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-between ${
                 activeTab === 'services'
                   ? 'bg-[#0D2C5C] text-white dark:bg-amber-500 dark:text-slate-950 shadow-sm'
-                  : 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300'
+                  : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300'
               }`}
             >
-              <span>🏛️</span>
-              <span>Layanan & Regulasi</span>
+              <span className="flex items-center space-x-2.5">
+                <span className="text-sm">🏛️</span>
+                <span>Layanan & Regulasi</span>
+              </span>
             </button>
 
             <button
               onClick={() => setActiveTab('settings')}
-              className={`px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-1.5 ${
+              className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-between ${
                 activeTab === 'settings'
                   ? 'bg-[#0D2C5C] text-white dark:bg-amber-500 dark:text-slate-950 shadow-sm'
-                  : 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300'
+                  : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300'
               }`}
             >
-              <span>⚙️</span>
-              <span>Pengaturan</span>
+              <span className="flex items-center space-x-2.5">
+                <span className="text-sm">⚙️</span>
+                <span>Pengaturan</span>
+              </span>
             </button>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-            <button
-              onClick={loadData}
-              className="px-3.5 py-2 text-xs font-semibold rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 transition flex items-center space-x-1"
-            >
-              <span>🔄 Refresh</span>
-            </button>
+          {/* Form Login Pegawai (Jika Belum Login) */}
+          {!session && (
+            <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl p-4 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm">
+              <div className="flex items-center space-x-2 mb-3">
+                <span className="text-base">🔐</span>
+                <h3 className="text-xs font-extrabold text-[#0D2C5C] dark:text-amber-400">Login Pegawai</h3>
+              </div>
 
-            <button
-              onClick={() => {
-                if (!session) {
-                  alert('Akses Terbatas: Silakan login terlebih dahulu untuk menambah berita manual.');
-                  return;
-                }
-                setIsModalOpen(true);
-              }}
-              className="px-4 py-2 text-xs font-bold rounded-xl bg-[#0D2C5C] hover:bg-[#0A2247] text-white border border-amber-400/40 shadow-sm flex items-center space-x-1.5 transition"
-            >
-              <span>+ Tambahkan Manual</span>
-            </button>
+              {authError && (
+                <div className="mb-3 p-2 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-600 dark:text-rose-400 text-[11px] font-medium">
+                  {authError}
+                </div>
+              )}
+
+              <form onSubmit={handleLogin} className="space-y-2.5 text-xs">
+                <div>
+                  <input
+                    type="email"
+                    required
+                    placeholder="nama@customs.go.id"
+                    value={loginEmail}
+                    onChange={(e) => setLoginEmail(e.target.value)}
+                    className="w-full px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-[#0D2C5C]"
+                  />
+                </div>
+
+                <div>
+                  <input
+                    type="password"
+                    required
+                    placeholder="Kata Sandi"
+                    value={loginPassword}
+                    onChange={(e) => setLoginPassword(e.target.value)}
+                    className="w-full px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-[#0D2C5C]"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={authLoading}
+                  className="w-full py-2 rounded-xl bg-[#0D2C5C] hover:bg-[#0A2247] text-white font-bold text-xs border border-amber-400/40 shadow-sm transition disabled:opacity-50"
+                >
+                  {authLoading ? 'Verifikasi...' : 'Masuk Portal'}
+                </button>
+              </form>
+            </div>
+          )}
+
+          {/* Kartu Informasi Instansi di Sidebar */}
+          <div className="bg-[#0D2C5C]/5 dark:bg-white/5 p-4 rounded-2xl border border-slate-200/50 dark:border-slate-800 text-xs space-y-2">
+            <span className="font-bold text-[#0D2C5C] dark:text-amber-400 block">Seksi PLI Pekanbaru</span>
+            <p className="text-[11px] text-slate-500 leading-relaxed">
+              Monitoring berkala media online, pengawasan peredaran BKC, dan pengelolaan opini publik.
+            </p>
           </div>
-        </div>
+        </aside>
 
-        {/* TAB 1: ARTIKEL & BERITA */}
-        {activeTab === 'articles' && (
-          <div className="space-y-4">
-            <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-4 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row gap-3">
-              <input
-                type="text"
-                placeholder="Cari judul artikel atau nama media..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="flex-1 px-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0D2C5C]"
-              />
-              <select
-                value={filterType}
-                onChange={(e) => setFilterType(e.target.value)}
-                className="px-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0D2C5C]"
-              >
-                <option value="all">Semua Tipe Entri</option>
-                <option value="scraped">Hasil Scraping</option>
-                <option value="manual">Input Manual</option>
-              </select>
+        {/* AREA KERJA KANAN */}
+        <main className="flex-1 min-w-0">
+
+          {/* Header Aksi */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+            <div>
+              <h1 className="text-xl font-extrabold text-[#0D2C5C] dark:text-amber-400">
+                {activeTab === 'articles' && 'Daftar Artikel & Berita'}
+                {activeTab === 'stats' && 'Statistik & Persepsi Media'}
+                {activeTab === 'services' && 'Layanan Informasi & Regulasi'}
+                {activeTab === 'settings' && 'Konfigurasi Sistem Portal'}
+              </h1>
+              <p className="text-xs text-slate-500 mt-0.5">Portal intelijen media KPPBC TMP B Pekanbaru</p>
             </div>
 
-            <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
-              <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse text-sm">
-                  <thead>
-                    <tr className="bg-slate-50 dark:bg-slate-800/60 border-b border-slate-200 dark:border-slate-800 text-xs text-slate-500 uppercase font-semibold">
-                      <th className="py-3 px-4">Judul Artikel</th>
-                      <th className="py-3 px-4">Sumber</th>
-                      <th className="py-3 px-4">Waktu Terbit</th>
-                      <th className="py-3 px-4">Tipe</th>
-                      <th className="py-3 px-4">Aksi</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                    {loading ? (
-                      <tr>
-                        <td colSpan="5" className="py-12 text-center text-slate-400">
-                          Memuat data artikel...
-                        </td>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={loadData}
+                className="px-3 py-2 text-xs font-semibold rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 transition flex items-center space-x-1"
+              >
+                <span>🔄 Refresh</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  if (!session) {
+                    alert('Akses Terbatas: Silakan login terlebih dahulu untuk menambah berita manual.');
+                    return;
+                  }
+                  setIsModalOpen(true);
+                }}
+                className="px-3.5 py-2 text-xs font-bold rounded-xl bg-[#0D2C5C] hover:bg-[#0A2247] text-white border border-amber-400/40 shadow-sm flex items-center space-x-1.5 transition"
+              >
+                <span>+ Tambah Manual</span>
+              </button>
+            </div>
+          </div>
+
+          {/* KONTEN TAB 1: ARTIKEL & BERITA */}
+          {activeTab === 'articles' && (
+            <div className="space-y-4">
+              <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-3.5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row gap-3">
+                <input
+                  type="text"
+                  placeholder="Cari judul artikel atau nama media..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="flex-1 px-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0D2C5C]"
+                />
+                <select
+                  value={filterType}
+                  onChange={(e) => setFilterType(e.target.value)}
+                  className="px-3 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0D2C5C]"
+                >
+                  <option value="all">Semua Tipe</option>
+                  <option value="scraped">Hasil Scraping</option>
+                  <option value="manual">Input Manual</option>
+                </select>
+              </div>
+
+              <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse text-sm">
+                    <thead>
+                      <tr className="bg-slate-50 dark:bg-slate-800/60 border-b border-slate-200 dark:border-slate-800 text-xs text-slate-500 uppercase font-semibold">
+                        <th className="py-3 px-4">Judul Artikel</th>
+                        <th className="py-3 px-4">Sumber</th>
+                        <th className="py-3 px-4">Waktu</th>
+                        <th className="py-3 px-4">Tipe</th>
+                        <th className="py-3 px-4">Aksi</th>
                       </tr>
-                    ) : filteredArticles.length === 0 ? (
-                      <tr>
-                        <td colSpan="5" className="py-12 text-center text-slate-400">
-                          Tidak ada artikel yang cocok dengan pencarian.
-                        </td>
-                      </tr>
-                    ) : (
-                      filteredArticles.map((article) => (
-                        <tr key={article.id || article.url} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition">
-                          <td className="py-3.5 px-4 font-medium text-slate-800 dark:text-slate-100 max-w-md">
-                            <div className="line-clamp-2">{article.title}</div>
-                            {article.snippet && (
-                              <div className="text-xs text-slate-400 line-clamp-1 mt-0.5">{article.snippet}</div>
-                            )}
-                          </td>
-                          <td className="py-3.5 px-4 text-xs font-semibold text-slate-600 dark:text-slate-300">
-                            {article.source_name}
-                          </td>
-                          <td className="py-3.5 px-4 text-xs text-slate-400 whitespace-nowrap">
-                            {new Date(article.published_at).toLocaleDateString('id-ID', {
-                              day: 'numeric',
-                              month: 'short',
-                              year: 'numeric'
-                            })}
-                          </td>
-                          <td className="py-3.5 px-4 text-xs whitespace-nowrap">
-                            <span className={`px-2 py-0.5 rounded-full font-medium ${
-                              article.entry_type === 'manual'
-                                ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300'
-                                : 'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300'
-                            }`}>
-                              {article.entry_type === 'manual' ? 'Manual' : 'Scraped'}
-                            </span>
-                          </td>
-                          <td className="py-3.5 px-4 text-xs whitespace-nowrap">
-                            <a
-                              href={article.url}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="text-[#0D2C5C] dark:text-amber-400 hover:underline font-semibold"
-                            >
-                              Buka ↗
-                            </a>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                      {loading ? (
+                        <tr>
+                          <td colSpan="5" className="py-12 text-center text-slate-400">
+                            Memuat data artikel...
                           </td>
                         </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* TAB 2: STATISTIK & PERSEPSI PUBLIK */}
-        {activeTab === 'stats' && (
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                <span className="text-xs font-semibold text-slate-500 uppercase">Total Artikel Terdata</span>
-                <div className="text-2xl font-black text-[#0D2C5C] dark:text-amber-400 mt-2">{totalArticles}</div>
-                <span className="text-[11px] text-slate-400 mt-1 block">Pemantauan kumulatif aktif</span>
-              </div>
-              <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                <span className="text-xs font-semibold text-emerald-600 uppercase">Sentimen Positif</span>
-                <div className="text-2xl font-black text-emerald-600 mt-2">{positiveCount}</div>
-                <span className="text-[11px] text-slate-400 mt-1 block">Pemberitaan apresiasi / kinerja</span>
-              </div>
-              <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                <span className="text-xs font-semibold text-sky-600 uppercase">Sentimen Netral</span>
-                <div className="text-2xl font-black text-sky-600 mt-2">{neutralCount}</div>
-                <span className="text-[11px] text-slate-400 mt-1 block">Informasi rilis reguler & umum</span>
-              </div>
-              <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                <span className="text-xs font-semibold text-rose-600 uppercase">Sentimen Kritis / Negatif</span>
-                <div className="text-2xl font-black text-rose-600 mt-2">{negativeCount}</div>
-                <span className="text-[11px] text-slate-400 mt-1 block">Perhatian khusus Seksi PLI</span>
-              </div>
-            </div>
-
-            <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm">
-              <h3 className="font-bold text-sm text-[#0D2C5C] dark:text-amber-400 mb-4">Distribusi Sumber & Kanal Data</h3>
-              <div className="space-y-3 text-xs">
-                <div>
-                  <div className="flex justify-between font-semibold mb-1">
-                    <span>Google News RSS Scraper (Otomatis)</span>
-                    <span>{scrapedCount} artikel</span>
-                  </div>
-                  <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2.5 overflow-hidden">
-                    <div 
-                      className="bg-[#0D2C5C] dark:bg-amber-500 h-2.5 rounded-full" 
-                      style={{ width: `${totalArticles ? (scrapedCount / totalArticles) * 100 : 0}%` }}
-                    ></div>
-                  </div>
-                </div>
-
-                <div>
-                  <div className="flex justify-between font-semibold mb-1">
-                    <span>Input Verifikasi Pegawai PLI (Manual)</span>
-                    <span>{manualCount} artikel</span>
-                  </div>
-                  <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2.5 overflow-hidden">
-                    <div 
-                      className="bg-emerald-500 h-2.5 rounded-full" 
-                      style={{ width: `${totalArticles ? (manualCount / totalArticles) * 100 : 0}%` }}
-                    ></div>
-                  </div>
+                      ) : filteredArticles.length === 0 ? (
+                        <tr>
+                          <td colSpan="5" className="py-12 text-center text-slate-400">
+                            Tidak ada artikel yang cocok dengan pencarian.
+                          </td>
+                        </tr>
+                      ) : (
+                        filteredArticles.map((article) => (
+                          <tr key={article.id || article.url} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition">
+                            <td className="py-3 px-4 font-medium text-slate-800 dark:text-slate-100 max-w-sm">
+                              <div className="line-clamp-2">{article.title}</div>
+                              {article.snippet && (
+                                <div className="text-xs text-slate-400 line-clamp-1 mt-0.5">{article.snippet}</div>
+                              )}
+                            </td>
+                            <td className="py-3 px-4 text-xs font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">
+                              {article.source_name}
+                            </td>
+                            <td className="py-3 px-4 text-xs text-slate-400 whitespace-nowrap">
+                              {new Date(article.published_at).toLocaleDateString('id-ID', {
+                                day: 'numeric',
+                                month: 'short',
+                                year: 'numeric'
+                              })}
+                            </td>
+                            <td className="py-3 px-4 text-xs whitespace-nowrap">
+                              <span className={`px-2 py-0.5 rounded-full font-medium ${
+                                article.entry_type === 'manual'
+                                  ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300'
+                                  : 'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300'
+                              }`}>
+                                {article.entry_type === 'manual' ? 'Manual' : 'Scraped'}
+                              </span>
+                            </td>
+                            <td className="py-3 px-4 text-xs whitespace-nowrap">
+                              <a
+                                href={article.url}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="text-[#0D2C5C] dark:text-amber-400 hover:underline font-semibold"
+                              >
+                                Buka ↗
+                              </a>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* TAB 3: LAYANAN INFORMASI & REGULASI KEPABEANAN */}
-        {activeTab === 'services' && (
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* KONTEN TAB 2: STATISTIK & PERSEPSI MEDIA */}
+          {activeTab === 'stats' && (
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+                <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                  <span className="text-[11px] font-semibold text-slate-500 uppercase">Total Artikel</span>
+                  <div className="text-2xl font-black text-[#0D2C5C] dark:text-amber-400 mt-1">{totalArticles}</div>
+                  <span className="text-[10px] text-slate-400 mt-1 block">Terkumpul di database</span>
+                </div>
+                <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                  <span className="text-[11px] font-semibold text-emerald-600 uppercase">Sentimen Positif</span>
+                  <div className="text-2xl font-black text-emerald-600 mt-1">{positiveCount}</div>
+                  <span className="text-[10px] text-slate-400 mt-1 block">Apresiasi & kinerja</span>
+                </div>
+                <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                  <span className="text-[11px] font-semibold text-sky-600 uppercase">Sentimen Netral</span>
+                  <div className="text-2xl font-black text-sky-600 mt-1">{neutralCount}</div>
+                  <span className="text-[10px] text-slate-400 mt-1 block">Pemberitaan umum</span>
+                </div>
+                <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                  <span className="text-[11px] font-semibold text-rose-600 uppercase">Sentimen Negatif</span>
+                  <div className="text-2xl font-black text-rose-600 mt-1">{negativeCount}</div>
+                  <span className="text-[10px] text-slate-400 mt-1 block">Perlu tindak lanjut</span>
+                </div>
+              </div>
+
               <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                <div className="text-2xl mb-2">📞</div>
-                <h4 className="font-bold text-sm text-[#0D2C5C] dark:text-amber-400 mb-1">Layanan Kontak PLI</h4>
-                <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                  Konsultasi kepabeanan, cukai, dan layanan pengaduan KPPBC TMP B Pekanbaru.
-                </p>
-                <div className="mt-3 text-xs font-semibold text-emerald-600">Jam Layanan: 07.30 - 17.00 WIB</div>
+                <h3 className="font-bold text-xs uppercase tracking-wider text-slate-400 mb-4">Distribusi Saluran Berita</h3>
+                <div className="space-y-4 text-xs">
+                  <div>
+                    <div className="flex justify-between font-semibold mb-1.5">
+                      <span>Google News Scraper (Otomatis)</span>
+                      <span>{scrapedCount} artikel</span>
+                    </div>
+                    <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2 overflow-hidden">
+                      <div 
+                        className="bg-[#0D2C5C] dark:bg-amber-500 h-2 rounded-full" 
+                        style={{ width: `${totalArticles ? (scrapedCount / totalArticles) * 100 : 0}%` }}
+                      ></div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="flex justify-between font-semibold mb-1.5">
+                      <span>Input Pegawai PLI (Manual)</span>
+                      <span>{manualCount} artikel</span>
+                    </div>
+                    <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2 overflow-hidden">
+                      <div 
+                        className="bg-emerald-500 h-2 rounded-full" 
+                        style={{ width: `${totalArticles ? (manualCount / totalArticles) * 100 : 0}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* KONTEN TAB 3: LAYANAN & REGULASI */}
+          {activeTab === 'services' && (
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+                <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                  <div className="text-xl mb-1.5">📞</div>
+                  <h4 className="font-bold text-xs text-[#0D2C5C] dark:text-amber-400 mb-1">Layanan Informasi PLI</h4>
+                  <p className="text-[11px] text-slate-500 leading-relaxed">
+                    Konsultasi kepabeanan, cukai, dan layanan pengaduan KPPBC TMP B Pekanbaru.
+                  </p>
+                  <div className="mt-2.5 text-[11px] font-semibold text-emerald-600">Jam Layanan: 07.30 - 17.00 WIB</div>
+                </div>
+
+                <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                  <div className="text-xl mb-1.5">📜</div>
+                  <h4 className="font-bold text-xs text-[#0D2C5C] dark:text-amber-400 mb-1">Fasilitas Berikat & TPB</h4>
+                  <p className="text-[11px] text-slate-500 leading-relaxed">
+                    Tempat Penimbunan Berikat, Kawasan Berikat, dan prosedur impor-ekspor industri.
+                  </p>
+                  <div className="mt-2.5 text-[11px] font-semibold text-sky-600">Wilayah Siak & Pelalawan</div>
+                </div>
+
+                <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                  <div className="text-xl mb-1.5">⚖️</div>
+                  <h4 className="font-bold text-xs text-[#0D2C5C] dark:text-amber-400 mb-1">Gempur Rokok Ilegal</h4>
+                  <p className="text-[11px] text-slate-500 leading-relaxed">
+                    Saluran informasi peredaran barang kena cukai (BKC) tanpa pita cukai resmi.
+                  </p>
+                  <div className="mt-2.5 text-[11px] font-semibold text-rose-600">Pekanbaru, Kampar, & Rohul</div>
+                </div>
               </div>
 
               <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                <div className="text-2xl mb-2">📜</div>
-                <h4 className="font-bold text-sm text-[#0D2C5C] dark:text-amber-400 mb-1">Kawasan Berikat & TPB</h4>
-                <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                  Fasilitas Tempat Penimbunan Berikat, Kawasan Berikat, dan prosedur impor-ekspor industri.
-                </p>
-                <div className="mt-3 text-xs font-semibold text-sky-600">Wilayah Siak & Pelalawan</div>
-              </div>
-
-              <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                <div className="text-2xl mb-2">⚖️</div>
-                <h4 className="font-bold text-sm text-[#0D2C5C] dark:text-amber-400 mb-1">Gempur Rokok Ilegal</h4>
-                <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                  Saluran pengaduan peredaran barang kena cukai (BKC) ilegal di Pekanbaru, Kampar, & Rohul.
-                </p>
-                <div className="mt-3 text-xs font-semibold text-rose-600">Operasi Cukai Aktif</div>
-              </div>
-            </div>
-
-            <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm">
-              <h3 className="font-bold text-sm text-[#0D2C5C] dark:text-amber-400 mb-3">Tautan Saluran Resmi & Portal Terkait</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                <a 
-                  href="https://www.beacukai.go.id" 
-                  target="_blank" 
-                  rel="noreferrer" 
-                  className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition flex items-center justify-between"
-                >
-                  <span className="font-semibold">Portal Resmi DJBC Pusat</span>
-                  <span className="text-slate-400">↗</span>
-                </a>
-                <a 
-                  href="https://insw.go.id" 
-                  target="_blank" 
-                  rel="noreferrer" 
-                  className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition flex items-center justify-between"
-                >
-                  <span className="font-semibold">Indonesia National Single Window (INSW)</span>
-                  <span className="text-slate-400">↗</span>
-                </a>
+                <h3 className="font-bold text-xs uppercase tracking-wider text-slate-400 mb-3">Portal Eksternal Terkait</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                  <a 
+                    href="https://www.beacukai.go.id" 
+                    target="_blank" 
+                    rel="noreferrer" 
+                    className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition flex items-center justify-between"
+                  >
+                    <span className="font-semibold">Portal Resmi DJBC Pusat</span>
+                    <span className="text-slate-400">↗</span>
+                  </a>
+                  <a 
+                    href="https://insw.go.id" 
+                    target="_blank" 
+                    rel="noreferrer" 
+                    className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition flex items-center justify-between"
+                  >
+                    <span className="font-semibold">Indonesia National Single Window (INSW)</span>
+                    <span className="text-slate-400">↗</span>
+                  </a>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* TAB 4: PENGATURAN & INFORMASI SISTEM */}
-        {activeTab === 'settings' && (
-          <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
-            <div>
-              <h2 className="text-lg font-bold text-[#0D2C5C] dark:text-amber-400">Konfigurasi SIMONITA</h2>
-              <p className="text-xs text-slate-500">Parameter sistem scraper dan administrasi pengawasan wilayah.</p>
-            </div>
+          {/* KONTEN TAB 4: PENGATURAN */}
+          {activeTab === 'settings' && (
+            <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+              <div>
+                <h2 className="text-base font-bold text-[#0D2C5C] dark:text-amber-400">Konfigurasi SIMONITA</h2>
+                <p className="text-xs text-slate-500">Parameter sistem scraper dan administrasi portal.</p>
+              </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-              <div className="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40">
-                <span className="font-semibold block mb-1">Target Kata Kunci Mesin Scraper</span>
-                <p className="text-slate-600 dark:text-slate-300 font-mono">"Bea Cukai Pekanbaru"</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 text-xs">
+                <div className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40">
+                  <span className="font-semibold block mb-1">Target Kata Kunci Scraper</span>
+                  <p className="text-slate-600 dark:text-slate-300 font-mono">"Bea Cukai Pekanbaru"</p>
+                </div>
+                <div className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40">
+                  <span className="font-semibold block mb-1">Jadwal Otomasi GitHub Actions</span>
+                  <p className="text-slate-600 dark:text-slate-300 font-mono">Setiap 1 Jam (0 * * * *)</p>
+                </div>
+                <div className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40">
+                  <span className="font-semibold block mb-1">Domain & Hosting</span>
+                  <p className="text-slate-600 dark:text-slate-300 font-mono">Cloudflare Pages (simonita.pages.dev / simonita.sbs)</p>
+                </div>
+                <div className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40">
+                  <span className="font-semibold block mb-1">Basis Data & Keamanan</span>
+                  <p className="text-slate-600 dark:text-slate-300 font-mono">Supabase PostgreSQL + RLS</p>
+                </div>
               </div>
-              <div className="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40">
-                <span className="font-semibold block mb-1">Jadwal Otomasi GitHub Actions</span>
-                <p className="text-slate-600 dark:text-slate-300 font-mono">Setiap 1 Jam (cron: '0 * * * *')</p>
-              </div>
-              <div className="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40">
-                <span className="font-semibold block mb-1">Domain & Hosting</span>
-                <p className="text-slate-600 dark:text-slate-300 font-mono">Cloudflare Pages (simonita.pages.dev / simonita.sbs)</p>
-              </div>
-              <div className="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40">
-                <span className="font-semibold block mb-1">Basis Data & Otentikasi</span>
-                <p className="text-slate-600 dark:text-slate-300 font-mono">Supabase PostgreSQL + RLS</p>
-              </div>
-            </div>
 
-            <div className="pt-4 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 flex flex-col sm:flex-row justify-between gap-2">
-              <span>Seksi Penyuluhan dan Layanan Informasi (PLI) KPPBC TMP B Pekanbaru</span>
-              <span>Versi Produksi 1.0.0</span>
+              <div className="pt-3 border-t border-slate-200 dark:border-slate-800 text-[11px] text-slate-400 flex flex-col sm:flex-row justify-between gap-1">
+                <span>Seksi Penyuluhan dan Layanan Informasi (PLI) KPPBC TMP B Pekanbaru</span>
+                <span>Versi 1.0.0</span>
+              </div>
             </div>
-          </div>
-        )}
-      </main>
+          )}
+        </main>
+      </div>
 
       {/* Drawer 2FA OTP Horizontal Sliding */}
       {showOtpDrawer && (
@@ -686,7 +719,7 @@ export default function App() {
                 <input
                   type="text"
                   required
-                  placeholder="Contoh: Bea Cukai Pekanbaru Musnahkan BMN Ilegal..."
+                  placeholder="Contoh: Bea Cukai Pekanbaru Gagalkan Penyelundupan..."
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                   className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0D2C5C]"
