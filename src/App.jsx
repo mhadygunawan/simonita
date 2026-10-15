@@ -166,6 +166,50 @@ export default function App() {
     return matchesSearch && matchesFilter;
   });
 
+  // Fitur Ekspor Data ke CSV / Excel
+  const exportToCSV = () => {
+    if (filteredArticles.length === 0) {
+      alert('Tidak ada data artikel untuk diekspor.');
+      return;
+    }
+
+    // Header Kolom CSV
+    const headers = ['No', 'Judul Artikel', 'Nama Sumber / Media', 'Waktu Terbit', 'Tipe Entri', 'Sentimen Opini', 'URL Artikel'];
+
+    // Baris Data
+    const rows = filteredArticles.map((article, index) => {
+      const cleanTitle = `"${(article.title || '').replace(/"/g, '""')}"`;
+      const cleanSource = `"${(article.source_name || '').replace(/"/g, '""')}"`;
+      const dateFormatted = new Date(article.published_at).toLocaleString('id-ID', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+      const cleanDate = `"${dateFormatted}"`;
+      const cleanType = `"${article.entry_type || 'scraped'}"`;
+      const cleanSentiment = `"${article.sentiment || 'neutral'}"`;
+      const cleanUrl = `"${(article.url || '').replace(/"/g, '""')}"`;
+
+      return [index + 1, cleanTitle, cleanSource, cleanDate, cleanType, cleanSentiment, cleanUrl].join(',');
+    });
+
+    // Gabungkan dengan BOM UTF-8 agar karakter bahasa Indonesia dan simbol terbaca rapi di Microsoft Excel
+    const csvContent = '\uFEFF' + [headers.join(','), ...rows].join('\r\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    const dateStamp = new Date().toISOString().slice(0, 10);
+    link.href = url;
+    link.setAttribute('download', `SIMONITA_Rekap_Berita_${dateStamp}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   // Metrik Statistik Sentimen & Total
   const totalArticles = articles.length;
   const scrapedCount = articles.filter(a => a.entry_type === 'scraped').length;
@@ -385,7 +429,19 @@ export default function App() {
               <p className="text-xs text-slate-500 mt-0.5">Portal intelijen media KPPBC TMP B Pekanbaru</p>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+              {/* Tombol Ekspor CSV / Excel */}
+              {activeTab === 'articles' && (
+                <button
+                  onClick={exportToCSV}
+                  className="px-3.5 py-2 text-xs font-bold rounded-xl border border-emerald-500/40 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-600/40 transition flex items-center space-x-1.5 shadow-sm"
+                  title="Unduh data dalam format CSV / Excel"
+                >
+                  <span>📥</span>
+                  <span>Ekspor CSV</span>
+                </button>
+              )}
+
               <button
                 onClick={loadData}
                 className="px-3 py-2 text-xs font-semibold rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 transition flex items-center space-x-1"
@@ -639,7 +695,7 @@ export default function App() {
                 </div>
                 <div className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40">
                   <span className="font-semibold block mb-1">Domain & Hosting</span>
-                  <p className="text-slate-600 dark:text-slate-300 font-mono">Cloudflare Pages (simonita.pages.dev / simonita.sbs)</p>
+                  <p className="text-slate-600 dark:text-slate-300 font-mono">Cloudflare Pages (simonita.cloud)</p>
                 </div>
                 <div className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40">
                   <span className="font-semibold block mb-1">Basis Data & Keamanan</span>
@@ -649,7 +705,7 @@ export default function App() {
 
               <div className="pt-3 border-t border-slate-200 dark:border-slate-800 text-[11px] text-slate-400 flex flex-col sm:flex-row justify-between gap-1">
                 <span>Seksi Penyuluhan dan Layanan Informasi (PLI) KPPBC TMP B Pekanbaru</span>
-                <span>Versi 1.0.0</span>
+                <span>Versi 1.1.0</span>
               </div>
             </div>
           )}
