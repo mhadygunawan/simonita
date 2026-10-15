@@ -39,15 +39,45 @@ export async function addManualArticle(article) {
   return data;
 }
 
+// Perbarui artikel & sentimen (Edit)
+export async function updateArticle(id, updates) {
+  const { data, error } = await supabase
+    .from('articles')
+    .update(updates)
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Error updating article:', error.message);
+    throw error;
+  }
+  return data;
+}
+
+// Hapus artikel permanen
+export async function deleteArticle(id) {
+  const { error } = await supabase
+    .from('articles')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    console.error('Error deleting article:', error.message);
+    throw error;
+  }
+  return true;
+}
+
 // Langganan pembaruan realtime
 export function subscribeToArticles(callback) {
   return supabase
     .channel('public:articles')
     .on(
       'postgres_changes',
-      { event: 'INSERT', schema: 'public', table: 'articles' },
-      (payload) => {
-        callback(payload.new);
+      { event: '*', schema: 'public', table: 'articles' },
+      () => {
+        callback();
       }
     )
     .subscribe();
