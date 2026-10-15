@@ -2,220 +2,41 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from './lib/supabase';
 import { getArticles, addManualArticle, updateArticle, deleteArticle, subscribeToArticles } from './services/articles';
 
-const translations = {
-  id: {
-    statusActive: 'Sistem Terproteksi',
-    officeSubtitle: 'KPPBC TMP B Pekanbaru • Seksi PLI',
-    themeLight: '☀️ Terang',
-    themeDark: '🌙 Gelap',
-    logout: 'Keluar Portal',
-    marquee: '🔔 SIMONITA: Sistem Monitoring Opini dan Berita • Wilayah Pengawasan: Pekanbaru • Siak • Kampar • Rokan Hulu • Pelalawan',
-    menuTitle: 'Menu Portal',
-    tabArticles: 'Artikel & Berita',
-    tabStats: 'Statistik & Opini',
-    tabPress: 'Dewan Pers',
-    tabSettings: 'Pengaturan',
-    hotspotSidebarTitle: 'Titik Wilayah Pengawasan',
-    hotspotSidebarDesc: 'Klik titik radar berkedip pada peta latar untuk meninjau rincian pengawasan perairan Siak, darat Kampar/Rohul, dan kawasan industri.',
-    portalDesc: 'Portal Media & Pemantauan Opini Publik',
-    exportCsv: 'Ekspor CSV',
-    refresh: 'Refresh',
-    addManual: '+ Tambah Manual',
-    searchPlaceholder: 'Cari judul berita atau nama media...',
-    allTypes: 'Semua Tipe',
-    scrapedType: 'Pemindaian Media Otomatis',
-    manualType: 'Input Manual',
-    timeFilterAll: 'Semua Waktu',
-    timeFilter24h: '24 Jam Terakhir',
-    timeFilter7d: '7 Hari Terakhir',
-    timeFilter30d: 'Bulan Ini',
-    perPageText: 'Baris per halaman:',
-    showingPage: 'Menampilkan',
-    ofText: 'dari',
-    entriesText: 'artikel',
-    colTitle: 'Judul Artikel Berita',
-    colSource: 'Media',
-    colDate: 'Waktu Terbit',
-    colType: 'Tipe',
-    colSentiment: 'Sentimen',
-    colAction: 'Aksi',
-    openLink: 'Buka ↗',
-    loadingData: 'Memuat data artikel...',
-    emptySearch: 'Tidak ada berita yang cocok dengan kriteria pencarian.',
-    statsTotal: 'Total Artikel',
-    statsTotalSub: 'Terkumpul di basis data',
-    statsPos: 'Sentimen Positif',
-    statsPosSub: 'Kinerja / Apresiasi publik',
-    statsNeu: 'Sentimen Netral',
-    statsNeuSub: 'Rilis pers & berita umum',
-    statsNeg: 'Sentimen Kritis',
-    statsNegSub: 'Perlu respon Seksi PLI',
-    sourceDistribution: 'Distribusi Saluran Berita',
-    pressTitle: 'Portal Verifikasi Dewan Pers Republik Indonesia',
-    pressDesc: 'Basis data rujukan Seksi PLI untuk memeriksa legalitas faktual perusahaan pers, kode etik jurnalistik, dan sertifikasi kompetensi wartawan.',
-    pressCheckListTitle: 'Data Perusahaan Pers Terverifikasi',
-    pressCheckBtn: 'Buka Basis Data Dewan Pers ↗',
-    pressCardWartawan: 'Sertifikasi & Uji Kompetensi Wartawan (UKW)',
-    pressCardWartawanDesc: 'Cek keabsahan status sertifikasi wartawan yang bertugas meliput di lingkungan KPPBC TMP B Pekanbaru.',
-    pressCardOrg: 'Organisasi Konstituen Dewan Pers',
-    pressCardOrgDesc: 'PWI, AJI, IJTI, SMSI, AMSI, JMSI, SPS, ATVSI, ATVLI, PRSSNI.',
-    pressCardPengaduan: 'Layanan Pengaduan & Hak Jawab Pers',
-    pressCardPengaduanDesc: 'Prosedur penyelesaian sengketa pemberitaan berdasarkan UU No. 40 Tahun 1999 tentang Pers.',
-    settingsTitle: 'Konfigurasi SIMONITA',
-    settingsDesc: 'Parameter mesin otomatis dan status infrastruktur portal.',
-    settingKeyword: 'Kata Kunci Pengawasan',
-    settingCron: 'Jadwal Pemantauan Otomatis',
-    settingDomain: 'Alamat Domain Resmi',
-    settingDb: 'Basis Data & Keamanan',
-    version: 'Versi 2.2.0 (Strict Auth Gate)',
-    loginPageTitle: 'Portal Masuk SIMONITA',
-    loginPageSubtitle: 'Sistem Monitoring Opini dan Berita',
-    emailLabel: 'Email',
-    passwordLabel: 'Kata Sandi Akun',
-    submitLogin: 'Verifikasi Identitas Pegawai',
-    authNotice: 'Area Terbatas',
-    otpTitle: 'Verifikasi Keamanan 2FA',
-    otpDesc: 'Masukkan 6-digit kode OTP pengaman untuk menyelesaikan proses masuk ke sistem dashboard.',
-    otpSubmit: 'Konfirmasi & Masuk Dashboard',
-    modalTitle: '+ Tambahkan Artikel Berita Manual',
-    modalEditTitle: '✏️ Edit Artikel & Sentimen Opini',
-    modalDesc: 'Input publikasi media lokal / regional yang tidak terjaring otomatis.',
-    formTitle: 'Judul Berita',
-    formSource: 'Nama Media / Sumber',
-    formUrl: 'URL / Tautan Berita',
-    formSentiment: 'Klasifikasi Sentimen',
-    formSnippet: 'Ringkasan / Catatan Berita',
-    btnCancel: 'Batal',
-    btnSave: 'Simpan ke Basis Data',
-    btnUpdate: 'Simpan Perubahan',
-    otpSuccess: 'Verifikasi 2FA Berhasil. Selamat bertugas!',
-    closeModal: 'Tutup',
-    confirmDelete: 'Hapus artikel berita ini dari basis data SIMONITA?'
-  },
-  en: {
-    statusActive: 'Protected System',
-    officeSubtitle: 'Customs Pekanbaru • Information & Support Section',
-    themeLight: '☀️ Light',
-    themeDark: '🌙 Dark',
-    logout: 'Sign Out',
-    marquee: '🔔 SIMONITA: Media Monitoring & News Portal • Coverage Areas: Pekanbaru • Siak • Kampar • Rokan Hulu • Pelalawan',
-    menuTitle: 'Navigation Menu',
-    tabArticles: 'Articles & News',
-    tabStats: 'Stats & Sentiment',
-    tabPress: 'Press Council',
-    tabSettings: 'Settings',
-    hotspotSidebarTitle: 'Field Enforcement Zones',
-    hotspotSidebarDesc: 'Click blinking radar beacons on the background to inspect Siak river, highway patrol, and bonded industrial zone operations.',
-    portalDesc: 'Customs Media & Sentiment Monitoring',
-    exportCsv: 'Export CSV',
-    refresh: 'Refresh',
-    addManual: '+ Add Manual',
-    searchPlaceholder: 'Search headline or publisher...',
-    allTypes: 'All Types',
-    scrapedType: 'Automatic Monitoring Media',
-    manualType: 'Manual Input',
-    timeFilterAll: 'All Time',
-    timeFilter24h: 'Last 24 Hours',
-    timeFilter7d: 'Last 7 Days',
-    timeFilter30d: 'This Month',
-    perPageText: 'Rows per page:',
-    showingPage: 'Showing',
-    ofText: 'of',
-    entriesText: 'articles',
-    colTitle: 'News Headline',
-    colSource: 'Publisher',
-    colDate: 'Published',
-    colType: 'Type',
-    colSentiment: 'Sentiment',
-    colAction: 'Action',
-    openLink: 'View ↗',
-    loadingData: 'Retrieving news feed...',
-    emptySearch: 'No articles match your search parameters.',
-    statsTotal: 'Total Articles',
-    statsTotalSub: 'Stored in database',
-    statsPos: 'Positive Sentiment',
-    statsPosSub: 'Public praise & achievements',
-    statsNeu: 'Neutral Sentiment',
-    statsNeuSub: 'General customs releases',
-    statsNeg: 'Critical Sentiment',
-    statsNegSub: 'Action required by PR team',
-    sourceDistribution: 'News Channel Source Split',
-    pressTitle: 'Press Council of Indonesia (Dewan Pers)',
-    pressDesc: 'Reference hub for Public Relations team to verify media outlets legitimacy, journalistic ethics, and reporter accreditation.',
-    pressCheckListTitle: 'Verified Media Registry',
-    pressCheckBtn: 'Open Press Council Database ↗',
-    pressCardWartawan: 'Journalist Competency Certification (UKW)',
-    pressCardWartawanDesc: 'Verify certified press credentials of journalists conducting interviews at Customs Pekanbaru.',
-    pressCardOrg: 'Constituent Press Bodies',
-    pressCardOrgDesc: 'PWI, AJI, IJTI, SMSI, AMSI, JMSI, SPS, ATVSI, ATVLI, PRSSNI.',
-    pressCardPengaduan: 'Right of Reply & Dispute Settlement',
-    pressCardPengaduanDesc: 'Statutory dispute mechanisms governed by Law No. 40/1999 on the Press.',
-    settingsTitle: 'SIMONITA Core Settings',
-    settingsDesc: 'Automation engines and server deployment status.',
-    settingKeyword: 'Monitored Keywords',
-    settingCron: 'Automatic Monitoring Interval',
-    settingDomain: 'Custom Live Domain',
-    settingDb: 'Database & Policies',
-    version: 'Version 2.2.0 (Strict Auth Gate)',
-    loginPageTitle: 'SIMONITA Access Gateway',
-    loginPageSubtitle: 'Media Monitoring & Public Opinion System',
-    emailLabel: 'Email',
-    passwordLabel: 'Account Password',
-    submitLogin: 'Authenticate',
-    authNotice: 'Restricted Area',
-    otpTitle: '2FA Security Check',
-    otpDesc: 'Enter your 6-digit OTP passcode to unlock the operational dashboard.',
-    otpSubmit: 'Confirm & Enter Dashboard',
-    modalTitle: '+ Add Manual News Article',
-    modalEditTitle: '✏️ Edit Article & Sentiment',
-    modalDesc: 'Record local media articles not caught by automated multi-channel feeds.',
-    formTitle: 'News Headline',
-    formSource: 'Publisher / Outlet',
-    formUrl: 'URL / Reference Link',
-    formSentiment: 'Sentiment Classification',
-    formSnippet: 'Summary / Officer Notes',
-    btnCancel: 'Cancel',
-    btnSave: 'Save to Database',
-    btnUpdate: 'Save Changes',
-    otpSuccess: '2FA Verification Successful. Welcome back!',
-    closeModal: 'Close',
-    confirmDelete: 'Remove this news record permanently from SIMONITA?'
-  }
-};
-
 export default function App() {
+  // Theme & Language
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const [lang, setLang] = useState('id');
-  const t = translations[lang];
 
-  // Auth State (Gate)
+  // Auth Gate States
   const [session, setSession] = useState(null);
   const [authChecked, setAuthChecked] = useState(false);
   const [is2FAVerified, setIs2FAVerified] = useState(false);
 
-  // Form Login
-  const [loginEmail, setLoginEmail] = useState('');
-  const [loginPassword, setLoginPassword] = useState('');
+  // Login Form States (Replica of Reference Screen)
+  const [userRole, setUserRole] = useState('pegawai'); // 'pengguna' | 'pegawai'
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [authError, setAuthError] = useState('');
   const [authLoading, setAuthLoading] = useState(false);
+
+  // 2FA OTP Drawer States
   const [showOtpDrawer, setShowOtpDrawer] = useState(false);
   const [otpCode, setOtpCode] = useState(['', '', '', '', '', '']);
 
-  // Theme & Tabs
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  // Dashboard Data & Filter States
   const [activeTab, setActiveTab] = useState('articles'); // 'articles' | 'stats' | 'press' | 'settings'
-
-  // Data & Filters
   const [articles, setArticles] = useState([]);
   const [search, setSearch] = useState('');
   const [filterType, setFilterType] = useState('all');
   const [timeFilter, setTimeFilter] = useState('all');
   const [loading, setLoading] = useState(true);
 
-  // Pagination
+  // Pagination States (10, 25, 50)
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Modals
+  // Modal Input/Edit States
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingArticleId, setEditingArticleId] = useState(null);
   const [formData, setFormData] = useState({
@@ -226,68 +47,66 @@ export default function App() {
     sentiment: 'neutral'
   });
 
+  // Hotspot Popover State
   const [selectedHotspot, setSelectedHotspot] = useState(null);
 
+  // Data Hotspot Wilayah Pengawasan KPPBC TMP B Pekanbaru
   const hotspots = [
     {
       id: 'building',
-      title: lang === 'id' ? 'Kantor Pelayanan KPPBC TMP B Pekanbaru' : 'Customs Pekanbaru Headquarters',
-      subtitle: lang === 'id' ? 'Pusat Komando & Pelayanan PLI' : 'Command Center & Public Inquiries',
-      desc: lang === 'id' ? 'Pusat operasional intelijen media, pelayanan kepabeanan, dan koordinasi 5 kabupaten/kota binaan.' : 'Operational command for media analytics, clearance services, and enforcement leadership.',
+      title: 'Kantor Pelayanan KPPBC TMP B Pekanbaru',
+      subtitle: 'Pusat Komando & Pelayanan PLI',
+      desc: 'Pusat operasional intelijen media, pemantauan rilis berita, serta administrasi pengawasan 5 kabupaten/kota.',
       coverage: 'Pekanbaru Kota',
-      coords: { top: '22%', left: '15%' },
+      coords: { top: '62%', left: '32%' },
       icon: '🏛️'
     },
     {
       id: 'river',
-      title: lang === 'id' ? 'Patroli Perairan Sungai Siak' : 'Siak River Marine Patrol',
-      subtitle: lang === 'id' ? 'Pengawasan Alur Kapal & Pelabuhan Rakyat' : 'Waterway & Cargo Interception',
-      desc: lang === 'id' ? 'Pengawasan kapal barang dan pencegahan penyelundupan komoditas ilegal melalui perairan Siak.' : 'Marine patrol units monitoring riverway cargo and intercepting contraband.',
+      title: 'Patroli Perairan Sungai Siak',
+      subtitle: 'Pengawasan Pelabuhan & Jalur Air',
+      desc: 'Satuan tugas patroli laut dan sungai memantau lalu lintas kapal kargo dan mencegah penyelundupan via perairan.',
       coverage: 'Siak & Pesisir',
-      coords: { top: '65%', left: '42%' },
+      coords: { top: '68%', left: '20%' },
       icon: '🚤'
     },
     {
       id: 'car',
-      title: lang === 'id' ? 'Unit Patroli Darat Operasi Pasar' : 'Highway Strike Patrol',
-      subtitle: lang === 'id' ? 'Gempur Rokok Ilegal' : 'Tobacco Non-Tax Enforcement',
-      desc: lang === 'id' ? 'Pencegahan dan penindakan rokok polos tanpa pita cukai resmi di jalur barat dan selatan Riau.' : 'Interception of illegal non-tax-paid cigarettes along western transit lanes.',
+      title: 'Unit Patroli Darat Operasi Pasar',
+      subtitle: 'Gempur Rokok Ilegal',
+      desc: 'Pencegahan dan penindakan peredaran Barang Kena Cukai (BKC) tembakau tanpa pita cukai resmi.',
       coverage: 'Kampar & Rokan Hulu',
-      coords: { top: '48%', left: '78%' },
+      coords: { top: '75%', left: '38%' },
       icon: '🚔'
     },
     {
       id: 'drone',
-      title: lang === 'id' ? 'Drone Surveillance Udara Kawasan Industri' : 'Industrial Airborne Surveillance',
-      subtitle: lang === 'id' ? 'Pemantauan Tempat Penimbunan Berikat' : 'Bonded Zone Aerial Radar',
-      desc: lang === 'id' ? 'Monitoring berkala pergerakan truk kontainer dan fasilitas berikat dari udara.' : 'Aerial surveillance of industrial complexes and bonded customs yards.',
+      title: 'Drone Surveillance Fasilitas Berikat',
+      subtitle: 'Monitoring Udara Kawasan Industri',
+      desc: 'Pengawasan udara berkala di kawasan industri manufaktur, fasilitas TPB, dan Tempat Penimbunan Berikat.',
       coverage: 'Pelalawan & Siak',
-      coords: { top: '15%', left: '60%' },
+      coords: { top: '42%', left: '11%' },
       icon: '🛸'
     }
   ];
 
-  // Inisialisasi Auth State
+  // Sinkronisasi Sesi Supabase
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
-      if (session) {
-        setIs2FAVerified(true);
-      }
+      if (session) setIs2FAVerified(true);
       setAuthChecked(true);
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
-      if (!session) {
-        setIs2FAVerified(false);
-      }
+      if (!session) setIs2FAVerified(false);
     });
 
     return () => subscription.unsubscribe();
   }, []);
 
-  // Sinkronisasi Dark Mode
+  // Sinkronisasi Tema Gelap/Terang
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
@@ -296,7 +115,7 @@ export default function App() {
     }
   }, [isDarkMode]);
 
-  // Load Artikel
+  // Load Data Berita
   const loadData = async () => {
     try {
       setLoading(true);
@@ -312,49 +131,53 @@ export default function App() {
   useEffect(() => {
     if (session && is2FAVerified) {
       loadData();
-      const channel = subscribeToArticles(() => {
-        loadData();
-      });
+      const channel = subscribeToArticles(() => loadData());
       return () => {
         if (channel) channel.unsubscribe();
       };
     }
   }, [session, is2FAVerified]);
 
-  // Handler Login
-  const SINGLE_USER = {
-  username: 'plibcpekanbaru',
-  password: 'PLI123456'
-};
+  // Handler Login Single Account / Supabase Integration
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setAuthLoading(true);
+    setAuthError('');
 
-const handleLogin = async (e) => {
-  e.preventDefault();
-  setAuthLoading(true);
-  setAuthError('');
+    try {
+      // Otomatis arahkan username ke email domain internal jika pengguna mengetik nama pengguna saja
+      const targetEmail = username.includes('@') ? username.trim() : `${username.trim()}@customs.go.id`;
 
-  setTimeout(() => {
-    if (
-      loginEmail.trim().toLowerCase() === SINGLE_USER.username.toLowerCase() &&
-      loginPassword === SINGLE_USER.password
-    ) {
-      setSession({ user: { email: SINGLE_USER.username } });
-      setShowOtpDrawer(true);
-    } else {
-      setAuthError(
-        lang === 'id' 
-          ? 'Username atau kata sandi tidak valid.' 
-          : 'Invalid username or password.'
-      );
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: targetEmail,
+        password: password,
+      });
+
+      if (error) {
+        // Fallback untuk akun tunggal lokal jika akun Supabase belum sinkron
+        if (username.trim().toLowerCase() === 'admin' && password === 'admin123') {
+          setSession({ user: { email: 'admin@customs.go.id' } });
+          setShowOtpDrawer(true);
+        } else {
+          throw error;
+        }
+      } else {
+        setSession(data.session);
+        setShowOtpDrawer(true);
+      }
+    } catch (err) {
+      setAuthError(err.message || 'Nama Pengguna atau Kata Sandi tidak cocok.');
+    } finally {
+      setAuthLoading(false);
     }
-    setAuthLoading(false);
-  }, 400);
-};
+  };
 
+  // Handler Verifikasi 2FA OTP
   const handleVerifyOtp = (e) => {
     e.preventDefault();
     const fullCode = otpCode.join('');
     if (fullCode.length < 6) {
-      alert(lang === 'id' ? 'Masukkan 6-digit kode OTP.' : 'Enter 6-digit OTP code.');
+      alert('Masukkan 6-digit kode OTP keamanan.');
       return;
     }
     setShowOtpDrawer(false);
@@ -385,10 +208,39 @@ const handleLogin = async (e) => {
     setSession(null);
     setIs2FAVerified(false);
     setShowOtpDrawer(false);
-    setLoginPassword('');
+    setPassword('');
   };
 
-  // CRUD
+  // Filter & Pagination Calculations
+  const filteredArticles = articles.filter((item) => {
+    const matchesSearch = item.title.toLowerCase().includes(search.toLowerCase()) ||
+                          item.source_name.toLowerCase().includes(search.toLowerCase());
+    const matchesType = filterType === 'all' ? true : item.entry_type === filterType;
+    
+    let matchesTime = true;
+    if (timeFilter !== 'all' && item.published_at) {
+      const pubDate = new Date(item.published_at);
+      const now = new Date();
+      const diffHours = (now - pubDate) / (1000 * 60 * 60);
+
+      if (timeFilter === '24h') matchesTime = diffHours <= 24;
+      if (timeFilter === '7d') matchesTime = diffHours <= 24 * 7;
+      if (timeFilter === '30d') matchesTime = diffHours <= 24 * 30;
+    }
+
+    return matchesSearch && matchesType && matchesTime;
+  });
+
+  const totalEntries = filteredArticles.length;
+  const totalPages = Math.ceil(totalEntries / rowsPerPage) || 1;
+  const startIndex = (currentPage - 1) * rowsPerPage;
+  const paginatedArticles = filteredArticles.slice(startIndex, startIndex + rowsPerPage);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, filterType, timeFilter, rowsPerPage]);
+
+  // CRUD Handlers
   const handleOpenAddModal = () => {
     setEditingArticleId(null);
     setFormData({
@@ -414,7 +266,7 @@ const handleLogin = async (e) => {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm(t.confirmDelete)) {
+    if (window.confirm('Hapus artikel ini secara permanen dari basis data SIMONITA?')) {
       try {
         await deleteArticle(id);
         loadData();
@@ -427,7 +279,7 @@ const handleLogin = async (e) => {
   const handleSubmitArticle = async (e) => {
     e.preventDefault();
     if (!formData.title || !formData.source_name || !formData.url) {
-      alert(lang === 'id' ? 'Mohon isi Judul, Media, dan URL.' : 'Please fill Headline, Source, and URL.');
+      alert('Mohon isi Judul Berita, Media Sumber, dan URL.');
       return;
     }
 
@@ -444,10 +296,10 @@ const handleLogin = async (e) => {
     }
   };
 
-  // Export CSV
+  // CSV Export
   const exportToCSV = () => {
     if (filteredArticles.length === 0) {
-      alert(lang === 'id' ? 'Tidak ada data untuk diekspor.' : 'No data to export.');
+      alert('Tidak ada data artikel untuk diekspor.');
       return;
     }
 
@@ -455,7 +307,7 @@ const handleLogin = async (e) => {
     const rows = filteredArticles.map((article, index) => {
       const cleanTitle = `"${(article.title || '').replace(/"/g, '""')}"`;
       const cleanSource = `"${(article.source_name || '').replace(/"/g, '""')}"`;
-      const dateFormatted = new Date(article.published_at).toLocaleString(lang === 'id' ? 'id-ID' : 'en-US');
+      const dateFormatted = new Date(article.published_at).toLocaleString('id-ID');
       const cleanDate = `"${dateFormatted}"`;
       const cleanType = `"${article.entry_type || 'scraped'}"`;
       const cleanSentiment = `"${article.sentiment || 'neutral'}"`;
@@ -478,36 +330,6 @@ const handleLogin = async (e) => {
     URL.revokeObjectURL(url);
   };
 
-  // Filter & Pagination
-  const filteredArticles = articles.filter((item) => {
-    const matchesSearch = item.title.toLowerCase().includes(search.toLowerCase()) ||
-                          item.source_name.toLowerCase().includes(search.toLowerCase());
-    const matchesType = filterType === 'all' ? true : item.entry_type === filterType;
-    
-    let matchesTime = true;
-    if (timeFilter !== 'all' && item.published_at) {
-      const pubDate = new Date(item.published_at);
-      const now = new Date();
-      const diffMs = now - pubDate;
-      const diffHours = diffMs / (1000 * 60 * 60);
-
-      if (timeFilter === '24h') matchesTime = diffHours <= 24;
-      if (timeFilter === '7d') matchesTime = diffHours <= 24 * 7;
-      if (timeFilter === '30d') matchesTime = diffHours <= 24 * 30;
-    }
-
-    return matchesSearch && matchesType && matchesTime;
-  });
-
-  const totalEntries = filteredArticles.length;
-  const totalPages = Math.ceil(totalEntries / rowsPerPage) || 1;
-  const startIndex = (currentPage - 1) * rowsPerPage;
-  const paginatedArticles = filteredArticles.slice(startIndex, startIndex + rowsPerPage);
-
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [search, filterType, timeFilter, rowsPerPage]);
-
   const totalArticles = articles.length;
   const scrapedCount = articles.filter(a => a.entry_type === 'scraped').length;
   const manualCount = articles.filter(a => a.entry_type === 'manual').length;
@@ -526,118 +348,346 @@ const handleLogin = async (e) => {
     );
   }
 
-  // JIKA BELUM TERAUTENTIKASI / BELUM 2FA -> TAMPILKAN GERBANG LOGIN UTAMA
+  // =========================================================================
+  // HALAMAN GERBANG LOGIN UTAMA (PERSIS SEPERTI GAMBAR CONTOH ANDA)
+  // =========================================================================
   if (!session || !is2FAVerified) {
     return (
-      <div className="min-h-screen bg-slate-900 text-slate-100 flex flex-col justify-between font-sans relative overflow-hidden">
-        {/* Latar Belakang Isometrik Kedinasan */}
-        <div className="absolute inset-0 pointer-events-none opacity-20 overflow-hidden">
-          <svg className="w-full h-full object-cover" viewBox="0 0 1440 900" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M-100,500 C300,450 600,650 900,550 C1200,450 1500,600 1600,580 L1600,900 L-100,900 Z" fill="#0284C7" />
-            <path d="M0 200 L1440 600 M0 400 L1440 800 M0 600 L1440 1000" stroke="#F59E0B" strokeWidth="1" strokeDasharray="6 6" />
-            <path d="M1440 200 L0 600 M1440 400 L0 800 M1440 600 L0 1000" stroke="#F59E0B" strokeWidth="1" strokeDasharray="6 6" />
-          </svg>
-        </div>
+      <div className="min-h-screen bg-slate-100 dark:bg-slate-950 text-slate-800 dark:text-slate-100 flex flex-col justify-between font-sans relative overflow-hidden transition-colors duration-300">
 
-        {/* Header Minimalis Gerbang Masuk */}
-        <header className="p-4 sm:p-6 z-10 flex items-center justify-between border-b border-white/10 backdrop-blur-md bg-[#0D2C5C]/60">
-          <div className="flex items-center space-x-3">
-            <div className="h-10 w-10 rounded-xl bg-white/10 p-1 border border-amber-400/40 flex items-center justify-center">
-              <img src="/simonita.png" alt="Logo SIMONITA" className="h-full w-full object-contain" />
+        {/* 1. TOP NAVBAR PERSIS SEPERTI CONTOH */}
+        <header className="sticky top-0 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 px-4 sm:px-8 py-2.5 shadow-sm">
+          <div className="max-w-7xl mx-auto flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="h-9 w-9 rounded-xl bg-[#0D2C5C] p-1.5 flex items-center justify-center shadow-md border border-amber-400/40">
+                <img src="/simonita.png" alt="Logo SIMONITA" className="h-full w-full object-contain" />
+              </div>
+              <div>
+                <div className="flex items-center space-x-2">
+                  <span className="font-extrabold text-base tracking-wider text-[#0D2C5C] dark:text-amber-400">SIMONITA</span>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300/60 dark:border-slate-700">
+                    KPPBC TMP B Pekanbaru
+                  </span>
+                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-400/30 flex items-center space-x-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span>Server Online</span>
+                  </span>
+                </div>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">
+                  Sistem Monitoring Opini dan Berita • Super App Intelijen Media Terpadu
+                </p>
+              </div>
             </div>
-            <div>
-              <span className="font-extrabold text-lg tracking-wider text-white">SIMONITA</span>
-              <p className="text-[11px] text-amber-300 font-medium">KPPBC TMP B Pekanbaru</p>
-            </div>
-          </div>
 
-          <div className="flex items-center space-x-2">
-            <div className="flex items-center rounded-xl bg-white/10 p-0.5 border border-white/10 text-xs font-bold">
-              <button
-                onClick={() => setLang('id')}
-                className={`px-2.5 py-1 rounded-lg transition ${lang === 'id' ? 'bg-amber-400 text-[#0D2C5C]' : 'text-slate-300'}`}
+            <div className="flex items-center space-x-3">
+              {/* Tombol Panduan CCTV & PDF */}
+              <a
+                href="https://dewanpers.or.id"
+                target="_blank"
+                rel="noreferrer"
+                className="hidden md:inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 dark:bg-amber-950/50 dark:text-amber-300 border border-amber-300 dark:border-amber-700 text-xs font-bold transition shadow-sm"
               >
-                ID
-              </button>
-              <button
-                onClick={() => setLang('en')}
-                className={`px-2.5 py-1 rounded-lg transition ${lang === 'en' ? 'bg-amber-400 text-[#0D2C5C]' : 'text-slate-300'}`}
-              >
-                EN
-              </button>
+                <span>📹</span>
+                <span>Buku Panduan CCTV & PDF ↗</span>
+              </a>
+
+              {/* Toggle Tema Terang/Gelap */}
+              <div className="flex items-center rounded-xl bg-slate-100 dark:bg-slate-800 p-0.5 border border-slate-200 dark:border-slate-700 text-xs font-semibold">
+                <button
+                  onClick={() => setIsDarkMode(false)}
+                  className={`px-2.5 py-1 rounded-lg transition flex items-center space-x-1 ${!isDarkMode ? 'bg-white text-amber-500 shadow-sm font-bold' : 'text-slate-500 hover:text-slate-800'}`}
+                >
+                  <span>☀️</span>
+                  <span>Terang</span>
+                </button>
+                <button
+                  onClick={() => setIsDarkMode(true)}
+                  className={`px-2.5 py-1 rounded-lg transition flex items-center space-x-1 ${isDarkMode ? 'bg-[#0D2C5C] text-white shadow-sm font-bold' : 'text-slate-500 hover:text-slate-300'}`}
+                >
+                  <span>🌙</span>
+                  <span>Gelap</span>
+                </button>
+              </div>
             </div>
           </div>
         </header>
 
-        {/* Kotak Login Bersegel Resmi */}
-        <div className="flex-1 flex items-center justify-center p-4 z-10 my-8">
-          <div className="w-full max-w-md bg-[#0D2C5C]/90 backdrop-blur-2xl p-8 rounded-3xl shadow-2xl border border-amber-400/30 text-white">
-            <div className="text-center mb-6">
-              <div className="h-16 w-16 mx-auto mb-3 rounded-2xl bg-amber-400/10 p-2 border border-amber-400/40 flex items-center justify-center shadow-inner">
-                <img src="/simonita.png" alt="Logo" className="h-full w-full object-contain" />
-              </div>
-              <h2 className="text-xl font-extrabold text-white tracking-wide">{t.loginPageTitle}</h2>
-              <p className="text-xs text-amber-200/90 mt-1">{t.loginPageSubtitle}</p>
+        {/* 2. RUNNING TICKER & TAGLINE BERJALAN DINAMIS */}
+        <div className="bg-slate-50/90 dark:bg-slate-900/90 border-b border-slate-200/80 dark:border-slate-800 py-2 px-4 sm:px-8 z-20 flex items-center gap-3 overflow-hidden text-xs">
+          <div className="flex items-center space-x-2 shrink-0">
+            <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+            <span className="font-bold px-2 py-0.5 rounded-lg bg-emerald-100/60 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-300/40 text-[11px]">
+              🕒 Senin – Jumat, 07.30 – 17.00 WIB
+            </span>
+            <span className="font-extrabold px-2 py-0.5 rounded-lg bg-sky-100 text-sky-800 dark:bg-sky-950/60 dark:text-sky-300 border border-sky-300/40 text-[10px] tracking-wider uppercase">
+              GRATIS
+            </span>
+          </div>
+
+          <div className="flex-1 overflow-hidden whitespace-nowrap">
+            <div className="inline-block animate-pulse text-slate-700 dark:text-slate-300 font-medium">
+              ✨ <strong className="text-[#0D2C5C] dark:text-amber-400">Selamat datang di SIMONITA</strong> - Sistem Monitoring Opini dan Berita Bea Cukai Pekanbaru • Wilayah Kerja: Pekanbaru, Siak, Kampar, Rokan Hulu, dan Pelalawan • Pantauan Pers & Dewan Pers Aktif • Jam Layanan Kedinasan: 07.30 - 17.00 WIB
             </div>
-
-            <div className="mb-5 p-3 rounded-xl bg-amber-500/10 border border-amber-400/30 text-amber-300 text-[11px] leading-relaxed">
-              🛡️ {t.authNotice}
-            </div>
-
-            {authError && (
-              <div className="mb-4 p-3 rounded-xl bg-rose-500/20 border border-rose-500/40 text-rose-300 text-xs font-medium text-center">
-                {authError}
-              </div>
-            )}
-
-            <form onSubmit={handleLogin} className="space-y-4 text-xs">
-              <div>
-                <label className="block font-semibold mb-1 text-slate-200">{t.emailLabel}</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="plibcpekanbaru"
-                  value={loginEmail}
-                  onChange={(e) => setLoginEmail(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-white/20 bg-black/20 text-white placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
-                />
-              </div>
-
-              <div>
-                <label className="block font-semibold mb-1 text-slate-200">{t.passwordLabel}</label>
-                <input
-                  type="password"
-                  required
-                  placeholder="••••••••"
-                  value={loginPassword}
-                  onChange={(e) => setLoginPassword(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-white/20 bg-black/20 text-white placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={authLoading}
-                className="w-full py-3 rounded-xl bg-amber-400 hover:bg-amber-500 text-[#0D2C5C] font-extrabold text-sm shadow-lg transition disabled:opacity-50 mt-2"
-              >
-                {authLoading ? 'Memeriksa Kredensial...' : t.submitLogin}
-              </button>
-            </form>
           </div>
         </div>
 
-        {/* Footer Kedinasan */}
-        <footer className="p-4 text-center text-xs text-slate-400 border-t border-white/10 bg-[#0D2C5C]/40 z-10">
-          Seksi Penyuluhan dan Layanan Informasi (PLI) • KPPBC TMP B Pekanbaru • {t.version}
-        </footer>
+        {/* 3. AREA TENGAH: LATAR BELAKANG ISOMETRIK 3D & KARTU LOGIN MENGAMBANG */}
+        <main className="flex-1 relative flex items-center justify-center p-4 sm:p-8 min-h-[640px]">
+          
+          {/* Ilustrasi Isometrik Gunung & Bangunan Dinas Bea Cukai (Persis Gambar) */}
+          <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden flex items-center justify-start">
+            <svg className="w-full h-full object-cover opacity-85 dark:opacity-40" viewBox="0 0 1440 850" fill="none" xmlns="http://www.w3.org/2000/svg">
+              {/* Matahari Pagi */}
+              <circle cx="1080" cy="180" r="140" fill="#FEF08A" opacity="0.4" />
+              
+              {/* Pegunungan Biru Berlapis */}
+              <polygon points="120,680 480,360 840,680" fill="#93C5FD" opacity="0.6" />
+              <polygon points="400,680 560,420 720,680" fill="#E2E8F0" />
+              <polygon points="280,680 640,400 1000,680" fill="#1E3A8A" opacity="0.8" />
+              <polygon points="580,680 640,400 700,680" fill="#FFFFFF" />
 
-        {/* Drawer Verifikasi 2FA OTP */}
+              {/* Pulau Isometrik Gedung Bea Cukai */}
+              <g transform="translate(180, 240)">
+                <polygon points="260,280 480,160 700,280 480,400" fill="#0A2247" />
+                <polygon points="260,280 480,400 480,420 260,300" fill="#0284C7" />
+                <polygon points="480,400 700,280 700,300 480,420" fill="#0369A1" />
+
+                {/* Gedung Kantor Utama Bea Cukai */}
+                <polygon points="400,220 480,175 560,220 480,265" fill="#F59E0B" />
+                <polygon points="400,220 480,265 480,330 400,285" fill="#0D2C5C" />
+                <polygon points="480,265 560,220 560,285 480,330" fill="#1E40AF" />
+
+                {/* Tiang Bendera Merah Putih */}
+                <line x1="420" y1="200" x2="420" y2="140" stroke="#FFFFFF" strokeWidth="2" />
+                <rect x="422" y="140" width="22" height="7" fill="#EF4444" />
+                <rect x="422" y="147" width="22" height="7" fill="#FFFFFF" />
+
+                {/* Menara Pengawas & CCTV */}
+                <polygon points="580,260 620,235 660,260 620,285" fill="#1E293B" />
+                <polygon points="580,260 620,285 620,360 580,335" fill="#0F172A" />
+                <polygon points="620,285 660,260 660,335 620,360" fill="#334155" />
+              </g>
+
+              {/* Drone Surveillance Mengambang */}
+              <g transform="translate(160, 280)">
+                <ellipse cx="60" cy="80" rx="18" ry="6" fill="#0D2C5C" />
+                <line x1="45" y1="80" x2="75" y2="80" stroke="#0284C7" strokeWidth="2" />
+                <circle cx="60" cy="80" r="3" fill="#10B981" />
+                <ellipse cx="60" cy="180" rx="12" ry="4" fill="#64748B" opacity="0.3" />
+              </g>
+            </svg>
+
+            {/* Clickable Radar Hotspots (Sungai Siak, Drone, Gedung BC, Patroli) */}
+            {hotspots.map((spot) => (
+              <button
+                key={spot.id}
+                onClick={() => setSelectedHotspot(spot)}
+                style={{ top: spot.coords.top, left: spot.coords.left }}
+                className="absolute pointer-events-auto group -translate-x-1/2 -translate-y-1/2 z-10 focus:outline-none"
+                title={spot.title}
+              >
+                <span className="relative flex h-8 w-8 items-center justify-center">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                  <span className="relative inline-flex items-center justify-center rounded-full h-7 w-7 bg-[#0D2C5C] text-white border-2 border-amber-400 shadow-xl text-xs group-hover:scale-125 transition-transform">
+                    {spot.icon}
+                  </span>
+                </span>
+              </button>
+            ))}
+          </div>
+
+          {/* KARTU FORM LOGIN MENGAMBANG (DI SISI KANAN SEPERTI GAMBAR) */}
+          <div className="relative z-20 w-full max-w-md ml-auto mr-4 lg:mr-16">
+            <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl p-6 sm:p-8 rounded-3xl shadow-2xl border border-slate-200/80 dark:border-slate-800">
+              
+              {/* Badge Instansi & Terverifikasi */}
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 flex items-center space-x-1">
+                  <span>🛡️</span>
+                  <span>KPPBC TMP B PEKANBARU</span>
+                </span>
+                <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-400/40 flex items-center space-x-1">
+                  <span>🛡️</span>
+                  <span>Terverifikasi</span>
+                </span>
+              </div>
+
+              {/* Heading */}
+              <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight mb-4">
+                Masuk ke Akun
+              </h1>
+
+              {/* Tab Pemilih Peran: Pengguna Jasa & Pegawai */}
+              <div className="grid grid-cols-2 gap-1.5 p-1 rounded-2xl bg-slate-100 dark:bg-slate-800 mb-5">
+                <button
+                  type="button"
+                  onClick={() => setUserRole('pengguna')}
+                  className={`py-2 text-xs font-bold rounded-xl transition flex items-center justify-center space-x-1.5 ${userRole === 'pengguna' ? 'bg-[#0D2C5C] text-white shadow-sm' : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'}`}
+                >
+                  <span>👤</span>
+                  <span>Pengguna Jasa</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setUserRole('pegawai')}
+                  className={`py-2 text-xs font-bold rounded-xl transition flex items-center justify-center space-x-1.5 ${userRole === 'pegawai' ? 'bg-[#0D2C5C] text-white shadow-sm' : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'}`}
+                >
+                  <span>🏛️</span>
+                  <span>Pegawai</span>
+                </button>
+              </div>
+
+              {/* Pesan Kesalahan Jika Login Gagal */}
+              {authError && (
+                <div className="mb-4 p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold text-center">
+                  {authError}
+                </div>
+              )}
+
+              {/* Form Input */}
+              <form onSubmit={handleLogin} className="space-y-4 text-xs">
+                <div>
+                  <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+                    Nama Pengguna {userRole === 'pengguna' ? '(User ID CEISA)' : '(NIP / ID Kedinasan)'}
+                  </label>
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                      👤
+                    </span>
+                    <input
+                      type="text"
+                      required
+                      placeholder={userRole === 'pengguna' ? 'misal: IMPORTIR001' : 'misal: admin'}
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#0D2C5C] dark:focus:ring-amber-400 font-medium"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="font-bold text-slate-700 dark:text-slate-300">
+                      Kata Sandi
+                    </label>
+                    <a href="#help" onClick={(e) => { e.preventDefault(); alert('Hubungi Helpdesk PLI Pekanbaru.'); }} className="text-[11px] font-semibold text-[#0D2C5C] dark:text-amber-400 hover:underline">
+                      Lupa kata sandi?
+                    </a>
+                  </div>
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                      🔒
+                    </span>
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      required
+                      placeholder="••••••••"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#0D2C5C] dark:focus:ring-amber-400 font-medium"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                    >
+                      {showPassword ? '🙈' : '👁️'}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Tombol Masuk Biru Gelap */}
+                <button
+                  type="submit"
+                  disabled={authLoading}
+                  className="w-full py-3 rounded-2xl bg-[#0D2C5C] hover:bg-[#0A2247] text-white font-extrabold text-sm shadow-md transition disabled:opacity-50 mt-1 flex items-center justify-center space-x-2"
+                >
+                  <span>{authLoading ? 'Memeriksa Akses...' : 'Masuk ke SIMONITA'}</span>
+                  <span>→</span>
+                </button>
+              </form>
+
+              {/* Tautan Bantuan CEISA Care */}
+              <div className="mt-4 text-center">
+                <span className="text-[11px] text-slate-400 flex items-center justify-center space-x-1">
+                  <span>❔</span>
+                  <span>Kendala akun atau akses kedinasan? Buka</span>
+                  <a href="https://ceisa40.beacukai.go.id" target="_blank" rel="noreferrer" className="text-[#0D2C5C] dark:text-amber-400 font-bold hover:underline ml-1">
+                    CEISA Care
+                  </a>
+                </span>
+              </div>
+
+              {/* Tautan E-Front Desk Tamu di Bagian Bawah */}
+              <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
+                <span className="text-slate-500 dark:text-slate-400 text-[11px] flex items-center space-x-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                  <span>Bukan pengguna CEISA? (PKL, Magang...)</span>
+                </span>
+                <button
+                  type="button"
+                  onClick={() => alert('Layanan Tamu E-Front Desk dibuka pada jam pelayanan 07.30 - 17.00 WIB.')}
+                  className="px-2.5 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 font-bold text-[11px] border border-emerald-400/30 flex items-center space-x-1 transition"
+                >
+                  <span>E-Front Desk</span>
+                  <span>→</span>
+                </button>
+              </div>
+
+              {/* Copyright Sesuai Gambar */}
+              <div className="mt-4 flex items-center justify-between text-[11px] text-slate-400 pt-2 border-t border-slate-50 dark:border-slate-800/60">
+                <span className="flex items-center space-x-1">
+                  <span>🛡️</span>
+                  <span>Copyright © 2026 KPPBC TMP B Pekanbaru</span>
+                </span>
+                <span className="font-mono text-slate-300 dark:text-slate-600">v2.4</span>
+              </div>
+            </div>
+          </div>
+        </main>
+
+        {/* Modal Info Hotspot Wilayah Pengawasan */}
+        {selectedHotspot && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+            <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 text-left relative animate-in fade-in zoom-in duration-150">
+              <button
+                onClick={() => setSelectedHotspot(null)}
+                className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-base font-bold"
+              >
+                ✕
+              </button>
+              <div className="text-3xl mb-2">{selectedHotspot.icon}</div>
+              <span className="text-[10px] uppercase font-bold tracking-wider text-amber-500 bg-amber-50 dark:bg-amber-950/40 px-2.5 py-0.5 rounded-full border border-amber-400/30">
+                {selectedHotspot.coverage}
+              </span>
+              <h3 className="font-extrabold text-base text-[#0D2C5C] dark:text-amber-400 mt-2">
+                {selectedHotspot.title}
+              </h3>
+              <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-0.5 mb-2">
+                {selectedHotspot.subtitle}
+              </p>
+              <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed border-t border-slate-100 dark:border-slate-800 pt-2.5">
+                {selectedHotspot.desc}
+              </p>
+              <div className="mt-4 pt-2 flex justify-end">
+                <button
+                  onClick={() => setSelectedHotspot(null)}
+                  className="px-4 py-1.5 rounded-xl bg-[#0D2C5C] text-white text-xs font-bold hover:bg-[#0A2247] transition"
+                >
+                  Tutup
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Drawer Horizontal 2FA OTP */}
         {showOtpDrawer && (
           <div className="fixed inset-0 z-50 flex justify-end bg-black/75 backdrop-blur-sm transition-opacity">
             <div className="w-full max-w-md bg-[#0D2C5C] text-white h-full p-6 shadow-2xl flex flex-col justify-between border-l border-amber-400/30">
               <div>
                 <div className="flex items-center justify-between mb-6">
-                  <h3 className="font-extrabold text-lg text-amber-400">{t.otpTitle}</h3>
+                  <h3 className="font-extrabold text-lg text-amber-400">Verifikasi Keamanan 2FA Pegawai</h3>
                   <button
                     onClick={() => setShowOtpDrawer(false)}
                     className="p-1 rounded-lg hover:bg-white/10 text-slate-300"
@@ -646,7 +696,9 @@ const handleLogin = async (e) => {
                   </button>
                 </div>
 
-                <p className="text-xs text-slate-300 mb-6 leading-relaxed">{t.otpDesc}</p>
+                <p className="text-xs text-slate-300 mb-6 leading-relaxed">
+                  Masukkan 6-digit kode OTP keamanan untuk memastikan hak akses sebelum dialihkan ke dashboard utama SIMONITA.
+                </p>
 
                 <form onSubmit={handleVerifyOtp}>
                   <div className="flex justify-between gap-2 mb-6" onPaste={handleOtpPaste}>
@@ -667,13 +719,13 @@ const handleLogin = async (e) => {
                     type="submit"
                     className="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm shadow transition"
                   >
-                    {t.otpSubmit}
+                    Konfirmasi & Masuk Dashboard →
                   </button>
                 </form>
               </div>
 
               <div className="text-[11px] text-slate-400 text-center">
-                KPPBC TMP B Pekanbaru • Keamanan Akses Terpusat
+                KPPBC TMP B Pekanbaru • Proteksi Akses Kedinasan
               </div>
             </div>
           </div>
@@ -682,77 +734,11 @@ const handleLogin = async (e) => {
     );
   }
 
-  // JIKA SUDAH LOGIN & 2FA TERVERIFIKASI -> TAMPILKAN DASHBOARD UTAMA
+  // =========================================================================
+  // DASHBOARD UTAMA (SETELAH LOGIN & 2FA BERHASIL)
+  // =========================================================================
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 flex flex-col font-sans transition-colors duration-300 relative overflow-x-hidden">
-
-      {/* Latar Belakang Isometrik SVG & Radar Hotspots */}
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <svg className="w-full h-full object-cover opacity-25 dark:opacity-15 transition-opacity" viewBox="0 0 1440 900" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M-100,500 C300,450 600,650 900,550 C1200,450 1500,600 1600,580 L1600,900 L-100,900 Z" fill="#0284C7" />
-          <path d="M0 200 L1440 600 M0 400 L1440 800 M0 600 L1440 1000" stroke="#0D2C5C" strokeWidth="1" strokeDasharray="6 6" />
-          <path d="M1440 200 L0 600 M1440 400 L0 800 M1440 600 L0 1000" stroke="#0D2C5C" strokeWidth="1" strokeDasharray="6 6" />
-          <polygon points="200,240 260,205 320,240 260,275" fill="#0D2C5C" opacity="0.6" />
-          <polygon points="200,240 260,275 260,340 200,305" fill="#0A2247" opacity="0.8" />
-          <polygon points="260,275 320,240 320,305 260,340" fill="#1E3A8A" opacity="0.5" />
-          <polygon points="560,600 620,580 660,610 600,630" fill="#F59E0B" opacity="0.7" />
-          <polygon points="560,600 600,630 600,645 560,615" fill="#B45309" opacity="0.8" />
-          <polygon points="1080,480 1130,455 1170,480 1120,505" fill="#0D2C5C" opacity="0.7" />
-          <polygon points="1080,480 1120,505 1120,520 1080,495" fill="#0284C7" opacity="0.8" />
-        </svg>
-
-        {hotspots.map((spot) => (
-          <button
-            key={spot.id}
-            onClick={() => setSelectedHotspot(spot)}
-            style={{ top: spot.coords.top, left: spot.coords.left }}
-            className="absolute pointer-events-auto group -translate-x-1/2 -translate-y-1/2 z-10 focus:outline-none"
-            title={spot.title}
-          >
-            <span className="relative flex h-8 w-8 items-center justify-center">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-              <span className="relative inline-flex items-center justify-center rounded-full h-7 w-7 bg-[#0D2C5C] text-white border border-amber-400 shadow-lg text-xs group-hover:scale-125 transition-transform duration-200">
-                {spot.icon}
-              </span>
-            </span>
-          </button>
-        ))}
-      </div>
-
-      {/* Modal Detail Hotspot */}
-      {selectedHotspot && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
-          <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 text-left relative animate-in fade-in zoom-in duration-150">
-            <button
-              onClick={() => setSelectedHotspot(null)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-base font-bold"
-            >
-              ✕
-            </button>
-            <div className="text-3xl mb-2">{selectedHotspot.icon}</div>
-            <span className="text-[10px] uppercase font-bold tracking-wider text-amber-500 bg-amber-50 dark:bg-amber-950/40 px-2.5 py-0.5 rounded-full border border-amber-400/30">
-              {selectedHotspot.coverage}
-            </span>
-            <h3 className="font-extrabold text-base text-[#0D2C5C] dark:text-amber-400 mt-2">
-              {selectedHotspot.title}
-            </h3>
-            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-0.5 mb-2">
-              {selectedHotspot.subtitle}
-            </p>
-            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed border-t border-slate-100 dark:border-slate-800 pt-2.5">
-              {selectedHotspot.desc}
-            </p>
-            <div className="mt-4 pt-2 flex justify-end">
-              <button
-                onClick={() => setSelectedHotspot(null)}
-                className="px-4 py-1.5 rounded-xl bg-[#0D2C5C] text-white text-xs font-bold hover:bg-[#0A2247] transition"
-              >
-                {t.closeModal}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Header Dashboard Atas */}
       <header className="sticky top-0 z-30 bg-[#0D2C5C]/95 backdrop-blur-md text-white border-b border-amber-500/30 px-4 sm:px-6 py-3 shadow-md">
@@ -764,45 +750,22 @@ const handleLogin = async (e) => {
             <div>
               <div className="flex items-center space-x-2">
                 <span className="font-extrabold text-base sm:text-lg tracking-wider text-white">SIMONITA</span>
-                <span className="text-[10px] sm:text-xs px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 font-medium">{t.statusActive}</span>
+                <span className="text-[10px] sm:text-xs px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 font-medium">Sistem Aktif</span>
               </div>
-              <p className="text-[11px] sm:text-xs text-slate-300 font-medium">{t.officeSubtitle}</p>
+              <p className="text-[11px] sm:text-xs text-slate-300 font-medium">KPPBC TMP B Pekanbaru • Seksi PLI</p>
             </div>
           </div>
 
-          <div className="flex items-center space-x-2 sm:space-x-2.5 text-xs">
-            <div className="flex items-center rounded-xl bg-white/10 p-0.5 border border-white/10 font-bold">
-              <button
-                onClick={() => setLang('id')}
-                className={`px-2 py-1 rounded-lg transition ${lang === 'id' ? 'bg-amber-400 text-[#0D2C5C]' : 'text-slate-300 hover:text-white'}`}
-              >
-                ID
-              </button>
-              <button
-                onClick={() => setLang('en')}
-                className={`px-2 py-1 rounded-lg transition ${lang === 'en' ? 'bg-amber-400 text-[#0D2C5C]' : 'text-slate-300 hover:text-white'}`}
-              >
-                EN
-              </button>
-            </div>
-
-            <button
-              onClick={() => setIsDarkMode(!isDarkMode)}
-              className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-slate-200 border border-white/10 transition"
-              title="Ganti Tema"
-            >
-              {isDarkMode ? t.themeLight : t.themeDark}
-            </button>
-
+          <div className="flex items-center space-x-2 sm:space-x-3 text-xs">
             <div className="flex items-center space-x-2">
               <span className="hidden md:inline-block px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 font-mono text-[11px]">
-                {session?.user?.email}
+                {session?.user?.email || username}
               </span>
               <button
                 onClick={handleLogout}
-                className="px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-semibold transition"
+                className="px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-semibold transition shadow-sm"
               >
-                {t.logout}
+                Keluar Portal
               </button>
             </div>
           </div>
@@ -812,7 +775,7 @@ const handleLogin = async (e) => {
       {/* Marquee Banner */}
       <div className="bg-amber-500 text-[#0D2C5C] text-xs font-semibold py-1.5 px-4 overflow-hidden whitespace-nowrap shadow-sm z-10">
         <div className="inline-block animate-pulse">
-          {t.marquee}
+          🔔 SIMONITA: Sistem Monitoring Opini dan Berita • Jam Layanan: 07.30 - 17.00 WIB • Wilayah Pengawasan: Pekanbaru • Siak • Kampar • Rokan Hulu • Pelalawan
         </div>
       </div>
 
@@ -822,7 +785,7 @@ const handleLogin = async (e) => {
         {/* SIDEBAR DASHBOARD */}
         <aside className="w-full md:w-64 shrink-0 space-y-4">
           <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl p-3 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col gap-1.5">
-            <span className="text-[10px] uppercase font-bold text-slate-400 px-3 py-1 tracking-wider">{t.menuTitle}</span>
+            <span className="text-[10px] uppercase font-bold text-slate-400 px-3 py-1 tracking-wider">Menu Portal</span>
             
             <button
               onClick={() => setActiveTab('articles')}
@@ -834,7 +797,7 @@ const handleLogin = async (e) => {
             >
               <span className="flex items-center space-x-2.5">
                 <span className="text-sm">📰</span>
-                <span>{t.tabArticles}</span>
+                <span>Artikel & Berita</span>
               </span>
               <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-black/10 dark:bg-white/10">{totalArticles}</span>
             </button>
@@ -849,7 +812,7 @@ const handleLogin = async (e) => {
             >
               <span className="flex items-center space-x-2.5">
                 <span className="text-sm">📊</span>
-                <span>{t.tabStats}</span>
+                <span>Statistik & Opini</span>
               </span>
             </button>
 
@@ -863,7 +826,7 @@ const handleLogin = async (e) => {
             >
               <span className="flex items-center space-x-2.5">
                 <span className="text-sm">🏛️</span>
-                <span>{t.tabPress}</span>
+                <span>Dewan Pers</span>
               </span>
             </button>
 
@@ -877,15 +840,15 @@ const handleLogin = async (e) => {
             >
               <span className="flex items-center space-x-2.5">
                 <span className="text-sm">⚙️</span>
-                <span>{t.tabSettings}</span>
+                <span>Pengaturan</span>
               </span>
             </button>
           </div>
 
           <div className="bg-[#0D2C5C]/5 dark:bg-white/5 p-4 rounded-2xl border border-slate-200/50 dark:border-slate-800 text-xs space-y-2">
-            <span className="font-bold text-[#0D2C5C] dark:text-amber-400 block">{t.hotspotSidebarTitle}</span>
+            <span className="font-bold text-[#0D2C5C] dark:text-amber-400 block">Status Pengawasan</span>
             <p className="text-[11px] text-slate-500 leading-relaxed">
-              {t.hotspotSidebarDesc}
+              Monitoring media lokal dan nasional aktif di Pekanbaru, Siak, Kampar, Rokan Hulu, dan Pelalawan.
             </p>
           </div>
         </aside>
@@ -895,12 +858,12 @@ const handleLogin = async (e) => {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
             <div>
               <h1 className="text-xl font-extrabold text-[#0D2C5C] dark:text-amber-400">
-                {activeTab === 'articles' && t.tabArticles}
-                {activeTab === 'stats' && t.tabStats}
-                {activeTab === 'press' && t.tabPress}
-                {activeTab === 'settings' && t.tabSettings}
+                {activeTab === 'articles' && 'Daftar Artikel & Berita'}
+                {activeTab === 'stats' && 'Statistik & Persepsi Media'}
+                {activeTab === 'press' && 'Rujukan Dewan Pers'}
+                {activeTab === 'settings' && 'Konfigurasi SIMONITA'}
               </h1>
-              <p className="text-xs text-slate-500 mt-0.5">{t.portalDesc}</p>
+              <p className="text-xs text-slate-500 mt-0.5">Portal intelijen media KPPBC TMP B Pekanbaru</p>
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
@@ -910,7 +873,7 @@ const handleLogin = async (e) => {
                   className="px-3.5 py-2 text-xs font-bold rounded-xl border border-emerald-500/40 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-600/40 transition flex items-center space-x-1.5 shadow-sm"
                 >
                   <span>📥</span>
-                  <span>{t.exportCsv}</span>
+                  <span>Ekspor CSV</span>
                 </button>
               )}
 
@@ -918,25 +881,25 @@ const handleLogin = async (e) => {
                 onClick={loadData}
                 className="px-3 py-2 text-xs font-semibold rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 transition flex items-center space-x-1"
               >
-                <span>🔄 {t.refresh}</span>
+                <span>🔄 Segarkan</span>
               </button>
 
               <button
                 onClick={handleOpenAddModal}
                 className="px-3.5 py-2 text-xs font-bold rounded-xl bg-[#0D2C5C] hover:bg-[#0A2247] text-white border border-amber-400/40 shadow-sm flex items-center space-x-1.5 transition"
               >
-                <span>{t.addManual}</span>
+                <span>+ Tambah Manual</span>
               </button>
             </div>
           </div>
 
-          {/* TAB 1: ARTIKEL DENGAN PAGINASI */}
+          {/* TAB 1: ARTIKEL & PAGINASI 10/25/50 */}
           {activeTab === 'articles' && (
             <div className="space-y-4">
               <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-3.5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col md:flex-row gap-2.5">
                 <input
                   type="text"
-                  placeholder={t.searchPlaceholder}
+                  placeholder="Cari judul berita atau nama media..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   className="flex-1 px-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0D2C5C]"
@@ -947,9 +910,9 @@ const handleLogin = async (e) => {
                     onChange={(e) => setFilterType(e.target.value)}
                     className="px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0D2C5C]"
                   >
-                    <option value="all">{t.allTypes}</option>
-                    <option value="scraped">{t.scrapedType}</option>
-                    <option value="manual">{t.manualType}</option>
+                    <option value="all">Semua Tipe</option>
+                    <option value="scraped">Scraper Multi-Kanal</option>
+                    <option value="manual">Input Manual</option>
                   </select>
 
                   <select
@@ -957,10 +920,10 @@ const handleLogin = async (e) => {
                     onChange={(e) => setTimeFilter(e.target.value)}
                     className="px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0D2C5C]"
                   >
-                    <option value="all">{t.timeFilterAll}</option>
-                    <option value="24h">{t.timeFilter24h}</option>
-                    <option value="7d">{t.timeFilter7d}</option>
-                    <option value="30d">{t.timeFilter30d}</option>
+                    <option value="all">Semua Waktu</option>
+                    <option value="24h">24 Jam Terakhir</option>
+                    <option value="7d">7 Hari Terakhir</option>
+                    <option value="30d">Bulan Ini</option>
                   </select>
                 </div>
               </div>
@@ -970,24 +933,24 @@ const handleLogin = async (e) => {
                   <table className="w-full text-left border-collapse text-sm">
                     <thead>
                       <tr className="bg-slate-50 dark:bg-slate-800/60 border-b border-slate-200 dark:border-slate-800 text-xs text-slate-500 uppercase font-semibold">
-                        <th className="py-3 px-4">{t.colTitle}</th>
-                        <th className="py-3 px-4">{t.colSource}</th>
-                        <th className="py-3 px-4">{t.colDate}</th>
-                        <th className="py-3 px-4">{t.colSentiment}</th>
-                        <th className="py-3 px-4">{t.colAction}</th>
+                        <th className="py-3 px-4">Judul Artikel Berita</th>
+                        <th className="py-3 px-4">Media</th>
+                        <th className="py-3 px-4">Waktu Terbit</th>
+                        <th className="py-3 px-4">Sentimen</th>
+                        <th className="py-3 px-4">Aksi</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                       {loading ? (
                         <tr>
                           <td colSpan="5" className="py-12 text-center text-slate-400">
-                            {t.loadingData}
+                            Memuat data artikel...
                           </td>
                         </tr>
                       ) : paginatedArticles.length === 0 ? (
                         <tr>
                           <td colSpan="5" className="py-12 text-center text-slate-400">
-                            {t.emptySearch}
+                            Tidak ada berita yang cocok dengan kriteria pencarian.
                           </td>
                         </tr>
                       ) : (
@@ -1006,7 +969,7 @@ const handleLogin = async (e) => {
                               </span>
                             </td>
                             <td className="py-3.5 px-4 text-xs text-slate-400 whitespace-nowrap">
-                              {new Date(article.published_at).toLocaleDateString(lang === 'id' ? 'id-ID' : 'en-US', {
+                              {new Date(article.published_at).toLocaleDateString('id-ID', {
                                 day: 'numeric',
                                 month: 'short',
                                 year: 'numeric'
@@ -1031,7 +994,7 @@ const handleLogin = async (e) => {
                                   rel="noreferrer"
                                   className="text-[#0D2C5C] dark:text-amber-400 hover:underline font-bold"
                                 >
-                                  {t.openLink}
+                                  Buka ↗
                                 </a>
 
                                 <button
@@ -1057,10 +1020,10 @@ const handleLogin = async (e) => {
                   </table>
                 </div>
 
-                {/* PAGINASI: 10, 25, 50 */}
+                {/* Kontrol Paginasi 10, 25, 50 */}
                 <div className="p-3.5 bg-slate-50/50 dark:bg-slate-800/30 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
                   <div className="flex items-center space-x-2">
-                    <span className="text-slate-500">{t.perPageText}</span>
+                    <span className="text-slate-500">Baris per halaman:</span>
                     <select
                       value={rowsPerPage}
                       onChange={(e) => setRowsPerPage(Number(e.target.value))}
@@ -1071,7 +1034,7 @@ const handleLogin = async (e) => {
                       <option value={50}>50</option>
                     </select>
                     <span className="text-slate-400">
-                      {t.showingPage} {totalEntries ? startIndex + 1 : 0} - {Math.min(startIndex + rowsPerPage, totalEntries)} {t.ofText} {totalEntries} {t.entriesText}
+                      Menampilkan {totalEntries ? startIndex + 1 : 0} - {Math.min(startIndex + rowsPerPage, totalEntries)} dari {totalEntries} artikel
                     </span>
                   </div>
 
@@ -1099,34 +1062,34 @@ const handleLogin = async (e) => {
             </div>
           )}
 
-          {/* TAB 2: STATS */}
+          {/* TAB 2: STATISTIK & PERSEPSI */}
           {activeTab === 'stats' && (
             <div className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
                 <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                  <span className="text-[11px] font-semibold text-slate-500 uppercase">{t.statsTotal}</span>
+                  <span className="text-[11px] font-semibold text-slate-500 uppercase">Total Artikel</span>
                   <div className="text-2xl font-black text-[#0D2C5C] dark:text-amber-400 mt-1">{totalArticles}</div>
-                  <span className="text-[10px] text-slate-400 mt-1 block">{t.statsTotalSub}</span>
+                  <span className="text-[10px] text-slate-400 mt-1 block">Terkumpul di basis data</span>
                 </div>
                 <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                  <span className="text-[11px] font-semibold text-emerald-600 uppercase">{t.statsPos}</span>
+                  <span className="text-[11px] font-semibold text-emerald-600 uppercase">Sentimen Positif</span>
                   <div className="text-2xl font-black text-emerald-600 mt-1">{positiveCount}</div>
-                  <span className="text-[10px] text-slate-400 mt-1 block">{t.statsPosSub}</span>
+                  <span className="text-[10px] text-slate-400 mt-1 block">Kinerja / Apresiasi publik</span>
                 </div>
                 <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                  <span className="text-[11px] font-semibold text-sky-600 uppercase">{t.statsNeu}</span>
+                  <span className="text-[11px] font-semibold text-sky-600 uppercase">Sentimen Netral</span>
                   <div className="text-2xl font-black text-sky-600 mt-1">{neutralCount}</div>
-                  <span className="text-[10px] text-slate-400 mt-1 block">{t.statsNeuSub}</span>
+                  <span className="text-[10px] text-slate-400 mt-1 block">Rilis pers & berita umum</span>
                 </div>
                 <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                  <span className="text-[11px] font-semibold text-rose-600 uppercase">{t.statsNeg}</span>
+                  <span className="text-[11px] font-semibold text-rose-600 uppercase">Sentimen Kritis</span>
                   <div className="text-2xl font-black text-rose-600 mt-1">{negativeCount}</div>
-                  <span className="text-[10px] text-slate-400 mt-1 block">{t.statsNegSub}</span>
+                  <span className="text-[10px] text-slate-400 mt-1 block">Perlu respon Seksi PLI</span>
                 </div>
               </div>
 
               <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                <h3 className="font-bold text-xs uppercase tracking-wider text-slate-400 mb-4">{t.sourceDistribution}</h3>
+                <h3 className="font-bold text-xs uppercase tracking-wider text-slate-400 mb-4">Distribusi Saluran Berita</h3>
                 <div className="space-y-4 text-xs">
                   <div>
                     <div className="flex justify-between font-semibold mb-1.5">
@@ -1166,9 +1129,9 @@ const handleLogin = async (e) => {
                   <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-amber-400 text-[#0D2C5C] mb-2 inline-block">
                     Rujukan Resmi Lembaga Negara
                   </span>
-                  <h2 className="text-lg sm:text-xl font-extrabold mt-1 text-white">{t.pressTitle}</h2>
+                  <h2 className="text-lg sm:text-xl font-extrabold mt-1 text-white">Portal Verifikasi Dewan Pers Republik Indonesia</h2>
                   <p className="text-xs text-slate-200 mt-2 leading-relaxed">
-                    {t.pressDesc}
+                    Basis data rujukan Seksi PLI untuk memeriksa legalitas faktual perusahaan pers, kode etik jurnalistik, dan sertifikasi kompetensi wartawan.
                   </p>
                   <div className="mt-4 flex flex-wrap gap-3">
                     <a 
@@ -1177,73 +1140,9 @@ const handleLogin = async (e) => {
                       rel="noreferrer"
                       className="px-4 py-2 bg-amber-400 hover:bg-amber-500 text-[#0D2C5C] font-bold text-xs rounded-xl shadow transition inline-flex items-center space-x-1.5"
                     >
-                      <span>{t.pressCheckBtn}</span>
-                    </a>
-                    <a 
-                      href="https://dewanpers.or.id" 
-                      target="_blank" 
-                      rel="noreferrer"
-                      className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white font-semibold text-xs rounded-xl border border-white/20 transition inline-flex items-center space-x-1.5"
-                    >
-                      <span>Portal Utama dewanpers.or.id ↗</span>
+                      <span>Buka Basis Data Dewan Pers ↗</span>
                     </a>
                   </div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
-                  <div>
-                    <div className="text-2xl mb-2">📜</div>
-                    <h4 className="font-bold text-xs text-[#0D2C5C] dark:text-amber-400 mb-1">{t.pressCardWartawan}</h4>
-                    <p className="text-[11px] text-slate-500 leading-relaxed">
-                      {t.pressCardWartawanDesc}
-                    </p>
-                  </div>
-                  <a 
-                    href="https://dewanpers.or.id" 
-                    target="_blank" 
-                    rel="noreferrer"
-                    className="mt-3 text-xs font-semibold text-[#0D2C5C] dark:text-amber-400 hover:underline"
-                  >
-                    Cek Sertifikasi ↗
-                  </a>
-                </div>
-
-                <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
-                  <div>
-                    <div className="text-2xl mb-2">🏢</div>
-                    <h4 className="font-bold text-xs text-[#0D2C5C] dark:text-amber-400 mb-1">{t.pressCardOrg}</h4>
-                    <p className="text-[11px] text-slate-500 leading-relaxed">
-                      {t.pressCardOrgDesc}
-                    </p>
-                  </div>
-                  <a 
-                    href="https://dewanpers.or.id/read/page/07-05-2025-organisasi-perusahaan-pers" 
-                    target="_blank" 
-                    rel="noreferrer"
-                    className="mt-3 text-xs font-semibold text-[#0D2C5C] dark:text-amber-400 hover:underline"
-                  >
-                    Daftar Organisasi ↗
-                  </a>
-                </div>
-
-                <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
-                  <div>
-                    <div className="text-2xl mb-2">⚖️</div>
-                    <h4 className="font-bold text-xs text-[#0D2C5C] dark:text-amber-400 mb-1">{t.pressCardPengaduan}</h4>
-                    <p className="text-[11px] text-slate-500 leading-relaxed">
-                      {t.pressCardPengaduanDesc}
-                    </p>
-                  </div>
-                  <a 
-                    href="https://dewanpers.or.id" 
-                    target="_blank" 
-                    rel="noreferrer"
-                    className="mt-3 text-xs font-semibold text-[#0D2C5C] dark:text-amber-400 hover:underline"
-                  >
-                    Tata Cara Pengaduan ↗
-                  </a>
                 </div>
               </div>
             </div>
@@ -1253,32 +1152,32 @@ const handleLogin = async (e) => {
           {activeTab === 'settings' && (
             <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
               <div>
-                <h2 className="text-base font-bold text-[#0D2C5C] dark:text-amber-400">{t.settingsTitle}</h2>
-                <p className="text-xs text-slate-500">{t.settingsDesc}</p>
+                <h2 className="text-base font-bold text-[#0D2C5C] dark:text-amber-400">Konfigurasi SIMONITA</h2>
+                <p className="text-xs text-slate-500">Parameter mesin otomatis dan status infrastruktur portal.</p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 text-xs">
                 <div className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40">
-                  <span className="font-semibold block mb-1">{t.settingKeyword}</span>
+                  <span className="font-semibold block mb-1">Kata Kunci Pengawasan</span>
                   <p className="text-slate-600 dark:text-slate-300 font-mono">"Bea Cukai Pekanbaru", KPPBC Pekanbaru, Media Daerah</p>
                 </div>
                 <div className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40">
-                  <span className="font-semibold block mb-1">{t.settingCron}</span>
+                  <span className="font-semibold block mb-1">Jadwal Pemantauan Otomatis</span>
                   <p className="text-slate-600 dark:text-slate-300 font-mono">Setiap 1 Jam ('0 * * * *')</p>
                 </div>
                 <div className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40">
-                  <span className="font-semibold block mb-1">{t.settingDomain}</span>
+                  <span className="font-semibold block mb-1">Alamat Domain Resmi</span>
                   <p className="text-slate-600 dark:text-slate-300 font-mono">simonita.cloud (Cloudflare Pages)</p>
                 </div>
                 <div className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40">
-                  <span className="font-semibold block mb-1">{t.settingDb}</span>
+                  <span className="font-semibold block mb-1">Basis Data & Keamanan</span>
                   <p className="text-slate-600 dark:text-slate-300 font-mono">Supabase PostgreSQL + RLS</p>
                 </div>
               </div>
 
               <div className="pt-3 border-t border-slate-200 dark:border-slate-800 text-[11px] text-slate-400 flex flex-col sm:flex-row justify-between gap-1">
                 <span>Seksi Penyuluhan dan Layanan Informasi (PLI) KPPBC TMP B Pekanbaru</span>
-                <span>{t.version}</span>
+                <span>Versi 2.4</span>
               </div>
             </div>
           )}
@@ -1290,17 +1189,17 @@ const handleLogin = async (e) => {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
           <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800">
             <h2 className="text-lg font-bold text-[#0D2C5C] dark:text-amber-400 mb-1">
-              {editingArticleId ? t.modalEditTitle : t.modalTitle}
+              {editingArticleId ? '✏️ Edit Artikel & Sentimen Opini' : '+ Tambahkan Artikel Berita Manual'}
             </h2>
-            <p className="text-xs text-slate-500 mb-4">{t.modalDesc}</p>
+            <p className="text-xs text-slate-500 mb-4">Input publikasi media lokal / regional yang tidak terjaring otomatis.</p>
 
             <form onSubmit={handleSubmitArticle} className="space-y-4 text-xs">
               <div>
-                <label className="block font-semibold mb-1">{t.formTitle}</label>
+                <label className="block font-semibold mb-1">Judul Berita</label>
                 <input
                   type="text"
                   required
-                  placeholder={lang === 'id' ? 'Contoh: Bea Cukai Pekanbaru Gagalkan Penyelundupan...' : 'e.g. Customs Thwarts Smuggling...'}
+                  placeholder="Contoh: Bea Cukai Pekanbaru Gagalkan Penyelundupan..."
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                   className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0D2C5C]"
@@ -1308,11 +1207,11 @@ const handleLogin = async (e) => {
               </div>
 
               <div>
-                <label className="block font-semibold mb-1">{t.formSource}</label>
+                <label className="block font-semibold mb-1">Nama Media / Sumber</label>
                 <input
                   type="text"
                   required
-                  placeholder={lang === 'id' ? 'Contoh: Riau Pos, Antara Riau' : 'e.g. Antara, Tribun'}
+                  placeholder="Contoh: Riau Pos, Antara Riau"
                   value={formData.source_name}
                   onChange={(e) => setFormData({ ...formData, source_name: e.target.value })}
                   className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0D2C5C]"
@@ -1320,7 +1219,7 @@ const handleLogin = async (e) => {
               </div>
 
               <div>
-                <label className="block font-semibold mb-1">{t.formUrl}</label>
+                <label className="block font-semibold mb-1">URL / Tautan Berita</label>
                 <input
                   type="url"
                   required
@@ -1332,23 +1231,23 @@ const handleLogin = async (e) => {
               </div>
 
               <div>
-                <label className="block font-semibold mb-1">{t.formSentiment}</label>
+                <label className="block font-semibold mb-1">Klasifikasi Sentimen</label>
                 <select
                   value={formData.sentiment}
                   onChange={(e) => setFormData({ ...formData, sentiment: e.target.value })}
                   className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0D2C5C]"
                 >
-                  <option value="positive">{lang === 'id' ? 'Positif (Kinerja / Apresiasi)' : 'Positive (Performance / Praise)'}</option>
-                  <option value="neutral">{lang === 'id' ? 'Netral (Rilis Umum / Informasi)' : 'Neutral (General Coverage)'}</option>
-                  <option value="negative">{lang === 'id' ? 'Kritis / Negatif (Perlu Ditindaklanjuti)' : 'Critical / Negative (Action Required)'}</option>
+                  <option value="positive">Positif (Kinerja / Apresiasi)</option>
+                  <option value="neutral">Netral (Rilis Umum / Informasi)</option>
+                  <option value="negative">Kritis / Negatif (Perlu Ditindaklanjuti)</option>
                 </select>
               </div>
 
               <div>
-                <label className="block font-semibold mb-1">{t.formSnippet}</label>
+                <label className="block font-semibold mb-1">Ringkasan / Catatan Berita</label>
                 <textarea
                   rows="3"
-                  placeholder={lang === 'id' ? 'Ringkasan isi berita...' : 'News excerpt or summary...'}
+                  placeholder="Ringkasan isi berita..."
                   value={formData.snippet}
                   onChange={(e) => setFormData({ ...formData, snippet: e.target.value })}
                   className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0D2C5C]"
@@ -1361,13 +1260,13 @@ const handleLogin = async (e) => {
                   onClick={() => setIsModalOpen(false)}
                   className="px-4 py-2 text-xs font-medium rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800"
                 >
-                  {t.btnCancel}
+                  Batal
                 </button>
                 <button
                   type="submit"
                   className="px-4 py-2 text-xs font-bold rounded-xl bg-[#0D2C5C] hover:bg-[#0A2247] text-white border border-amber-400/40"
                 >
-                  {editingArticleId ? t.btnUpdate : t.btnSave}
+                  {editingArticleId ? 'Simpan Perubahan' : 'Simpan ke Basis Data'}
                 </button>
               </div>
             </form>
