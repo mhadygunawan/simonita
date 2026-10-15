@@ -15,6 +15,9 @@ export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  // Interactive Hotspot Modal/Popover State
+  const [selectedHotspot, setSelectedHotspot] = useState(null);
+
   // Auth State
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
@@ -31,6 +34,46 @@ export default function App() {
     snippet: '',
     sentiment: 'neutral'
   });
+
+  // Hotspots Wilayah Pengawasan KPPBC TMP B Pekanbaru
+  const hotspots = [
+    {
+      id: 'building',
+      title: 'Kantor Pelayanan KPPBC TMP B Pekanbaru',
+      subtitle: 'Pusat Komando & Pelayanan PLI',
+      desc: 'Pusat koordinasi pemantauan media, pelayanan kepabeanan dan cukai, serta administrasi pengawasan 5 kabupaten/kota.',
+      coverage: 'Pekanbaru Kota',
+      coords: { top: '22%', left: '15%' },
+      icon: '🏛️'
+    },
+    {
+      id: 'river',
+      title: 'Patroli Perairan Sungai Siak',
+      subtitle: 'Pengawasan Jalur Air & Pelabuhan Rakyat',
+      desc: 'Satuan tugas patroli laut dan sungai memantau pergerakan kapal kargo serta pencegahan penyelundupan barang ilegal via jalur sungai.',
+      coverage: 'Wilayah Siak & Sekitarnya',
+      coords: { top: '65%', left: '42%' },
+      icon: '🚤'
+    },
+    {
+      id: 'car',
+      title: 'Unit Patroli Darat Operasi Pasar',
+      subtitle: 'Gempur Rokok Ilegal Darat',
+      desc: 'Pencegahan dan penindakan peredaran Barang Kena Cukai (BKC) hasil tembakau ilegal di jalur lintas barat dan selatan Riau.',
+      coverage: 'Kampar & Rokan Hulu',
+      coords: { top: '48%', left: '78%' },
+      icon: '🚔'
+    },
+    {
+      id: 'drone',
+      title: 'Drone Monitoring Udara Kawasan Industri',
+      subtitle: 'Surveillance Tempat Penimbunan Berikat',
+      desc: 'Pemantauan berkala kawasan industri, fasilitas Tempat Penimbunan Berikat (TPB), dan Kawasan Berikat dari udara.',
+      coverage: 'Pelalawan & Siak',
+      coords: { top: '15%', left: '60%' },
+      icon: '🛸'
+    }
+  ];
 
   // Sinkronisasi Sesi Supabase
   useEffect(() => {
@@ -173,10 +216,7 @@ export default function App() {
       return;
     }
 
-    // Header Kolom CSV
     const headers = ['No', 'Judul Artikel', 'Nama Sumber / Media', 'Waktu Terbit', 'Tipe Entri', 'Sentimen Opini', 'URL Artikel'];
-
-    // Baris Data
     const rows = filteredArticles.map((article, index) => {
       const cleanTitle = `"${(article.title || '').replace(/"/g, '""')}"`;
       const cleanSource = `"${(article.source_name || '').replace(/"/g, '""')}"`;
@@ -195,7 +235,6 @@ export default function App() {
       return [index + 1, cleanTitle, cleanSource, cleanDate, cleanType, cleanSentiment, cleanUrl].join(',');
     });
 
-    // Gabungkan dengan BOM UTF-8 agar karakter bahasa Indonesia dan simbol terbaca rapi di Microsoft Excel
     const csvContent = '\uFEFF' + [headers.join(','), ...rows].join('\r\n');
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
@@ -221,14 +260,84 @@ export default function App() {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 flex flex-col font-sans transition-colors duration-300 relative overflow-x-hidden">
 
-      {/* Latar Belakang Isometrik SVG Khas Wilayah Kerja Riau */}
-      <div className="fixed inset-0 pointer-events-none opacity-20 dark:opacity-10 z-0 overflow-hidden">
-        <svg className="w-full h-full object-cover" viewBox="0 0 1440 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* Latar Belakang Isometrik SVG Khas Wilayah Kerja Riau & Clickable Hotspots */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        {/* Visual Ilustrasi Vektor SVG */}
+        <svg className="w-full h-full object-cover opacity-25 dark:opacity-15 transition-opacity" viewBox="0 0 1440 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+          {/* Aliran Sungai Siak */}
           <path d="M-100,500 C300,450 600,650 900,550 C1200,450 1500,600 1600,580 L1600,900 L-100,900 Z" fill="#0284C7" />
+          
+          {/* Pola Kisi Isometrik */}
           <path d="M0 200 L1440 600 M0 400 L1440 800 M0 600 L1440 1000" stroke="#0D2C5C" strokeWidth="1" strokeDasharray="6 6" />
           <path d="M1440 200 L0 600 M1440 400 L0 800 M1440 600 L0 1000" stroke="#0D2C5C" strokeWidth="1" strokeDasharray="6 6" />
+
+          {/* Vektor Isometrik Gedung Kantor Bea Cukai */}
+          <polygon points="200,240 260,205 320,240 260,275" fill="#0D2C5C" opacity="0.6" />
+          <polygon points="200,240 260,275 260,340 200,305" fill="#0A2247" opacity="0.8" />
+          <polygon points="260,275 320,240 320,305 260,340" fill="#1E3A8A" opacity="0.5" />
+
+          {/* Kapal Patroli Sungai */}
+          <polygon points="560,600 620,580 660,610 600,630" fill="#F59E0B" opacity="0.7" />
+          <polygon points="560,600 600,630 600,645 560,615" fill="#B45309" opacity="0.8" />
+
+          {/* Mobil Patroli Darat */}
+          <polygon points="1080,480 1130,455 1170,480 1120,505" fill="#0D2C5C" opacity="0.7" />
+          <polygon points="1080,480 1120,505 1120,520 1080,495" fill="#0284C7" opacity="0.8" />
         </svg>
+
+        {/* Titik Interaktif (Clickable Hotspots) */}
+        {hotspots.map((spot) => (
+          <button
+            key={spot.id}
+            onClick={() => setSelectedHotspot(spot)}
+            style={{ top: spot.coords.top, left: spot.coords.left }}
+            className="absolute pointer-events-auto group -translate-x-1/2 -translate-y-1/2 z-10 focus:outline-none"
+            title={spot.title}
+          >
+            <span className="relative flex h-8 w-8 items-center justify-center">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+              <span className="relative inline-flex items-center justify-center rounded-full h-7 w-7 bg-[#0D2C5C] text-white border border-amber-400 shadow-lg text-xs group-hover:scale-125 transition-transform duration-200">
+                {spot.icon}
+              </span>
+            </span>
+          </button>
+        ))}
       </div>
+
+      {/* Modal Detail Wilayah Pengawasan Hotspot */}
+      {selectedHotspot && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 text-left relative animate-in fade-in zoom-in duration-150">
+            <button
+              onClick={() => setSelectedHotspot(null)}
+              className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-base font-bold"
+            >
+              ✕
+            </button>
+            <div className="text-3xl mb-2">{selectedHotspot.icon}</div>
+            <span className="text-[10px] uppercase font-bold tracking-wider text-amber-500 bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 rounded-full border border-amber-400/30">
+              {selectedHotspot.coverage}
+            </span>
+            <h3 className="font-extrabold text-base text-[#0D2C5C] dark:text-amber-400 mt-2">
+              {selectedHotspot.title}
+            </h3>
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-0.5 mb-2">
+              {selectedHotspot.subtitle}
+            </p>
+            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed border-t border-slate-100 dark:border-slate-800 pt-2.5">
+              {selectedHotspot.desc}
+            </p>
+            <div className="mt-4 pt-2 flex justify-end">
+              <button
+                onClick={() => setSelectedHotspot(null)}
+                className="px-4 py-1.5 rounded-xl bg-[#0D2C5C] text-white text-xs font-bold hover:bg-[#0A2247] transition"
+              >
+                Tutup
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Header Navigasi Atas */}
       <header className="sticky top-0 z-30 bg-[#0D2C5C]/95 backdrop-blur-md text-white border-b border-amber-500/30 px-4 sm:px-6 py-3.5 shadow-md">
@@ -405,11 +514,11 @@ export default function App() {
             </div>
           )}
 
-          {/* Kartu Informasi Instansi di Sidebar */}
+          {/* Kartu Informasi Hotspot & Instansi di Sidebar */}
           <div className="bg-[#0D2C5C]/5 dark:bg-white/5 p-4 rounded-2xl border border-slate-200/50 dark:border-slate-800 text-xs space-y-2">
-            <span className="font-bold text-[#0D2C5C] dark:text-amber-400 block">Seksi PLI Pekanbaru</span>
+            <span className="font-bold text-[#0D2C5C] dark:text-amber-400 block">Titik Hotspot Wilayah</span>
             <p className="text-[11px] text-slate-500 leading-relaxed">
-              Monitoring berkala media online, pengawasan peredaran BKC, dan pengelolaan opini publik.
+              Klik ikon berkedip pada latar belakang untuk melihat ringkasan tugas pengawasan darat, air, dan kawasan berikat.
             </p>
           </div>
         </aside>
@@ -430,7 +539,6 @@ export default function App() {
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
-              {/* Tombol Ekspor CSV / Excel */}
               {activeTab === 'articles' && (
                 <button
                   onClick={exportToCSV}
@@ -705,7 +813,7 @@ export default function App() {
 
               <div className="pt-3 border-t border-slate-200 dark:border-slate-800 text-[11px] text-slate-400 flex flex-col sm:flex-row justify-between gap-1">
                 <span>Seksi Penyuluhan dan Layanan Informasi (PLI) KPPBC TMP B Pekanbaru</span>
-                <span>Versi 1.1.0</span>
+                <span>Versi 1.2.0</span>
               </div>
             </div>
           )}
