@@ -1,31 +1,28 @@
-name: SIMONITA News Scraper & AI Sentiment
+name: Scrape and Analyze
 
 on:
   schedule:
-    # Berjalan otomatis setiap 1 jam
-    - cron: '0 * * * *'
-  # Memungkinkan pemicuan manual dari tab Actions di GitHub
-  workflow_dispatch:
+    - cron: '0 */6 * * *' # Menjalankan otomatis setiap 6 jam
+  workflow_dispatch:      # Memungkinkan tombol 'Run workflow' manual
 
 jobs:
   scrape-and-analyze:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js Environment
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'npm'
-
-      - name: Install Dependencies
-        run: npm ci
-
-      - name: Run News Scraper Engine
-        env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-        run: node scripts/scrape.js
+      - name: Trigger Supabase Scrape Edge Function
+        run: |
+          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST \
+            "${{ secrets.SUPABASE_URL }}/functions/v1/scrape-web" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" \
+            -H "Content-Type: application/json")
+          
+          HTTP_BODY=$(echo "$RESPONSE" | sed '$d')
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          
+          echo "Response Body: $HTTP_BODY"
+          echo "HTTP Code: $HTTP_CODE"
+          
+          if [ "$HTTP_CODE" -ne 200 ]; then
+            echo "Scraping trigger gagal dengan status $HTTP_CODE"
+            exit 1
+          fi
